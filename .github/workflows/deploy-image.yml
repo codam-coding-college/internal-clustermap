@@ -2,8 +2,8 @@ name: Build, Publish & Release
 
 on:
   push:
-    tags:
-      - '*'
+    branches:
+      - main
 
 env:
   REGISTRY: ghcr.io
