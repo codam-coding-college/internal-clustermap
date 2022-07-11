@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: internal-clustermap
+spec:
+  selector:
+    matchLabels:
+      app: internal-clustermap
+  template:
+    metadata:
+      labels:
+        app: internal-clustermap
+    spec:
+      containers:
+      - name: internal-clustermap
+        image: ghcr.io/codam-coding-college/internal-clustermap:main
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "1000m"
+        ports:
+        - containerPort: 3000
+        env:
+        - name: DATABASE_URL
+          value: ...
+        
