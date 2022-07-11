@@ -26,4 +26,6 @@ model Location {
     host_id         Int?
     begin_at        DateTime?
     end_at          DateTime?
+
+    @@map("locations")
 }
