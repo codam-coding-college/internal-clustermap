@@ -49,7 +49,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-      - uses: google-github-actions/release-please-action@v3
-        with:
-          release-type: node
-          package-name: ${{ env.IMAGE_NAME }}
+      # - uses: google-github-actions/release-please-action@v3
+      #   with:
+      #     release-type: node
+      #     package-name: ${{ env.IMAGE_NAME }}
