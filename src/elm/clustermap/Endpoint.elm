@@ -26,7 +26,7 @@ clusterf1 =
 
 activeSessions : Endpoint
 activeSessions =
-    Endpoint "http://localhost:3000/api/active"
+    Endpoint "api/active"
 
 
 
