@@ -36,7 +36,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Docker build
-        run: docker build -t ${{ env.IMAGE_NAME }}
+        run: docker build -t ${{ env.IMAGE_NAME }} .
 
       - run: npx semantic-release
         env:
