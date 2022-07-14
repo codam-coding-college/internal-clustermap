@@ -11,15 +11,16 @@
   },
   "dependencies": {
     "@prisma/client": "^4.0.0",
-    "@semantic-release/changelog": "^6.0.1",
     "cors": "^2.8.5",
     "next": "12.2.0",
     "react": "18.2.0"
   },
   "devDependencies": {
-    "@codedependant/semantic-release-docker": "^2.2.0",
     "@semantic-release/commit-analyzer": "^9.0.2",
     "@semantic-release/git": "^10.0.1",
+    "@semantic-release-plus/docker": "^3.1.2",
+    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/github": "^8.0.5",
     "@types/cors": "^2.8.12",
     "@types/node": "18.0.0",
     "@types/react": "18.0.14",
@@ -37,22 +38,5 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/codam-coding-college/internal-clustermap.git"
-  },
-  "release": {
-    "branches": "main",
-    "dockerTags": [
-      "latest",
-      "{{version}}",
-      "{{major}}-latest'",
-      "{{major}}.{{minor}}"
-    ],
-    "dockerImage": "internal-clustermap",
-    "dockerFile": "Dockerfile",
-    "dockerRegistry": "ghcr.io",
-    "dockerProject": "codam-coding-college",
-    "dockerLogin": false,
-    "plugins": [
-      "@codedependant/semantic-release-docker"
-    ]
   }
 }
