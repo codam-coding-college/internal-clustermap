@@ -36,10 +36,8 @@
   "release": {
     "branches": ["main"]
   },
-  "publish": [
-    {
-      "path": "semantic-release-docker",
-      "name": "ghcr.io/codam-coding-college/internal-clustermap"
-    }
-  ]
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/codam-coding-college/internal-clustermap.git"
+  }
 }
