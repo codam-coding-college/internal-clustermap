@@ -36,5 +36,18 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/codam-coding-college/internal-clustermap.git"
+  },
+  "release": {
+    "branches": "main",
+    "plugins": [
+      ["@codedependant/semantic-release-docker", {
+        "dockerTags": ["latest", "{{version}}", "{{major}}-latest'","{{major}}.{{minor}}"],
+        "dockerImage": "internal-clustermap",
+        "dockerFile": "Dockerfile",
+        "dockerRegistry": "ghcr.io",
+        "dockerProject": "codam-coding-college",
+        "dockerLogin": false
+      }]
+    ]
   }
 }
