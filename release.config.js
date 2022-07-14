@@ -7,6 +7,7 @@ module.exports = {
         dockerFile: 'Dockerfile',
         dockerRegistry: 'ghcr.io',
         dockerProject: 'codam-coding-college',
+        dockerLogin: false,
       }]
     ]
   }
