@@ -3,6 +3,7 @@ RUN apt-get update && apt-get install -y curl gzip
 WORKDIR /app
 
 COPY package.json ./
+COPY prisma/ prisma/
 RUN yarn install
 
 RUN curl -L -o elm.gz https://github.com/elm/compiler/releases/download/0.19.1/binary-for-linux-64-bit.gz && \
