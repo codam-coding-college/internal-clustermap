@@ -13,13 +13,14 @@
     "@prisma/client": "^4.0.0",
     "cors": "^2.8.5",
     "next": "12.2.0",
+    "node-cache": "^5.1.2",
     "react": "18.2.0"
   },
   "devDependencies": {
-    "@semantic-release/commit-analyzer": "^9.0.2",
-    "@semantic-release/git": "^10.0.1",
     "@semantic-release-plus/docker": "^3.1.2",
     "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/commit-analyzer": "^9.0.2",
+    "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "^8.0.5",
     "@types/cors": "^2.8.12",
     "@types/node": "18.0.0",

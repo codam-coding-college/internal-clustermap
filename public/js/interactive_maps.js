@@ -5380,7 +5380,7 @@ var $author$project$Main$Window = F2(
 		return {aM: height, a5: width};
 	});
 var $author$project$Endpoint$Endpoint = $elm$core$Basics$identity;
-var $author$project$Endpoint$activeSessions = 'http://localhost:3000/api/active';
+var $author$project$Endpoint$activeSessions = 'api/active';
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $author$project$Clustermap$MapSettings = F4(
 	function (height, width, activeIconSize, emptyIconSize) {
