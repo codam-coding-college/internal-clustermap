@@ -519,11 +519,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.c1.aT === region.$7.aT)
+	if (region.c2.aU === region.dp.aU)
 	{
-		return 'on line ' + region.c1.aT;
+		return 'on line ' + region.c2.aU;
 	}
-	return 'on lines ' + region.c1.aT + ' through ' + region.$7.aT;
+	return 'on lines ' + region.c2.aU + ' through ' + region.dp.aU;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.fh,
-		impl.ge,
-		impl.fW,
+		impl.fi,
+		impl.gf,
+		impl.fX,
 		function() { return function() {} }
 	);
 });
@@ -2704,9 +2704,9 @@ var _VirtualDom_mapEventTuple = F2(function(func, tuple)
 var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
-		T: func(record.T),
-		c3: record.c3,
-		cX: record.cX
+		U: func(record.U),
+		c4: record.c4,
+		cY: record.cY
 	}
 });
 
@@ -2974,11 +2974,11 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 		// 3 = Custom
 
 		var value = result.a;
-		var message = !tag ? value : tag < 3 ? value.a : value.T;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.c3;
+		var message = !tag ? value : tag < 3 ? value.a : value.U;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.c4;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.cX) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.cY) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3928,11 +3928,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.fh,
-		impl.ge,
-		impl.fW,
+		impl.fi,
+		impl.gf,
+		impl.fX,
 		function(sendToApp, initialModel) {
-			var view = impl.gf;
+			var view = impl.gg;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3964,12 +3964,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.fh,
-		impl.ge,
-		impl.fW,
+		impl.fi,
+		impl.gf,
+		impl.fX,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.c0 && impl.c0(sendToApp)
-			var view = impl.gf;
+			var divertHrefToApp = impl.c1 && impl.c1(sendToApp)
+			var view = impl.gg;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3977,12 +3977,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.eK);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.eL);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.ga) && (_VirtualDom_doc.title = title = doc.ga);
+				(title !== doc.gb) && (_VirtualDom_doc.title = title = doc.gb);
 			});
 		}
 	);
@@ -4038,12 +4038,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.fv;
-	var onUrlRequest = impl.fw;
+	var onUrlChange = impl.fw;
+	var onUrlRequest = impl.fx;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		c0: function(sendToApp)
+		c1: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4059,9 +4059,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.dY === next.dY
-							&& curr.bM === next.bM
-							&& curr.dU.a === next.dU.a
+							&& curr.dZ === next.dZ
+							&& curr.bN === next.bN
+							&& curr.dV.a === next.dV.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4069,13 +4069,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		fh: function(flags)
+		fi: function(flags)
 		{
-			return A3(impl.fh, flags, _Browser_getUrl(), key);
+			return A3(impl.fi, flags, _Browser_getUrl(), key);
 		},
+		gg: impl.gg,
 		gf: impl.gf,
-		ge: impl.ge,
-		fW: impl.fW
+		fX: impl.fX
 	});
 }
 
@@ -4141,17 +4141,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { fb: 'hidden', eT: 'visibilitychange' }
+		? { fc: 'hidden', eU: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { fb: 'mozHidden', eT: 'mozvisibilitychange' }
+		? { fc: 'mozHidden', eU: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { fb: 'msHidden', eT: 'msvisibilitychange' }
+		? { fc: 'msHidden', eU: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { fb: 'webkitHidden', eT: 'webkitvisibilitychange' }
-		: { fb: 'hidden', eT: 'visibilitychange' };
+		? { fc: 'webkitHidden', eU: 'webkitvisibilitychange' }
+		: { fc: 'hidden', eU: 'visibilitychange' };
 }
 
 
@@ -4232,12 +4232,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		d4: _Browser_getScene(),
-		a4: {
-			ep: _Browser_window.pageXOffset,
-			eq: _Browser_window.pageYOffset,
-			a5: _Browser_doc.documentElement.clientWidth,
-			aM: _Browser_doc.documentElement.clientHeight
+		d5: _Browser_getScene(),
+		a5: {
+			eq: _Browser_window.pageXOffset,
+			er: _Browser_window.pageYOffset,
+			a6: _Browser_doc.documentElement.clientWidth,
+			aN: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4247,8 +4247,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		a5: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		aM: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		a6: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		aN: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4271,15 +4271,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			d4: {
-				a5: node.scrollWidth,
-				aM: node.scrollHeight
+			d5: {
+				a6: node.scrollWidth,
+				aN: node.scrollHeight
 			},
-			a4: {
-				ep: node.scrollLeft,
-				eq: node.scrollTop,
-				a5: node.clientWidth,
-				aM: node.clientHeight
+			a5: {
+				eq: node.scrollLeft,
+				er: node.scrollTop,
+				a6: node.clientWidth,
+				aN: node.clientHeight
 			}
 		};
 	});
@@ -4309,18 +4309,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			d4: _Browser_getScene(),
-			a4: {
-				ep: x,
-				eq: y,
-				a5: _Browser_doc.documentElement.clientWidth,
-				aM: _Browser_doc.documentElement.clientHeight
+			d5: _Browser_getScene(),
+			a5: {
+				eq: x,
+				er: y,
+				a6: _Browser_doc.documentElement.clientWidth,
+				aN: _Browser_doc.documentElement.clientHeight
 			},
-			e4: {
-				ep: x + rect.left,
-				eq: y + rect.top,
-				a5: rect.width,
-				aM: rect.height
+			e5: {
+				eq: x + rect.left,
+				er: y + rect.top,
+				a6: rect.width,
+				aN: rect.height
 			}
 		};
 	});
@@ -4365,25 +4365,25 @@ var _Http_toTask = F3(function(router, toTask, request)
 	return _Scheduler_binding(function(callback)
 	{
 		function done(response) {
-			callback(toTask(request.dq.a(response)));
+			callback(toTask(request.dr.a(response)));
 		}
 
 		var xhr = new XMLHttpRequest();
 		xhr.addEventListener('error', function() { done($elm$http$Http$NetworkError_); });
 		xhr.addEventListener('timeout', function() { done($elm$http$Http$Timeout_); });
-		xhr.addEventListener('load', function() { done(_Http_toResponse(request.dq.b, xhr)); });
-		$elm$core$Maybe$isJust(request.eh) && _Http_track(router, xhr, request.eh.a);
+		xhr.addEventListener('load', function() { done(_Http_toResponse(request.dr.b, xhr)); });
+		$elm$core$Maybe$isJust(request.ei) && _Http_track(router, xhr, request.ei.a);
 
 		try {
-			xhr.open(request.fp, request.ek, true);
+			xhr.open(request.fq, request.el, true);
 		} catch (e) {
-			return done($elm$http$Http$BadUrl_(request.ek));
+			return done($elm$http$Http$BadUrl_(request.el));
 		}
 
 		_Http_configureRequest(xhr, request);
 
-		request.eK.a && xhr.setRequestHeader('Content-Type', request.eK.a);
-		xhr.send(request.eK.b);
+		request.eL.a && xhr.setRequestHeader('Content-Type', request.eL.a);
+		xhr.send(request.eL.b);
 
 		return function() { xhr.c = true; xhr.abort(); };
 	});
@@ -4394,13 +4394,13 @@ var _Http_toTask = F3(function(router, toTask, request)
 
 function _Http_configureRequest(xhr, request)
 {
-	for (var headers = request.du; headers.b; headers = headers.b) // WHILE_CONS
+	for (var headers = request.dv; headers.b; headers = headers.b) // WHILE_CONS
 	{
 		xhr.setRequestHeader(headers.a.a, headers.a.b);
 	}
-	xhr.timeout = request.f9.a || 0;
-	xhr.responseType = request.dq.d;
-	xhr.withCredentials = request.eC;
+	xhr.timeout = request.ga.a || 0;
+	xhr.responseType = request.dr.d;
+	xhr.withCredentials = request.eD;
 }
 
 
@@ -4421,10 +4421,10 @@ function _Http_toResponse(toBody, xhr)
 function _Http_toMetadata(xhr)
 {
 	return {
-		ek: xhr.responseURL,
-		fQ: xhr.status,
-		fR: xhr.statusText,
-		du: _Http_parseHeaders(xhr.getAllResponseHeaders())
+		el: xhr.responseURL,
+		fR: xhr.status,
+		fS: xhr.statusText,
+		dv: _Http_parseHeaders(xhr.getAllResponseHeaders())
 	};
 }
 
@@ -4519,15 +4519,15 @@ function _Http_track(router, xhr, tracker)
 	xhr.upload.addEventListener('progress', function(event) {
 		if (xhr.c) { return; }
 		_Scheduler_rawSpawn(A2($elm$core$Platform$sendToSelf, router, _Utils_Tuple2(tracker, $elm$http$Http$Sending({
-			fI: event.loaded,
-			d7: event.total
+			fJ: event.loaded,
+			d8: event.total
 		}))));
 	});
 	xhr.addEventListener('progress', function(event) {
 		if (xhr.c) { return; }
 		_Scheduler_rawSpawn(A2($elm$core$Platform$sendToSelf, router, _Utils_Tuple2(tracker, $elm$http$Http$Receiving({
-			fA: event.loaded,
-			d7: event.lengthComputable ? $elm$core$Maybe$Just(event.total) : $elm$core$Maybe$Nothing
+			fB: event.loaded,
+			d8: event.lengthComputable ? $elm$core$Maybe$Just(event.total) : $elm$core$Maybe$Nothing
 		}))));
 	});
 }
@@ -5082,7 +5082,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {ds: fragment, bM: host, dS: path, dU: port_, dY: protocol, dZ: query};
+		return {dt: fragment, bN: host, dT: path, dV: port_, dZ: protocol, d_: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5373,29 +5373,29 @@ var $author$project$Main$Mapf1Msg = function (a) {
 };
 var $author$project$Main$Model = F4(
 	function (clusterF0, clusterF1, windowInfo, deviceInfo) {
-		return {M: clusterF0, N: clusterF1, bA: deviceInfo, gg: windowInfo};
+		return {N: clusterF0, O: clusterF1, bB: deviceInfo, gh: windowInfo};
 	});
 var $author$project$Main$Window = F2(
 	function (width, height) {
-		return {aM: height, a5: width};
+		return {aN: height, a6: width};
 	});
 var $author$project$Endpoint$Endpoint = $elm$core$Basics$identity;
 var $author$project$Endpoint$activeSessions = 'api/active';
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $author$project$Clustermap$MapSettings = F4(
 	function (height, width, activeIconSize, emptyIconSize) {
-		return {aG: activeIconSize, bD: emptyIconSize, aM: height, a5: width};
+		return {aH: activeIconSize, bE: emptyIconSize, aN: height, a6: width};
 	});
 var $elm$core$Basics$ge = _Utils_ge;
 var $elm$core$Basics$round = _Basics_round;
 var $author$project$Main$calcMapSettings = F2(
 	function (window, _v0) {
-		var _class = _v0.dj;
-		var orientation = _v0.aX;
-		var preheight = $elm$core$Basics$round(window.aM * 0.93);
+		var _class = _v0.dk;
+		var orientation = _v0.aY;
+		var preheight = $elm$core$Basics$round(window.aN * 0.93);
 		var prewidth = $elm$core$Basics$round(preheight * 0.77);
-		var width = (_Utils_cmp(prewidth, window.a5) > -1) ? $elm$core$Basics$round(window.a5 * 0.95) : prewidth;
-		var height = (_Utils_cmp(prewidth, window.a5) > -1) ? $elm$core$Basics$round(width * 1.299) : preheight;
+		var width = (_Utils_cmp(prewidth, window.a6) > -1) ? $elm$core$Basics$round(window.a6 * 0.95) : prewidth;
+		var height = (_Utils_cmp(prewidth, window.a6) > -1) ? $elm$core$Basics$round(width * 1.299) : preheight;
 		switch (_class) {
 			case 0:
 				if (!orientation) {
@@ -5435,12 +5435,12 @@ var $elm$core$Basics$min = F2(
 	});
 var $author$project$Main$classifyDevice = function (window) {
 	return {
-		dj: function () {
-			var shortSide = A2($elm$core$Basics$min, window.a5, window.aM);
-			var longSide = A2($elm$core$Basics$max, window.a5, window.aM);
+		dk: function () {
+			var shortSide = A2($elm$core$Basics$min, window.a6, window.aN);
+			var longSide = A2($elm$core$Basics$max, window.a6, window.aN);
 			return (shortSide < 600) ? 0 : ((longSide <= 1200) ? 1 : (((longSide > 1200) && (longSide <= 1800)) ? 2 : 3));
 		}(),
-		aX: (_Utils_cmp(window.a5, window.aM) < 0) ? 0 : 1
+		aY: (_Utils_cmp(window.a6, window.aN) < 0) ? 0 : 1
 	};
 };
 var $author$project$Asset$Image = $elm$core$Basics$identity;
@@ -6046,7 +6046,7 @@ var $elm$http$Http$resolve = F2(
 			case 3:
 				var metadata = response.a;
 				return $elm$core$Result$Err(
-					$elm$http$Http$BadStatus(metadata.fQ));
+					$elm$http$Http$BadStatus(metadata.fR));
 			default:
 				var body = response.b;
 				return A2(
@@ -6074,7 +6074,7 @@ var $elm$http$Http$Request = function (a) {
 };
 var $elm$http$Http$State = F2(
 	function (reqs, subs) {
-		return {d$: reqs, d8: subs};
+		return {d0: reqs, d9: subs};
 	});
 var $elm$http$Http$init = $elm$core$Task$succeed(
 	A2($elm$http$Http$State, $elm$core$Dict$empty, _List_Nil));
@@ -6118,7 +6118,7 @@ var $elm$http$Http$updateReqs = F3(
 					return A2(
 						$elm$core$Task$andThen,
 						function (pid) {
-							var _v4 = req.eh;
+							var _v4 = req.ei;
 							if (_v4.$ === 1) {
 								return A3($elm$http$Http$updateReqs, router, otherCmds, reqs);
 							} else {
@@ -6148,7 +6148,7 @@ var $elm$http$Http$onEffects = F4(
 				return $elm$core$Task$succeed(
 					A2($elm$http$Http$State, reqs, subs));
 			},
-			A3($elm$http$Http$updateReqs, router, cmds, state.d$));
+			A3($elm$http$Http$updateReqs, router, cmds, state.d0));
 	});
 var $elm$core$List$maybeCons = F3(
 	function (f, mx, xs) {
@@ -6191,7 +6191,7 @@ var $elm$http$Http$onSelfMsg = F3(
 				A2(
 					$elm$core$List$filterMap,
 					A3($elm$http$Http$maybeSend, router, tracker, progress),
-					state.d8)));
+					state.d9)));
 	});
 var $elm$http$Http$Cancel = function (a) {
 	return {$: 0, a: a};
@@ -6205,14 +6205,14 @@ var $elm$http$Http$cmdMap = F2(
 			var r = cmd.a;
 			return $elm$http$Http$Request(
 				{
-					eC: r.eC,
-					eK: r.eK,
-					dq: A2(_Http_mapExpect, func, r.dq),
-					du: r.du,
-					fp: r.fp,
-					f9: r.f9,
-					eh: r.eh,
-					ek: r.ek
+					eD: r.eD,
+					eL: r.eL,
+					dr: A2(_Http_mapExpect, func, r.dr),
+					dv: r.dv,
+					fq: r.fq,
+					ga: r.ga,
+					ei: r.ei,
+					el: r.el
 				});
 		}
 	});
@@ -6235,13 +6235,54 @@ var $elm$http$Http$subscription = _Platform_leaf('Http');
 var $elm$http$Http$request = function (r) {
 	return $elm$http$Http$command(
 		$elm$http$Http$Request(
-			{eC: false, eK: r.eK, dq: r.dq, du: r.du, fp: r.fp, f9: r.f9, eh: r.eh, ek: r.ek}));
+			{eD: false, eL: r.eL, dr: r.dr, dv: r.dv, fq: r.fq, ga: r.ga, ei: r.ei, el: r.el}));
 };
 var $elm$http$Http$get = function (r) {
 	return $elm$http$Http$request(
-		{eK: $elm$http$Http$emptyBody, dq: r.dq, du: _List_Nil, fp: 'GET', f9: $elm$core$Maybe$Nothing, eh: $elm$core$Maybe$Nothing, ek: r.ek});
+		{eL: $elm$http$Http$emptyBody, dr: r.dr, dv: _List_Nil, fq: 'GET', ga: $elm$core$Maybe$Nothing, ei: $elm$core$Maybe$Nothing, el: r.el});
 };
 var $elm$json$Json$Decode$list = _Json_decodeList;
+var $author$project$Clustermap$Jpg = function (a) {
+	return {$: 0, a: a};
+};
+var $author$project$Clustermap$compareSessionUsername = F2(
+	function (username, session) {
+		return _Utils_eq(session.a4, username);
+	});
+var $elm$core$List$filter = F2(
+	function (isGood, list) {
+		return A3(
+			$elm$core$List$foldr,
+			F2(
+				function (x, xs) {
+					return isGood(x) ? A2($elm$core$List$cons, x, xs) : xs;
+				}),
+			_List_Nil,
+			list);
+	});
+var $elm$core$List$head = function (list) {
+	if (list.b) {
+		var x = list.a;
+		var xs = list.b;
+		return $elm$core$Maybe$Just(x);
+	} else {
+		return $elm$core$Maybe$Nothing;
+	}
+};
+var $author$project$Clustermap$getInitialImage = F2(
+	function (username, sessionlist) {
+		var _v0 = $elm$core$List$head(
+			A2(
+				$elm$core$List$filter,
+				$author$project$Clustermap$compareSessionUsername(username),
+				sessionlist));
+		if (!_v0.$) {
+			var item = _v0.a;
+			return item.ag;
+		} else {
+			return $author$project$Clustermap$Jpg('https://cdn.intra.42.fr/users/small_' + username);
+		}
+	});
 var $webbhuset$elm_json_decode$Json$Decode$Field$require = F3(
 	function (fieldName, valueDecoder, continuation) {
 		return A2(
@@ -6250,43 +6291,56 @@ var $webbhuset$elm_json_decode$Json$Decode$Field$require = F3(
 			A2($elm$json$Json$Decode$field, fieldName, valueDecoder));
 	});
 var $elm$json$Json$Decode$string = _Json_decodeString;
-var $author$project$Clustermap$sessionDecoder = A3(
-	$webbhuset$elm_json_decode$Json$Decode$Field$require,
-	'login',
-	$elm$json$Json$Decode$string,
-	function (username) {
-		return A3(
-			$webbhuset$elm_json_decode$Json$Decode$Field$require,
-			'hostname',
-			$elm$json$Json$Decode$string,
-			function (host) {
-				return $elm$json$Json$Decode$succeed(
-					{bM: host, a3: username});
-			});
-	});
-var $author$project$Clustermap$sessionListDecoder = $elm$json$Json$Decode$list($author$project$Clustermap$sessionDecoder);
+var $author$project$Clustermap$sessionDecoder = function (sessionlist) {
+	return A3(
+		$webbhuset$elm_json_decode$Json$Decode$Field$require,
+		'login',
+		$elm$json$Json$Decode$string,
+		function (username) {
+			return A3(
+				$webbhuset$elm_json_decode$Json$Decode$Field$require,
+				'hostname',
+				$elm$json$Json$Decode$string,
+				function (host) {
+					return $elm$json$Json$Decode$succeed(
+						{
+							bN: host,
+							ag: A2($author$project$Clustermap$getInitialImage, username, sessionlist),
+							a4: username
+						});
+				});
+		});
+};
+var $author$project$Clustermap$sessionListDecoder = function (sessionlist) {
+	return $elm$json$Json$Decode$list(
+		$author$project$Clustermap$sessionDecoder(sessionlist));
+};
 var $author$project$Endpoint$toString = function (_v0) {
 	var str = _v0;
 	return str;
 };
-var $author$project$Clustermap$getActiveSessions = function (endpoint) {
-	return $elm$http$Http$get(
-		{
-			dq: A2($elm$http$Http$expectJson, $author$project$Clustermap$GotSessions, $author$project$Clustermap$sessionListDecoder),
-			ek: $author$project$Endpoint$toString(endpoint)
-		});
-};
+var $author$project$Clustermap$getActiveSessions = F2(
+	function (endpoint, sessionlist) {
+		return $elm$http$Http$get(
+			{
+				dr: A2(
+					$elm$http$Http$expectJson,
+					$author$project$Clustermap$GotSessions,
+					$author$project$Clustermap$sessionListDecoder(sessionlist)),
+				el: $author$project$Endpoint$toString(endpoint)
+			});
+	});
 var $author$project$Clustermap$GotHosts = function (a) {
 	return {$: 1, a: a};
 };
 var $rundis$elm_bootstrap$Bootstrap$Popover$State = $elm$core$Basics$identity;
 var $rundis$elm_bootstrap$Bootstrap$Popover$initialState = {
-	cH: {
-		cS: 0,
-		bY: 0,
-		cY: {aM: 0, dG: 0, eg: 0, a5: 0}
+	cI: {
+		cT: 0,
+		bZ: 0,
+		cZ: {aN: 0, dH: 0, eh: 0, a6: 0}
 	},
-	ax: false
+	az: false
 };
 var $elm$json$Json$Decode$int = _Json_decodeInt;
 var $author$project$Clustermap$hostDecoder = A3(
@@ -6307,8 +6361,8 @@ var $author$project$Clustermap$hostDecoder = A3(
 						return $elm$json$Json$Decode$succeed(
 							{
 								u: hostname,
-								ai: $rundis$elm_bootstrap$Bootstrap$Popover$initialState,
-								b8: _Utils_Tuple2(left, top)
+								ak: $rundis$elm_bootstrap$Bootstrap$Popover$initialState,
+								b9: _Utils_Tuple2(left, top)
 							});
 					});
 			});
@@ -6335,7 +6389,7 @@ var $author$project$Clustermap$mapSettingsDecoder = A3(
 							$elm$json$Json$Decode$int,
 							function (emptyIconSize) {
 								return $elm$json$Json$Decode$succeed(
-									{aG: activeIconSize, bD: emptyIconSize, aM: height, a5: width});
+									{aH: activeIconSize, bE: emptyIconSize, aN: height, a6: width});
 							});
 					});
 			});
@@ -6351,41 +6405,41 @@ var $author$project$Clustermap$hostModelDecoder = A3(
 			$author$project$Clustermap$hostListDecoder,
 			function (hostlist) {
 				return $elm$json$Json$Decode$succeed(
-					{av: hostlist, k: mapsettings});
+					{ax: hostlist, k: mapsettings});
 			});
 	});
 var $author$project$Clustermap$getHosts = function (endpoint) {
 	return $elm$http$Http$get(
 		{
-			dq: A2($elm$http$Http$expectJson, $author$project$Clustermap$GotHosts, $author$project$Clustermap$hostModelDecoder),
-			ek: $author$project$Endpoint$toString(endpoint)
+			dr: A2($elm$http$Http$expectJson, $author$project$Clustermap$GotHosts, $author$project$Clustermap$hostModelDecoder),
+			el: $author$project$Endpoint$toString(endpoint)
 		});
 };
 var $author$project$Clustermap$init = F4(
 	function (hostEndpoint, sessionEndpoint, image, mapsettings) {
 		return _Utils_Tuple2(
-			{an: _List_Nil, dx: hostEndpoint, S: $elm$core$Maybe$Nothing, bS: image, k: mapsettings, aB: $author$project$Clustermap$HostLoading, aC: $author$project$Clustermap$Loading, c$: sessionEndpoint},
+			{E: _List_Nil, dy: hostEndpoint, T: $elm$core$Maybe$Nothing, bT: image, k: mapsettings, aD: $author$project$Clustermap$HostLoading, am: $author$project$Clustermap$Loading, c0: sessionEndpoint},
 			$elm$core$Platform$Cmd$batch(
 				_List_fromArray(
 					[
-						$author$project$Clustermap$getActiveSessions(sessionEndpoint),
+						A2($author$project$Clustermap$getActiveSessions, sessionEndpoint, _List_Nil),
 						$author$project$Clustermap$getHosts(hostEndpoint)
 					])));
 	});
 var $elm$core$Platform$Cmd$map = _Platform_map;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Main$init = function (_v0) {
-	var width = _v0.a5;
-	var height = _v0.aM;
-	var isFirefox = _v0.dC;
+	var width = _v0.a6;
+	var height = _v0.aN;
+	var isFirefox = _v0.dD;
 	var width90 = $elm$core$Basics$round(width * 0.9);
 	var resizeTask = isFirefox ? $elm$core$Platform$Cmd$none : A2($elm$core$Task$perform, $author$project$Main$BeResponsive, $elm$browser$Browser$Dom$getViewport);
 	var height90 = $elm$core$Basics$round(height * 0.9);
 	var device = $author$project$Main$classifyDevice(
-		{aM: height90, a5: width90});
+		{aN: height90, a6: width90});
 	var mapsettings = A2(
 		$author$project$Main$calcMapSettings,
-		{aM: height90, a5: width90},
+		{aN: height90, a6: width90},
 		device);
 	var _v1 = A4($author$project$Clustermap$init, $author$project$Endpoint$clusterf1, $author$project$Endpoint$activeSessions, $author$project$Asset$clusterf1, mapsettings);
 	var f1model = _v1.a;
@@ -6422,7 +6476,7 @@ var $elm$time$Time$Every = F2(
 	});
 var $elm$time$Time$State = F2(
 	function (taggers, processes) {
-		return {dX: processes, d9: taggers};
+		return {dY: processes, ea: taggers};
 	});
 var $elm$time$Time$init = $elm$core$Task$succeed(
 	A2($elm$time$Time$State, $elm$core$Dict$empty, $elm$core$Dict$empty));
@@ -6569,7 +6623,7 @@ var $elm$time$Time$spawnHelp = F3(
 	});
 var $elm$time$Time$onEffects = F3(
 	function (router, subs, _v0) {
-		var processes = _v0.dX;
+		var processes = _v0.dY;
 		var rightStep = F3(
 			function (_v6, id, _v7) {
 				var spawns = _v7.a;
@@ -6638,7 +6692,7 @@ var $elm$time$Time$millisToPosix = $elm$core$Basics$identity;
 var $elm$time$Time$now = _Time_now($elm$time$Time$millisToPosix);
 var $elm$time$Time$onSelfMsg = F3(
 	function (router, interval, state) {
-		var _v0 = A2($elm$core$Dict$get, interval, state.d9);
+		var _v0 = A2($elm$core$Dict$get, interval, state.ea);
 		if (_v0.$ === 1) {
 			return $elm$core$Task$succeed(state);
 		} else {
@@ -6692,7 +6746,7 @@ var $elm$browser$Browser$Events$MySub = F3(
 	});
 var $elm$browser$Browser$Events$State = F2(
 	function (subs, pids) {
-		return {dT: pids, d8: subs};
+		return {dU: pids, d9: subs};
 	});
 var $elm$browser$Browser$Events$init = $elm$core$Task$succeed(
 	A2($elm$browser$Browser$Events$State, _List_Nil, $elm$core$Dict$empty));
@@ -6726,7 +6780,7 @@ var $elm$core$Dict$fromList = function (assocs) {
 };
 var $elm$browser$Browser$Events$Event = F2(
 	function (key, event) {
-		return {dp: event, dF: key};
+		return {dq: event, dG: key};
 	});
 var $elm$browser$Browser$Events$spawn = F3(
 	function (router, key, _v0) {
@@ -6800,7 +6854,7 @@ var $elm$browser$Browser$Events$onEffects = F3(
 			stepLeft,
 			stepBoth,
 			stepRight,
-			state.dT,
+			state.dU,
 			$elm$core$Dict$fromList(newSubs),
 			_Utils_Tuple3(_List_Nil, $elm$core$Dict$empty, _List_Nil));
 		var deadPids = _v0.a;
@@ -6828,8 +6882,8 @@ var $elm$browser$Browser$Events$onEffects = F3(
 	});
 var $elm$browser$Browser$Events$onSelfMsg = F3(
 	function (router, _v0, state) {
-		var key = _v0.dF;
-		var event = _v0.dp;
+		var key = _v0.dG;
+		var event = _v0.dq;
 		var toMessage = function (_v2) {
 			var subKey = _v2.a;
 			var _v3 = _v2.b;
@@ -6838,7 +6892,7 @@ var $elm$browser$Browser$Events$onSelfMsg = F3(
 			var decoder = _v3.c;
 			return _Utils_eq(subKey, key) ? A2(_Browser_decodeEvent, decoder, event) : $elm$core$Maybe$Nothing;
 		};
-		var messages = A2($elm$core$List$filterMap, toMessage, state.d8);
+		var messages = A2($elm$core$List$filterMap, toMessage, state.d9);
 		return A2(
 			$elm$core$Task$andThen,
 			function (_v1) {
@@ -6909,6 +6963,56 @@ var $author$project$Clustermap$HostSuccess = function (a) {
 var $author$project$Clustermap$Success = function (a) {
 	return {$: 2, a: a};
 };
+var $author$project$Clustermap$Default = function (a) {
+	return {$: 3, a: a};
+};
+var $author$project$Clustermap$Gif = function (a) {
+	return {$: 2, a: a};
+};
+var $author$project$Clustermap$Jpeg = function (a) {
+	return {$: 1, a: a};
+};
+var $author$project$Clustermap$updateImage = function (imageSrc) {
+	switch (imageSrc.$) {
+		case 0:
+			var url = imageSrc.a;
+			return $author$project$Clustermap$Jpeg(url);
+		case 1:
+			var url = imageSrc.a;
+			return $author$project$Clustermap$Gif(url);
+		case 2:
+			var url = imageSrc.a;
+			return $author$project$Clustermap$Default(url);
+		default:
+			var url = imageSrc.a;
+			return $author$project$Clustermap$Default(url);
+	}
+};
+var $author$project$Clustermap$imageSrcVal = function (src) {
+	switch (src.$) {
+		case 0:
+			var url = src.a;
+			return url + '.jpg';
+		case 1:
+			var url = src.a;
+			return url + '.jpeg';
+		case 2:
+			var url = src.a;
+			return url + '.gif';
+		default:
+			return 'https://cdn.intra.42.fr/users/3b3.jpg';
+	}
+};
+var $author$project$Clustermap$updateSessionImage = F3(
+	function (imageSrc, converter, session) {
+		return _Utils_eq(
+			$author$project$Clustermap$imageSrcVal(session.ag),
+			$author$project$Clustermap$imageSrcVal(imageSrc)) ? _Utils_update(
+			session,
+			{
+				ag: converter(imageSrc)
+			}) : session;
+	});
 var $author$project$Clustermap$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
@@ -6920,8 +7024,8 @@ var $author$project$Clustermap$update = F2(
 						_Utils_update(
 							model,
 							{
-								an: sessionlist,
-								aC: $author$project$Clustermap$Success(sessionlist)
+								E: sessionlist,
+								am: $author$project$Clustermap$Success(sessionlist)
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -6930,7 +7034,7 @@ var $author$project$Clustermap$update = F2(
 						_Utils_update(
 							model,
 							{
-								aC: $author$project$Clustermap$Failure(err)
+								am: $author$project$Clustermap$Failure(err)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
@@ -6942,8 +7046,8 @@ var $author$project$Clustermap$update = F2(
 						_Utils_update(
 							model,
 							{
-								S: $elm$core$Maybe$Just(hostmodel),
-								aB: $author$project$Clustermap$HostSuccess(hostmodel)
+								T: $elm$core$Maybe$Just(hostmodel),
+								aD: $author$project$Clustermap$HostSuccess(hostmodel)
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -6952,24 +7056,24 @@ var $author$project$Clustermap$update = F2(
 						_Utils_update(
 							model,
 							{
-								aB: $author$project$Clustermap$HostFailure(err)
+								aD: $author$project$Clustermap$HostFailure(err)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
 			case 2:
 				return _Utils_Tuple2(
 					model,
-					$author$project$Clustermap$getActiveSessions(model.c$));
-			default:
+					A2($author$project$Clustermap$getActiveSessions, model.c0, model.E));
+			case 3:
 				var host = msg.a;
 				var state = msg.b;
 				var updatePopState = function (session) {
 					return A2($elm$core$String$contains, host, session.u) ? _Utils_update(
 						session,
-						{ai: state}) : session;
+						{ak: state}) : session;
 				};
 				var newhostModel = function () {
-					var _v4 = model.S;
+					var _v4 = model.T;
 					if (_v4.$ === 1) {
 						return $elm$core$Maybe$Nothing;
 					} else {
@@ -6978,7 +7082,7 @@ var $author$project$Clustermap$update = F2(
 							_Utils_update(
 								hmodel,
 								{
-									av: A2($elm$core$List$map, updatePopState, hmodel.av)
+									ax: A2($elm$core$List$map, updatePopState, hmodel.ax)
 								}));
 					}
 				}();
@@ -6986,7 +7090,7 @@ var $author$project$Clustermap$update = F2(
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{S: newhostModel}),
+							{T: newhostModel}),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					var newhmodel = newhostModel.a;
@@ -6994,82 +7098,96 @@ var $author$project$Clustermap$update = F2(
 						_Utils_update(
 							model,
 							{
-								S: $elm$core$Maybe$Just(newhmodel),
-								aB: $author$project$Clustermap$HostSuccess(newhmodel)
+								T: $elm$core$Maybe$Just(newhmodel),
+								aD: $author$project$Clustermap$HostSuccess(newhmodel)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
+			default:
+				var currentImg = msg.a;
+				var sessionlist = A2(
+					$elm$core$List$map,
+					A2($author$project$Clustermap$updateSessionImage, currentImg, $author$project$Clustermap$updateImage),
+					model.E);
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							E: sessionlist,
+							am: $author$project$Clustermap$Success(sessionlist)
+						}),
+					$elm$core$Platform$Cmd$none);
 		}
 	});
 var $author$project$Main$update = F2(
 	function (msg, model) {
-		var clusterF0 = model.M;
-		var clusterF1 = model.N;
+		var clusterF0 = model.N;
+		var clusterF1 = model.O;
 		switch (msg.$) {
 			case 0:
 				var mapmsg = msg.a;
-				var _v1 = A2($author$project$Clustermap$update, mapmsg, model.M);
+				var _v1 = A2($author$project$Clustermap$update, mapmsg, model.N);
 				var newmodel = _v1.a;
 				var newcmd = _v1.b;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{M: newmodel}),
+						{N: newmodel}),
 					A2($elm$core$Platform$Cmd$map, $author$project$Main$Mapf0Msg, newcmd));
 			case 1:
 				var mapmsg = msg.a;
-				var _v2 = A2($author$project$Clustermap$update, mapmsg, model.N);
+				var _v2 = A2($author$project$Clustermap$update, mapmsg, model.O);
 				var newmodel = _v2.a;
 				var newcmd = _v2.b;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{N: newmodel}),
+						{O: newmodel}),
 					A2($elm$core$Platform$Cmd$map, $author$project$Main$Mapf1Msg, newcmd));
 			case 2:
 				var viewp = msg.a;
 				var predevice = $author$project$Main$classifyDevice(
 					{
-						aM: $elm$core$Basics$round(viewp.a4.aM),
-						a5: $elm$core$Basics$round(viewp.a4.a5)
+						aN: $elm$core$Basics$round(viewp.a5.aN),
+						a6: $elm$core$Basics$round(viewp.a5.a6)
 					});
 				var mapsettings = A2(
 					$author$project$Main$calcMapSettings,
 					{
-						aM: $elm$core$Basics$round(viewp.a4.aM),
-						a5: $elm$core$Basics$round(viewp.a4.a5)
+						aN: $elm$core$Basics$round(viewp.a5.aN),
+						a6: $elm$core$Basics$round(viewp.a5.a6)
 					},
 					predevice);
 				var device = function () {
-					var _v3 = predevice.aX;
+					var _v3 = predevice.aY;
 					if (!_v3) {
 						return predevice;
 					} else {
 						return (_Utils_cmp(
-							mapsettings.a5,
-							$elm$core$Basics$round(viewp.a4.a5 / 2)) > 0) ? _Utils_update(
+							mapsettings.a6,
+							$elm$core$Basics$round(viewp.a5.a6 / 2)) > 0) ? _Utils_update(
 							predevice,
-							{aX: 0}) : predevice;
+							{aY: 0}) : predevice;
 					}
 				}();
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							M: _Utils_update(
+							N: _Utils_update(
 								clusterF0,
 								{k: mapsettings}),
-							N: _Utils_update(
+							O: _Utils_update(
 								clusterF1,
 								{
 									k: _Utils_update(
 										mapsettings,
 										{
-											aM: mapsettings.aM - 30,
-											a5: mapsettings.a5 - $elm$core$Basics$round(30.0 * 0.77)
+											aN: mapsettings.aN - 30,
+											a6: mapsettings.a6 - $elm$core$Basics$round(30.0 * 0.77)
 										})
 								}),
-							bA: device
+							bB: device
 						}),
 					$elm$core$Platform$Cmd$none);
 			default:
@@ -7079,8 +7197,8 @@ var $author$project$Main$update = F2(
 					_Utils_update(
 						model,
 						{
-							bA: $author$project$Main$classifyDevice(
-								{aM: height, a5: width})
+							bB: $author$project$Main$classifyDevice(
+								{aN: height, a6: width})
 						}),
 					A2($elm$core$Task$perform, $author$project$Main$BeResponsive, $elm$browser$Browser$Dom$getViewport));
 		}
@@ -7096,7 +7214,7 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
 var $elm$html$Html$div = _VirtualDom_node('div');
 var $author$project$Main$getMapcontainerClass = function (deviceinfo) {
-	var _v0 = deviceinfo.aX;
+	var _v0 = deviceinfo.aY;
 	if (!_v0) {
 		return 'mapcontainer-row';
 	} else {
@@ -7144,6 +7262,9 @@ var $author$project$Asset$toString = function (_v0) {
 	var url = _v0;
 	return url;
 };
+var $author$project$Clustermap$ImageLoadError = function (a) {
+	return {$: 4, a: a};
+};
 var $author$project$Clustermap$PopoverMsg = F2(
 	function (a, b) {
 		return {$: 3, a: a, b: b};
@@ -7173,43 +7294,32 @@ var $rundis$elm_bootstrap$Bootstrap$Internal$Button$applyModifier = F2(
 				return _Utils_update(
 					options,
 					{
-						d7: $elm$core$Maybe$Just(size)
+						d8: $elm$core$Maybe$Just(size)
 					});
 			case 1:
 				var coloring = modifier.a;
 				return _Utils_update(
 					options,
 					{
-						O: $elm$core$Maybe$Just(coloring)
+						P: $elm$core$Maybe$Just(coloring)
 					});
 			case 2:
 				return _Utils_update(
 					options,
-					{bn: true});
+					{bo: true});
 			case 3:
 				var val = modifier.a;
 				return _Utils_update(
 					options,
-					{bC: val});
+					{bD: val});
 			default:
 				var attrs = modifier.a;
 				return _Utils_update(
 					options,
 					{
-						Y: _Utils_ap(options.Y, attrs)
+						Z: _Utils_ap(options.Z, attrs)
 					});
 		}
-	});
-var $elm$core$List$filter = F2(
-	function (isGood, list) {
-		return A3(
-			$elm$core$List$foldr,
-			F2(
-				function (x, xs) {
-					return isGood(x) ? A2($elm$core$List$cons, x, xs) : xs;
-				}),
-			_List_Nil,
-			list);
 	});
 var $elm$core$Tuple$second = function (_v0) {
 	var y = _v0.b;
@@ -7225,7 +7335,7 @@ var $elm$html$Html$Attributes$classList = function (classes) {
 				$elm$core$Tuple$first,
 				A2($elm$core$List$filter, $elm$core$Tuple$second, classes))));
 };
-var $rundis$elm_bootstrap$Bootstrap$Internal$Button$defaultOptions = {Y: _List_Nil, bn: false, O: $elm$core$Maybe$Nothing, bC: false, d7: $elm$core$Maybe$Nothing};
+var $rundis$elm_bootstrap$Bootstrap$Internal$Button$defaultOptions = {Z: _List_Nil, bo: false, P: $elm$core$Maybe$Nothing, bD: false, d8: $elm$core$Maybe$Nothing};
 var $elm$json$Json$Encode$bool = _Json_wrap;
 var $elm$html$Html$Attributes$boolProperty = F2(
 	function (key, bool) {
@@ -7280,14 +7390,14 @@ var $rundis$elm_bootstrap$Bootstrap$Internal$Button$buttonAttributes = function 
 				_List_fromArray(
 					[
 						_Utils_Tuple2('btn', true),
-						_Utils_Tuple2('btn-block', options.bn),
-						_Utils_Tuple2('disabled', options.bC)
+						_Utils_Tuple2('btn-block', options.bo),
+						_Utils_Tuple2('disabled', options.bD)
 					])),
-				$elm$html$Html$Attributes$disabled(options.bC)
+				$elm$html$Html$Attributes$disabled(options.bD)
 			]),
 		_Utils_ap(
 			function () {
-				var _v0 = A2($elm$core$Maybe$andThen, $rundis$elm_bootstrap$Bootstrap$General$Internal$screenSizeOption, options.d7);
+				var _v0 = A2($elm$core$Maybe$andThen, $rundis$elm_bootstrap$Bootstrap$General$Internal$screenSizeOption, options.d8);
 				if (!_v0.$) {
 					var s = _v0.a;
 					return _List_fromArray(
@@ -7300,7 +7410,7 @@ var $rundis$elm_bootstrap$Bootstrap$Internal$Button$buttonAttributes = function 
 			}(),
 			_Utils_ap(
 				function () {
-					var _v1 = options.O;
+					var _v1 = options.P;
 					if (!_v1.$) {
 						if (!_v1.a.$) {
 							var role = _v1.a.a;
@@ -7321,7 +7431,7 @@ var $rundis$elm_bootstrap$Bootstrap$Internal$Button$buttonAttributes = function 
 						return _List_Nil;
 					}
 				}(),
-				options.Y)));
+				options.Z)));
 };
 var $rundis$elm_bootstrap$Bootstrap$Button$button = F2(
 	function (options, children) {
@@ -7332,16 +7442,16 @@ var $rundis$elm_bootstrap$Bootstrap$Button$button = F2(
 	});
 var $author$project$Clustermap$calculateLeft = F3(
 	function (model, hostmapsettings, left) {
-		return $elm$core$Basics$round((left / hostmapsettings.a5) * model.k.a5);
+		return $elm$core$Basics$round((left / hostmapsettings.a6) * model.k.a6);
 	});
 var $author$project$Clustermap$calculateTop = F3(
 	function (model, hostmapsettings, top) {
-		return $elm$core$Basics$round((top / hostmapsettings.aM) * model.k.aM);
+		return $elm$core$Basics$round((top / hostmapsettings.aN) * model.k.aN);
 	});
 var $rundis$elm_bootstrap$Bootstrap$Popover$Config = $elm$core$Basics$identity;
 var $rundis$elm_bootstrap$Bootstrap$Popover$Top = 0;
 var $rundis$elm_bootstrap$Bootstrap$Popover$config = function (triggerElement) {
-	return {eZ: $elm$core$Maybe$Nothing, R: 0, ga: $elm$core$Maybe$Nothing, ej: triggerElement};
+	return {e_: $elm$core$Maybe$Nothing, S: 0, gb: $elm$core$Maybe$Nothing, ek: triggerElement};
 };
 var $rundis$elm_bootstrap$Bootstrap$Popover$Content = $elm$core$Basics$identity;
 var $rundis$elm_bootstrap$Bootstrap$Popover$content = F3(
@@ -7350,7 +7460,7 @@ var $rundis$elm_bootstrap$Bootstrap$Popover$content = F3(
 		return _Utils_update(
 			conf,
 			{
-				eZ: $elm$core$Maybe$Just(
+				e_: $elm$core$Maybe$Just(
 					A2(
 						$elm$html$Html$div,
 						A2(
@@ -7396,18 +7506,9 @@ var $author$project$Asset$emptyHost = function (size) {
 				_List_Nil)
 			]));
 };
-var $elm$core$List$head = function (list) {
-	if (list.b) {
-		var x = list.a;
-		var xs = list.b;
-		return $elm$core$Maybe$Just(x);
-	} else {
-		return $elm$core$Maybe$Nothing;
-	}
-};
 var $author$project$Clustermap$hostFilter = F2(
 	function (host, session) {
-		return A2($elm$core$String$contains, host, session.bM);
+		return A2($elm$core$String$contains, host, session.bN);
 	});
 var $elm$core$Maybe$withDefault = F2(
 	function (_default, maybe) {
@@ -7432,15 +7533,6 @@ var $elm$html$Html$Attributes$href = function (url) {
 		_VirtualDom_noJavaScriptUri(url));
 };
 var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
-var $rundis$elm_bootstrap$Bootstrap$Popover$forceClose = F2(
-	function (_v0, toMsg) {
-		var state = _v0;
-		return $elm$json$Json$Decode$succeed(
-			toMsg(
-				_Utils_update(
-					state,
-					{ax: false})));
-	});
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
 	return {$: 0, a: a};
 };
@@ -7452,10 +7544,19 @@ var $elm$html$Html$Events$on = F2(
 			event,
 			$elm$virtual_dom$VirtualDom$Normal(decoder));
 	});
+var $rundis$elm_bootstrap$Bootstrap$Popover$forceClose = F2(
+	function (_v0, toMsg) {
+		var state = _v0;
+		return $elm$json$Json$Decode$succeed(
+			toMsg(
+				_Utils_update(
+					state,
+					{az: false})));
+	});
 var $elm$core$Basics$not = _Basics_not;
 var $rundis$elm_bootstrap$Bootstrap$Popover$DOMState = F3(
 	function (rect, offsetWidth, offsetHeight) {
-		return {cS: offsetHeight, bY: offsetWidth, cY: rect};
+		return {cT: offsetHeight, bZ: offsetWidth, cZ: rect};
 	});
 var $elm$json$Json$Decode$map3 = _Json_map3;
 var $elm$json$Json$Decode$float = _Json_decodeFloat;
@@ -7569,7 +7670,7 @@ var $rundis$elm_bootstrap$Bootstrap$Utilities$DomHelper$boundingArea = A4(
 		function (_v0, width, height) {
 			var x = _v0.a;
 			var y = _v0.b;
-			return {aM: height, dG: x, eg: y, a5: width};
+			return {aN: height, dH: x, eh: y, a6: width};
 		}),
 	A2($rundis$elm_bootstrap$Bootstrap$Utilities$DomHelper$position, 0, 0),
 	$rundis$elm_bootstrap$Bootstrap$Utilities$DomHelper$offsetWidth,
@@ -7628,15 +7729,15 @@ var $rundis$elm_bootstrap$Bootstrap$Popover$stateDecoder = A4(
 var $rundis$elm_bootstrap$Bootstrap$Popover$toggleState = F2(
 	function (_v0, toMsg) {
 		var state = _v0;
-		var isActive = state.ax;
+		var isActive = state.az;
 		return A2(
 			$elm$json$Json$Decode$andThen,
 			function (v) {
 				return $elm$json$Json$Decode$succeed(
 					toMsg(
-						(!isActive) ? {cH: v, ax: true} : _Utils_update(
+						(!isActive) ? {cI: v, az: true} : _Utils_update(
 							state,
-							{ax: false})));
+							{az: false})));
 			},
 			$rundis$elm_bootstrap$Bootstrap$Popover$stateDecoder);
 	});
@@ -7663,7 +7764,7 @@ var $rundis$elm_bootstrap$Bootstrap$Popover$titlePrivate = F4(
 		return _Utils_update(
 			conf,
 			{
-				ga: $elm$core$Maybe$Just(
+				gb: $elm$core$Maybe$Just(
 					A2(
 						elemFn,
 						A2(
@@ -7678,44 +7779,44 @@ var $rundis$elm_bootstrap$Bootstrap$Popover$top = function (_v0) {
 	var conf = _v0;
 	return _Utils_update(
 		conf,
-		{R: 0});
+		{S: 0});
 };
 var $elm$core$Basics$negate = function (n) {
 	return -n;
 };
 var $rundis$elm_bootstrap$Bootstrap$Popover$calculatePos = F2(
 	function (pos, _v0) {
-		var rect = _v0.cY;
-		var offsetWidth = _v0.bY;
-		var offsetHeight = _v0.cS;
+		var rect = _v0.cZ;
+		var offsetWidth = _v0.bZ;
+		var offsetHeight = _v0.cT;
 		switch (pos) {
 			case 3:
 				return {
-					ap: $elm$core$Maybe$Nothing,
-					aq: $elm$core$Maybe$Just((offsetHeight / 2) - 12),
-					dG: (-offsetWidth) - 10,
-					eg: (rect.aM / 2) - (offsetHeight / 2)
+					ar: $elm$core$Maybe$Nothing,
+					as: $elm$core$Maybe$Just((offsetHeight / 2) - 12),
+					dH: (-offsetWidth) - 10,
+					eh: (rect.aN / 2) - (offsetHeight / 2)
 				};
 			case 1:
 				return {
-					ap: $elm$core$Maybe$Nothing,
-					aq: $elm$core$Maybe$Just((offsetHeight / 2) - 12),
-					dG: rect.a5,
-					eg: (rect.aM / 2) - (offsetHeight / 2)
+					ar: $elm$core$Maybe$Nothing,
+					as: $elm$core$Maybe$Just((offsetHeight / 2) - 12),
+					dH: rect.a6,
+					eh: (rect.aN / 2) - (offsetHeight / 2)
 				};
 			case 0:
 				return {
-					ap: $elm$core$Maybe$Just((offsetWidth / 2) - 12),
-					aq: $elm$core$Maybe$Nothing,
-					dG: (rect.a5 / 2) - (offsetWidth / 2),
-					eg: (-offsetHeight) - 10
+					ar: $elm$core$Maybe$Just((offsetWidth / 2) - 12),
+					as: $elm$core$Maybe$Nothing,
+					dH: (rect.a6 / 2) - (offsetWidth / 2),
+					eh: (-offsetHeight) - 10
 				};
 			default:
 				return {
-					ap: $elm$core$Maybe$Just((offsetWidth / 2) - 12),
-					aq: $elm$core$Maybe$Nothing,
-					dG: (rect.a5 / 2) - (offsetWidth / 2),
-					eg: rect.aM
+					ar: $elm$core$Maybe$Just((offsetWidth / 2) - 12),
+					as: $elm$core$Maybe$Nothing,
+					dH: (rect.a6 / 2) - (offsetWidth / 2),
+					eh: rect.aN
 				};
 		}
 	});
@@ -7769,28 +7870,28 @@ var $rundis$elm_bootstrap$Bootstrap$Popover$positionClass = function (position) 
 };
 var $rundis$elm_bootstrap$Bootstrap$Popover$popoverView = F2(
 	function (_v0, _v1) {
-		var isActive = _v0.ax;
-		var domState = _v0.cH;
+		var isActive = _v0.az;
+		var domState = _v0.cI;
 		var conf = _v1;
 		var px = function (f) {
 			return $elm$core$String$fromFloat(f) + 'px';
 		};
-		var pos = A2($rundis$elm_bootstrap$Bootstrap$Popover$calculatePos, conf.R, domState);
+		var pos = A2($rundis$elm_bootstrap$Bootstrap$Popover$calculatePos, conf.S, domState);
 		var styles = isActive ? _List_fromArray(
 			[
 				A2(
 				$elm$html$Html$Attributes$style,
 				'left',
-				px(pos.dG)),
+				px(pos.dH)),
 				A2(
 				$elm$html$Html$Attributes$style,
 				'top',
-				px(pos.eg)),
+				px(pos.eh)),
 				A2($elm$html$Html$Attributes$style, 'display', 'inline-block'),
 				A2(
 				$elm$html$Html$Attributes$style,
 				'width',
-				px(domState.bY))
+				px(domState.bZ))
 			]) : _List_fromArray(
 			[
 				A2($elm$html$Html$Attributes$style, 'left', '-5000px'),
@@ -7809,7 +7910,7 @@ var $rundis$elm_bootstrap$Bootstrap$Popover$popoverView = F2(
 							'top',
 							px(t));
 					},
-					pos.aq),
+					pos.as),
 					A2(
 					$elm$core$Maybe$map,
 					function (l) {
@@ -7818,7 +7919,7 @@ var $rundis$elm_bootstrap$Bootstrap$Popover$popoverView = F2(
 							'left',
 							px(l));
 					},
-					pos.ap)
+					pos.ar)
 				]));
 		return A2(
 			$elm$html$Html$div,
@@ -7831,9 +7932,9 @@ var $rundis$elm_bootstrap$Bootstrap$Popover$popoverView = F2(
 								_Utils_Tuple2('popover', true),
 								_Utils_Tuple2('fade', true),
 								_Utils_Tuple2('show', isActive),
-								$rundis$elm_bootstrap$Bootstrap$Popover$positionClass(conf.R)
+								$rundis$elm_bootstrap$Bootstrap$Popover$positionClass(conf.S)
 							])),
-						$rundis$elm_bootstrap$Bootstrap$Popover$directionAttr(conf.R)
+						$rundis$elm_bootstrap$Bootstrap$Popover$directionAttr(conf.S)
 					]),
 				styles),
 			A2(
@@ -7855,19 +7956,19 @@ var $rundis$elm_bootstrap$Bootstrap$Popover$popoverView = F2(
 							var t = _v2;
 							return t;
 						},
-						conf.ga),
+						conf.gb),
 						A2(
 						$elm$core$Maybe$map,
 						function (_v3) {
 							var c = _v3;
 							return c;
 						},
-						conf.eZ)
+						conf.e_)
 					])));
 	});
 var $rundis$elm_bootstrap$Bootstrap$Popover$view = F2(
 	function (state, conf) {
-		var triggerElement = conf.ej;
+		var triggerElement = conf.ek;
 		return A2(
 			$elm$html$Html$div,
 			_List_fromArray(
@@ -7890,9 +7991,9 @@ var $author$project$Clustermap$viewIcon = F4(
 				sessionlist));
 		var offset = function () {
 			if (maybeSession.$ === 1) {
-				return (model.k.bD / 2) | 0;
+				return (model.k.bE / 2) | 0;
 			} else {
-				return (model.k.aG / 2) | 0;
+				return (model.k.aH / 2) | 0;
 			}
 		}();
 		return A2(
@@ -7904,12 +8005,12 @@ var $author$project$Clustermap$viewIcon = F4(
 					$elm$html$Html$Attributes$style,
 					'left',
 					$elm$core$String$fromInt(
-						A3($author$project$Clustermap$calculateLeft, model, hostmapsettings, host.b8.a) - offset) + 'px'),
+						A3($author$project$Clustermap$calculateLeft, model, hostmapsettings, host.b9.a) - offset) + 'px'),
 					A2(
 					$elm$html$Html$Attributes$style,
 					'top',
 					$elm$core$String$fromInt(
-						A3($author$project$Clustermap$calculateTop, model, hostmapsettings, host.b8.b) - offset) + 'px')
+						A3($author$project$Clustermap$calculateTop, model, hostmapsettings, host.b9.b) - offset) + 'px')
 				]),
 			function () {
 				if (maybeSession.$ === 1) {
@@ -7917,7 +8018,7 @@ var $author$project$Clustermap$viewIcon = F4(
 						[
 							A2(
 							$rundis$elm_bootstrap$Bootstrap$Popover$view,
-							host.ai,
+							host.ak,
 							A3(
 								$rundis$elm_bootstrap$Bootstrap$Popover$content,
 								_List_Nil,
@@ -7939,12 +8040,12 @@ var $author$project$Clustermap$viewIcon = F4(
 															$author$project$Clustermap$hostToId(host.u)),
 														A2(
 															$rundis$elm_bootstrap$Bootstrap$Popover$onHover,
-															host.ai,
+															host.ak,
 															$author$project$Clustermap$PopoverMsg(host.u))))
 												]),
 											_List_fromArray(
 												[
-													$author$project$Asset$emptyHost(model.k.bD)
+													$author$project$Asset$emptyHost(model.k.bE)
 												]))))))
 						]);
 				} else {
@@ -7953,7 +8054,7 @@ var $author$project$Clustermap$viewIcon = F4(
 						[
 							A2(
 							$rundis$elm_bootstrap$Bootstrap$Popover$view,
-							host.ai,
+							host.ak,
 							A3(
 								$rundis$elm_bootstrap$Bootstrap$Popover$content,
 								_List_Nil,
@@ -7967,7 +8068,7 @@ var $author$project$Clustermap$viewIcon = F4(
 									_List_Nil,
 									_List_fromArray(
 										[
-											$elm$html$Html$text(session.a3)
+											$elm$html$Html$text(session.a4)
 										]),
 									$rundis$elm_bootstrap$Bootstrap$Popover$top(
 										$rundis$elm_bootstrap$Bootstrap$Popover$config(
@@ -7982,7 +8083,7 @@ var $author$project$Clustermap$viewIcon = F4(
 																$author$project$Clustermap$hostToId(host.u)),
 															A2(
 																$rundis$elm_bootstrap$Bootstrap$Popover$onHover,
-																host.ai,
+																host.ak,
 																$author$project$Clustermap$PopoverMsg(host.u))))
 													]),
 												_List_fromArray(
@@ -7991,7 +8092,7 @@ var $author$project$Clustermap$viewIcon = F4(
 														$elm$html$Html$a,
 														_List_fromArray(
 															[
-																$elm$html$Html$Attributes$href('https://profile.intra.42.fr/users/' + session.a3),
+																$elm$html$Html$Attributes$href('https://profile.intra.42.fr/users/' + session.a4),
 																$elm$html$Html$Attributes$target('_blank')
 															]),
 														_List_fromArray(
@@ -8000,16 +8101,22 @@ var $author$project$Clustermap$viewIcon = F4(
 																$elm$html$Html$img,
 																_List_fromArray(
 																	[
-																		$elm$html$Html$Attributes$src('https://cdn.intra.42.fr/users/small_' + (session.a3 + '.jpg')),
+																		$elm$html$Html$Attributes$src(
+																		$author$project$Clustermap$imageSrcVal(session.ag)),
+																		A2(
+																		$elm$html$Html$Events$on,
+																		'error',
+																		$elm$json$Json$Decode$succeed(
+																			$author$project$Clustermap$ImageLoadError(session.ag))),
 																		$elm$html$Html$Attributes$class('round-img'),
 																		A2(
 																		$elm$html$Html$Attributes$style,
 																		'width',
-																		$elm$core$String$fromInt(model.k.aG)),
+																		$elm$core$String$fromInt(model.k.aH)),
 																		A2(
 																		$elm$html$Html$Attributes$style,
 																		'height',
-																		$elm$core$String$fromInt(model.k.aG))
+																		$elm$core$String$fromInt(model.k.aH))
 																	]),
 																_List_Nil)
 															]))
@@ -8029,7 +8136,7 @@ var $author$project$Clustermap$viewIcons = F3(
 		return A2(
 			$elm$core$List$map,
 			A3($author$project$Clustermap$viewKeyedIcon, model, sessionlist, hostmodel.k),
-			hostmodel.av);
+			hostmodel.ax);
 	});
 var $author$project$Clustermap$viewMap = F3(
 	function (model, sessionlist, hostmodel) {
@@ -8043,32 +8150,32 @@ var $author$project$Clustermap$viewMap = F3(
 			A2(
 				$elm$core$List$cons,
 				_Utils_Tuple2(
-					$author$project$Asset$toString(model.bS),
+					$author$project$Asset$toString(model.bT),
 					A2(
 						$elm$html$Html$img,
 						_List_fromArray(
 							[
 								$elm$html$Html$Attributes$src(
-								$author$project$Asset$toString(model.bS)),
+								$author$project$Asset$toString(model.bT)),
 								A2($elm$html$Html$Attributes$style, 'position', 'relative'),
 								A2(
 								$elm$html$Html$Attributes$style,
 								'height',
-								$elm$core$String$fromInt(model.k.aM) + 'px'),
+								$elm$core$String$fromInt(model.k.aN) + 'px'),
 								A2(
 								$elm$html$Html$Attributes$style,
 								'width',
-								$elm$core$String$fromInt(model.k.a5) + 'px')
+								$elm$core$String$fromInt(model.k.a6) + 'px')
 							]),
 						_List_Nil)),
 				A3($author$project$Clustermap$viewIcons, model, sessionlist, hostmodel)));
 	});
 var $author$project$Clustermap$view = function (model) {
-	var _v0 = model.aB;
+	var _v0 = model.aD;
 	switch (_v0.$) {
 		case 0:
 			var err = _v0.a;
-			var _v1 = model.S;
+			var _v1 = model.T;
 			if (_v1.$ === 1) {
 				return A2(
 					$elm$html$Html$div,
@@ -8086,7 +8193,7 @@ var $author$project$Clustermap$view = function (model) {
 						]));
 			} else {
 				var hostmodel = _v1.a;
-				var _v2 = model.aC;
+				var _v2 = model.am;
 				switch (_v2.$) {
 					case 0:
 						return A2(
@@ -8101,7 +8208,7 @@ var $author$project$Clustermap$view = function (model) {
 										[
 											$elm$html$Html$text('Error retrieving sessions, map might be outdated.')
 										])),
-									A3($author$project$Clustermap$viewMap, model, model.an, hostmodel)
+									A3($author$project$Clustermap$viewMap, model, model.E, hostmodel)
 								]));
 					case 1:
 						return $elm$html$Html$text('Loading Sessions...');
@@ -8114,7 +8221,7 @@ var $author$project$Clustermap$view = function (model) {
 			return $elm$html$Html$text('Loading Hosts...');
 		default:
 			var hostmodel = _v0.a;
-			var _v3 = model.aC;
+			var _v3 = model.am;
 			switch (_v3.$) {
 				case 0:
 					return A2(
@@ -8129,7 +8236,7 @@ var $author$project$Clustermap$view = function (model) {
 									[
 										$elm$html$Html$text('Error retrieving sessions, map might be outdated.')
 									])),
-								A3($author$project$Clustermap$viewMap, model, model.an, hostmodel)
+								A3($author$project$Clustermap$viewMap, model, model.E, hostmodel)
 							]));
 				case 1:
 					return $elm$html$Html$text('Loading Sessions...');
@@ -8148,7 +8255,7 @@ var $author$project$Clustermap$hostListFilter = F2(
 		var _v0 = $elm$core$List$head(
 			A2(
 				$elm$core$List$filter,
-				$author$project$Clustermap$sessionFilter(session.bM),
+				$author$project$Clustermap$sessionFilter(session.bN),
 				hostlist));
 		if (_v0.$ === 1) {
 			return false;
@@ -8158,12 +8265,12 @@ var $author$project$Clustermap$hostListFilter = F2(
 	});
 var $author$project$Clustermap$viewUsedImacs = function (model) {
 	var hlist = function () {
-		var _v0 = model.S;
+		var _v0 = model.T;
 		if (_v0.$ === 1) {
 			return _List_Nil;
 		} else {
 			var hmodel = _v0.a;
-			return hmodel.av;
+			return hmodel.ax;
 		}
 	}();
 	var usedImacs = $elm$core$String$fromInt(
@@ -8171,7 +8278,7 @@ var $author$project$Clustermap$viewUsedImacs = function (model) {
 			A2(
 				$elm$core$List$filter,
 				$author$project$Clustermap$hostListFilter(hlist),
-				model.an)));
+				model.E)));
 	var totalImacs = $elm$core$String$fromInt(
 		$elm$core$List$length(hlist));
 	return $elm$html$Html$text(usedImacs + ('/' + totalImacs));
@@ -8191,7 +8298,7 @@ var $author$project$Main$view = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$Attributes$class(
-						$author$project$Main$getMapcontainerClass(model.bA))
+						$author$project$Main$getMapcontainerClass(model.bB))
 					]),
 				_List_fromArray(
 					[
@@ -8212,7 +8319,7 @@ var $author$project$Main$view = function (model) {
 										A2(
 										$elm$html$Html$Attributes$style,
 										'width',
-										$elm$core$String$fromInt(model.M.k.a5) + 'px'),
+										$elm$core$String$fromInt(model.N.k.a6) + 'px'),
 										A2($elm$html$Html$Attributes$style, 'margin-top', '1vh')
 									]),
 								_List_fromArray(
@@ -8221,12 +8328,12 @@ var $author$project$Main$view = function (model) {
 										A2(
 										$elm$html$Html$map,
 										$author$project$Main$Mapf0Msg,
-										$author$project$Clustermap$viewUsedImacs(model.M))
+										$author$project$Clustermap$viewUsedImacs(model.N))
 									])),
 								A2(
 								$elm$html$Html$map,
 								$author$project$Main$Mapf0Msg,
-								$author$project$Clustermap$view(model.M))
+								$author$project$Clustermap$view(model.N))
 							])),
 						A2(
 						$elm$html$Html$div,
@@ -8245,7 +8352,7 @@ var $author$project$Main$view = function (model) {
 										A2(
 										$elm$html$Html$Attributes$style,
 										'width',
-										$elm$core$String$fromInt(model.N.k.a5) + 'px'),
+										$elm$core$String$fromInt(model.O.k.a6) + 'px'),
 										A2($elm$html$Html$Attributes$style, 'margin-top', '1vh')
 									]),
 								_List_fromArray(
@@ -8254,18 +8361,18 @@ var $author$project$Main$view = function (model) {
 										A2(
 										$elm$html$Html$map,
 										$author$project$Main$Mapf1Msg,
-										$author$project$Clustermap$viewUsedImacs(model.N))
+										$author$project$Clustermap$viewUsedImacs(model.O))
 									])),
 								A2(
 								$elm$html$Html$map,
 								$author$project$Main$Mapf1Msg,
-								$author$project$Clustermap$view(model.N))
+								$author$project$Clustermap$view(model.O))
 							]))
 					]))
 			]));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
-	{fh: $author$project$Main$init, fW: $author$project$Main$subscriptions, ge: $author$project$Main$update, gf: $author$project$Main$view});
+	{fi: $author$project$Main$init, fX: $author$project$Main$subscriptions, gf: $author$project$Main$update, gg: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	A2(
 		$elm$json$Json$Decode$andThen,
@@ -8277,7 +8384,7 @@ _Platform_export({'Main':{'init':$author$project$Main$main(
 						$elm$json$Json$Decode$andThen,
 						function (height) {
 							return $elm$json$Json$Decode$succeed(
-								{aM: height, dC: isFirefox, a5: width});
+								{aN: height, dD: isFirefox, a6: width});
 						},
 						A2($elm$json$Json$Decode$field, 'height', $elm$json$Json$Decode$int));
 				},
