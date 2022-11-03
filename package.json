@@ -5,12 +5,14 @@
   "scripts": {
     "dev": "next dev",
     "build": "elm make src/elm/clustermap/Main.elm --optimize --output=public/js/interactive_maps.js && next build",
+    "debug": "elm make src/elm/clustermap/Main.elm --output=public/js/interactive_maps.js && next build",
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^4.0.0",
+    "class-autobind": "^0.1.4",
     "cors": "^2.8.5",
     "next": "12.2.0",
     "node-cache": "^5.1.2",

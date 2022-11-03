@@ -8,7 +8,7 @@ with any map and any amount of computers.
 import Asset exposing (Image)
 import Bootstrap.Button as Button
 import Bootstrap.Popover as Popover
-import Endpoint exposing (Endpoint)
+import Endpoint exposing (Endpoint, imagesEndpoint)
 import Html exposing (Html, a, div, img, p, text)
 import Html.Attributes exposing (class, href, id, src, style, target)
 import Html.Keyed as Keyed
@@ -18,8 +18,6 @@ import Json.Decode.Field as Field
 import Maybe
 import Platform.Cmd
 import Time
-import Json.Decode
-import Html.Events exposing (on)
 import Asset exposing (image)
 
 
@@ -41,6 +39,12 @@ type HostRequest
     | HostLoading
     | HostSuccess HostModel
 
+{-| Tracks the state of an image request.
+-}
+type ImageRequest
+    = ImageFailure Http.Error
+    | ImageLoading
+    | ImageSuccess (List UserImage)
 
 {-| Contains the settings used to render the map.
 These are passed to the init function.
@@ -72,42 +76,6 @@ type alias Host =
     , popState : Popover.State
     }
 
-type ImageSrc
-    = Jpg String
-    | Jpeg String
-    | Gif String
-    | Default String
-
-imageSrcVal : ImageSrc -> String
-imageSrcVal src =
-    case src of
-        Jpg url ->
-            url ++ ".jpg"
-        Jpeg url ->
-            url ++ ".jpeg"
-        Gif url ->
-            url ++ ".gif"
-        Default _ ->
-            "https://cdn.intra.42.fr/users/3b3.jpg"
-
-updateImage : ImageSrc -> ImageSrc
-updateImage imageSrc =
-    case imageSrc of
-        Jpg url ->
-            Jpeg url
-        Jpeg url ->
-            Gif url
-        Gif url ->
-            Default url
-        Default url ->
-            Default url
-
-updateSessionImage : ImageSrc -> (ImageSrc -> ImageSrc) -> Session -> Session
-updateSessionImage imageSrc converter session =
-    if (imageSrcVal session.imageSrc) == (imageSrcVal imageSrc) then
-        {session | imageSrc = (converter imageSrc)}
-    else
-        session
 
 {-| Defines an active session. The host field should match one of the host id's
 in the hostList. If it doesn't the session is not displayed. The username is
@@ -116,10 +84,26 @@ used in the display and to find the profile picture.
 type alias Session =
     { username : String
     , host : String
-    , imageSrc: ImageSrc
+    , imageSrc : Image
     }
 
+type alias UserImage =
+    { id : Int
+    , username : String
+    , image : ImageJson
+    }
 
+type alias ImageJson =
+    { link : Image
+    , versions : ImageVersions
+    }
+
+type alias ImageVersions =
+    { micro : Image
+    , small : Image
+    , medium : Image
+    , large : Image
+    }
 
 type alias Model =
     { hostEndpoint : Endpoint
@@ -128,8 +112,10 @@ type alias Model =
     , mapSettings : MapSettings
     , activeList : List Session
     , hostModel : Maybe HostModel
+    , imageList : List UserImage
     , reqS : SessionRequest
     , reqH : HostRequest
+    , reqI : ImageRequest
     }
 
 
@@ -145,10 +131,12 @@ init hostEndpoint sessionEndpoint image mapsettings =
       , mapSettings = mapsettings
       , activeList = []
       , hostModel = Nothing
+      , imageList = []
       , reqS = Loading
       , reqH = HostLoading
+      , reqI = ImageLoading
       }
-    , Platform.Cmd.batch [ getActiveSessions sessionEndpoint [], getHosts hostEndpoint ]
+    , Platform.Cmd.batch [ getHosts hostEndpoint, getImages imagesEndpoint ]
     )
 
 
@@ -159,9 +147,9 @@ init hostEndpoint sessionEndpoint image mapsettings =
 type Msg
     = GotSessions (Result Error (List Session))
     | GotHosts (Result Error HostModel)
+    | GotImages (Result Error (List UserImage))
     | FetchSessions Time.Posix
     | PopoverMsg String Popover.State
-    | ImageLoadError ImageSrc
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -190,10 +178,21 @@ update msg model =
                     ( { model | reqH = HostFailure err }
                     , Cmd.none
                     )
+        GotImages result ->
+            case result of
+                Ok imagelist ->
+                    ( { model | imageList = imagelist, reqI = ImageSuccess imagelist }
+                    , getActiveSessions model.sessionEndpoint model.activeList imagelist
+                    )
+
+                Err err ->
+                    ( { model | reqI = ImageFailure err }
+                    , Cmd.none
+                    )
 
         FetchSessions _ ->
             ( model
-            , getActiveSessions model.sessionEndpoint model.activeList
+            , getActiveSessions model.sessionEndpoint model.activeList model.imageList
             )
 
         PopoverMsg host state ->
@@ -220,13 +219,6 @@ update msg model =
 
                 Just newhmodel ->
                     ( { model | hostModel = Just newhmodel, reqH = HostSuccess newhmodel }, Cmd.none )
-        
-        ImageLoadError currentImg ->
-            let 
-                sessionlist =
-                    List.map (updateSessionImage currentImg updateImage) model.activeList
-            in
-            ( { model | activeList = sessionlist, reqS = Success sessionlist }, Cmd.none )
 
 
 -- VIEW
@@ -277,7 +269,18 @@ view model =
                     text "Loading Sessions..."
 
                 Success sessionlist ->
-                    viewMap model sessionlist hostmodel
+                    case model.reqI of 
+                        ImageFailure _ ->
+                            div []
+                                [ p [] [ text "Error retrieving images, sorry :(" ]
+                                , viewMap model sessionlist hostmodel
+                                ]
+
+                        ImageLoading ->
+                            text "Loading Images..."
+
+                        ImageSuccess _ ->
+                            viewMap model sessionlist hostmodel
 
 
 {-| Renders the map and all the icons.
@@ -365,8 +368,7 @@ viewIcon model sessionlist hostmapsettings host =
                         ]
                         [ a [ href ("https://profile.intra.42.fr/users/" ++ session.username), target "_blank" ]
                             [ img
-                                [ src (imageSrcVal session.imageSrc)
-                                , on "error" (Json.Decode.succeed (ImageLoadError session.imageSrc))
+                                [ src (Asset.toString session.imageSrc)
                                 , class "round-img"
                                 , style "width"
                                     <| String.fromInt model.mapSettings.activeIconSize
@@ -469,12 +471,20 @@ getHosts endpoint =
         }
 
 
-getActiveSessions : Endpoint -> (List Session) -> Cmd Msg
-getActiveSessions endpoint sessionlist=
+getActiveSessions : Endpoint -> (List Session) -> (List UserImage) -> Cmd Msg
+getActiveSessions endpoint sessionlist userimagelist=
     Http.get
         { url = Endpoint.toString endpoint
-        , expect = Http.expectJson GotSessions (sessionListDecoder sessionlist)
+        , expect = Http.expectJson GotSessions (sessionListDecoder sessionlist userimagelist)
         }
+
+getImages : Endpoint -> Cmd Msg
+getImages endpoint =
+    Http.get
+        { url = Endpoint.toString endpoint
+        , expect = Http.expectJson GotImages imageRequestListDecoder
+        }
+
 
 
 httpErrorString : Error -> String
@@ -550,6 +560,16 @@ hostDecoder =
                                 , popState = Popover.initialState
                                 }
 
+defaultImageJson : ImageJson
+defaultImageJson =
+        { link = image "https://cdn.intra.42.fr/users/78999b974389f4c1370718e6c4eb0512/3b3.jpg"
+        , versions =
+            { large = image "https://cdn.intra.42.fr/users/6d3ac322ccab95159955311616ee167b/large_3b3.jpg"
+            , micro = image "https://cdn.intra.42.fr/users/067c131574dc60e884f2dfd51943f805/micro_3b3.jpg"
+            , small = image "https://cdn.intra.42.fr/users/c6ccbf99169c9599a385a6aea2e3b307/small_3b3.jpg"
+            , medium = image "https://cdn.intra.42.fr/users/c3df498b1ae3803a1800eee23a3cee7a/medium_3b3.jpg"
+            }
+        }
 
 
 -- SESSION DECODERS
@@ -557,22 +577,30 @@ compareSessionUsername : String -> Session -> Bool
 compareSessionUsername username session =
     session.username == username
 
-getInitialImage : String -> (List Session) -> ImageSrc
-getInitialImage username sessionlist =
+compareUserImageUsername : String -> UserImage -> Bool
+compareUserImageUsername username userimage =
+    userimage.username == username
+
+getInitialImage : String -> (List Session) -> (List UserImage)-> Image
+getInitialImage username sessionlist userimagelist =
     case List.head (List.filter (compareSessionUsername username) sessionlist) of
         Just item ->
             item.imageSrc
         Nothing ->
-            Jpg ("https://cdn.intra.42.fr/users/small_" ++ username)
+            case List.head (List.filter (compareUserImageUsername username) userimagelist) of
+                Just item ->
+                    item.image.versions.medium
+                Nothing ->
+                    defaultImageJson.versions.medium
 
 
-sessionListDecoder : (List Session) -> Decoder (List Session)
-sessionListDecoder sessionlist =
-    Decode.list (sessionDecoder sessionlist)
+sessionListDecoder : (List Session) -> (List UserImage) -> Decoder (List Session)
+sessionListDecoder sessionlist userimagelist =
+    Decode.list (sessionDecoder sessionlist userimagelist)
 
 
-sessionDecoder : (List Session) -> Decoder Session
-sessionDecoder sessionlist =
+sessionDecoder : (List Session) -> (List UserImage) -> Decoder Session
+sessionDecoder sessionlist userimagelist=
     Field.require "login" Decode.string <|
         \username ->
             Field.require "hostname" Decode.string <|
@@ -580,5 +608,61 @@ sessionDecoder sessionlist =
                     Decode.succeed
                         { username = username
                         , host = host
-                        , imageSrc = (getInitialImage username sessionlist)
+                        , imageSrc = (getInitialImage username sessionlist userimagelist)
                         }
+
+imageRequestListDecoder : Decoder (List UserImage)
+imageRequestListDecoder =
+    Decode.list imageRequestDecoder
+
+
+imageRequestDecoder : Decoder UserImage
+imageRequestDecoder =
+    Field.require "id" Decode.int <|
+        \id -> 
+        Field.require "login" Decode.string <|
+            \username ->
+                Field.require "image" imageJsonDecoder <|
+                    \image ->
+                        Decode.succeed
+                            { id = id
+                            , username = username
+                            , image = image
+                            }
+
+
+imageJsonDecoder : Decoder ImageJson
+imageJsonDecoder =
+    Field.attempt "link" Decode.string <|
+        \mlink ->
+            case mlink of
+                Just link ->
+                    Field.attempt "versions" imageVersionsDecoder <|
+                        \mversions ->
+                            case mversions of
+                                Just versions ->
+                                    Decode.succeed
+                                        { link = image link
+                                        , versions = versions
+                                        }
+                                Nothing ->
+                                    Decode.succeed defaultImageJson
+                Nothing ->
+                    Decode.succeed defaultImageJson
+
+imageVersionsDecoder : Decoder ImageVersions
+imageVersionsDecoder =
+    Field.require "large" Decode.string <|
+        \large ->
+            Field.require "micro" Decode.string <|
+                \micro -> 
+                    Field.require "small" Decode.string <|
+                        \small ->
+                            Field.require "medium" Decode.string <|
+                                \medium ->
+                                    Decode.succeed
+                                        { micro = image micro
+                                        , small = image small
+                                        , medium = image medium
+                                        , large = image large
+                                        }

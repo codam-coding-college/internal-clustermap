@@ -1,4 +1,4 @@
-module Endpoint exposing (Endpoint, activeSessions, clusterf0, clusterf1, decoder, encode, endpoint, toString)
+module Endpoint exposing (Endpoint, activeSessions, clusterf0, clusterf1, decoder, encode, endpoint, imagesEndpoint, toString)
 
 import Json.Decode as Decode exposing (Decoder)
 import Json.Encode as Encode exposing (Value)
@@ -27,6 +27,11 @@ clusterf1 =
 activeSessions : Endpoint
 activeSessions =
     Endpoint "api/active"
+
+
+imagesEndpoint : Endpoint
+imagesEndpoint =
+    Endpoint "api/images"
 
 
 
