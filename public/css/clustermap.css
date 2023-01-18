@@ -3,6 +3,8 @@
     --background-color: #121212;
     --foreground-color: #fafafa;
     --accent-color: #d644d1;
+    --inactive-color: #999999;
+    --danger-color: #e52a2d;
     --drag-icon-color: #007bff;
     --active-color: rgba(48, 205, 49, 0.76);
     --popover-border: rgba(255, 255, 255, 0.2);
@@ -33,7 +35,7 @@ body {
 .mapcontainer-row {
     display: grid;
     grid-template-rows: 1fr, 1fr;
-    grid-template-areas: 
+    grid-template-areas:
     "a"
     "b";
 }
@@ -73,14 +75,21 @@ body {
 }
 
 .empty-host {
-	fill: var(--accent-color);
-	color: var(--accent-color);
+	fill: var(--inactive-color);
+	color: var(--inactive-color);
 }
 
 .empty-host-drag {
 	fill: var(--drag-icon-color);
     color: var(--drag-icon-color);
     fill-opacity: 0.6;
+}
+
+.dead-host {
+    fill: var(--danger-color);
+    color: var(--danger-color);
+    transform: scale(1.5);
+    animation: deadhost 3s infinite;
 }
 
 .download-button {
@@ -125,6 +134,14 @@ body {
     0% { transform: scale(1); fill: var(--accent-color); }
     50% { transform: scale(1.2); fill: #ff0000; }
     100% { transform: scale(1); fill: var(--accent-color); }
+}
+
+@keyframes deadhost {
+    0% { transform: scale(1.5); }
+    45% { transform: scale(1.5); }
+    50% { transform: scale(1); }
+    55% { transform: scale(1.5); }
+    100% { transform: scale(1.5); }
 }
 
 .popover-trigger:target {

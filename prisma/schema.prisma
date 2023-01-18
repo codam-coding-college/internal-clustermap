@@ -29,3 +29,16 @@ model Location {
 
     @@map("locations")
 }
+
+model Host {
+    id              Int @id
+    created_at      DateTime?
+    updated_at      DateTime?
+    deleted_at      DateTime?
+    ip_address      String? @unique
+    hostname        String? @unique
+    alive           Boolean?
+    checkable       Boolean?
+
+    @@map("hosts")
+}

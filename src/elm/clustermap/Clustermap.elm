@@ -85,6 +85,7 @@ type alias Session =
     { username : String
     , host : String
     , imageSrc : Image
+    , alive : Bool
     }
 
 type alias UserImage =
@@ -269,7 +270,7 @@ view model =
                     text "Loading Sessions..."
 
                 Success sessionlist ->
-                    case model.reqI of 
+                    case model.reqI of
                         ImageFailure _ ->
                             div []
                                 [ p [] [ text "Error retrieving images, sorry :(" ]
@@ -332,8 +333,8 @@ viewIcon model sessionlist hostmapsettings host =
                 Nothing ->
                     model.mapSettings.emptyIconSize // 2
 
-                Just _ ->
-                    model.mapSettings.activeIconSize // 2
+                Just session ->
+                    if session.alive then model.mapSettings.activeIconSize // 2 else model.mapSettings.emptyIconSize // 2
     in
     div
         [ class "imac-location"
@@ -360,30 +361,44 @@ viewIcon model sessionlist hostmapsettings host =
                 ]
 
             Just session ->
-                [ Popover.config
-                    (Button.button
-                        [ Button.attrs
-                            <| id (hostToId host.id)
-                            :: Popover.onHover host.popState (PopoverMsg host.id)
-                        ]
-                        [ a [ href ("https://profile.intra.42.fr/users/" ++ session.username), target "_blank" ]
-                            [ img
-                                [ src (Asset.toString session.imageSrc)
-                                , class "round-img"
-                                , style "width"
-                                    <| String.fromInt model.mapSettings.activeIconSize
-                                , style "height"
-                                    <| String.fromInt model.mapSettings.activeIconSize
-                                ]
-                                []
+                if session.alive then
+                    [ Popover.config
+                        (Button.button
+                            [ Button.attrs
+                                <| id (hostToId host.id)
+                                :: Popover.onHover host.popState (PopoverMsg host.id)
                             ]
-                        ]
-                    )
-                    |> Popover.top
-                    |> Popover.title [] [ text session.username ]
-                    |> Popover.content [] [ text (hostToId host.id) ]
-                    |> Popover.view host.popState
-                ]
+                            [ a [ href ("https://profile.intra.42.fr/users/" ++ session.username), target "_blank" ]
+                                [ img
+                                    [ src (Asset.toString session.imageSrc)
+                                    , class "round-img"
+                                    , style "width"
+                                        <| String.fromInt model.mapSettings.activeIconSize
+                                    , style "height"
+                                        <| String.fromInt model.mapSettings.activeIconSize
+                                    ]
+                                    []
+                                ]
+                            ]
+                        )
+                        |> Popover.top
+                        |> Popover.title [] [ text session.username ]
+                        |> Popover.content [] [ text (hostToId host.id) ]
+                        |> Popover.view host.popState
+                    ]
+                else
+                    [ Popover.config
+                        (Button.button
+                            [ Button.attrs
+                                <| id (hostToId host.id)
+                                :: Popover.onHover host.popState (PopoverMsg host.id)
+                            ]
+                            [ Asset.deadHost model.mapSettings.emptyIconSize ]
+                        )
+                        |> Popover.top
+                        |> Popover.content [] [ text (hostToId host.id ++ " (dead)") ]
+                        |> Popover.view host.popState
+                    ]
         )
 
 
@@ -601,15 +616,25 @@ sessionListDecoder sessionlist userimagelist =
 
 sessionDecoder : (List Session) -> (List UserImage) -> Decoder Session
 sessionDecoder sessionlist userimagelist=
-    Field.require "login" Decode.string <|
-        \username ->
-            Field.require "hostname" Decode.string <|
-                \host ->
-                    Decode.succeed
-                        { username = username
-                        , host = host
-                        , imageSrc = (getInitialImage username sessionlist userimagelist)
-                        }
+    Field.require "hostname" Decode.string <|
+        \host ->
+            Field.attempt "login" Decode.string <|
+                \maybeUsername ->
+                    case maybeUsername of
+                        Just username ->
+                            Decode.succeed
+                                { username = username
+                                , host = host
+                                , imageSrc = (getInitialImage username sessionlist userimagelist)
+                                , alive = True
+                                }
+                        Nothing ->
+                            Decode.succeed
+                                { username = ""
+                                , host = host
+                                , imageSrc = defaultImageJson.versions.medium
+                                , alive = False
+                                }
 
 imageRequestListDecoder : Decoder (List UserImage)
 imageRequestListDecoder =
@@ -619,7 +644,7 @@ imageRequestListDecoder =
 imageRequestDecoder : Decoder UserImage
 imageRequestDecoder =
     Field.require "id" Decode.int <|
-        \id -> 
+        \id ->
         Field.require "login" Decode.string <|
             \username ->
                 Field.require "image" imageJsonDecoder <|
@@ -655,7 +680,7 @@ imageVersionsDecoder =
     Field.require "large" Decode.string <|
         \large ->
             Field.require "micro" Decode.string <|
-                \micro -> 
+                \micro ->
                     Field.require "small" Decode.string <|
                         \small ->
                             Field.require "medium" Decode.string <|
