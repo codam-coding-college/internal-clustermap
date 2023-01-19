@@ -396,7 +396,7 @@ viewIcon model sessionlist hostmapsettings host =
                             [ Asset.deadHost model.mapSettings.emptyIconSize ]
                         )
                         |> Popover.top
-                        |> Popover.content [] [ text (hostToId host.id ++ " (dead)") ]
+                        |> Popover.content [] [ text (hostToId host.id ++ "") ]
                         |> Popover.view host.popState
                     ]
         )
@@ -419,7 +419,7 @@ viewUsedImacs model =
     let
         totalImacs =
             String.fromInt
-                <| List.length hlist
+                <| List.length hlist - (List.length <| List.filter (deadHostListFilter hlist) model.activeList)
 
         usedImacs =
             String.fromInt
@@ -453,7 +453,7 @@ calculateTop model hostmapsettings top =
 
 hostListFilter : List Host -> Session -> Bool
 hostListFilter hostlist session =
-    case List.head <| List.filter (sessionFilter session.host) hostlist of
+    case List.head <| List.filter (sessionFilter session) hostlist of
         Nothing ->
             False
 
@@ -461,9 +461,23 @@ hostListFilter hostlist session =
             True
 
 
-sessionFilter : String -> Host -> Bool
-sessionFilter sessionhost host =
-    String.contains sessionhost host.id
+
+deadHostListFilter : List Host -> Session -> Bool
+deadHostListFilter hostlist session =
+    case List.head <| List.filter (deadHostSessionFilter session) hostlist of
+        Nothing ->
+            False
+
+        Just _ ->
+            True
+
+deadHostSessionFilter : Session -> Host -> Bool
+deadHostSessionFilter session host =
+    not session.alive && String.contains session.host host.id
+
+sessionFilter : Session -> Host -> Bool
+sessionFilter session host =
+    session.alive && String.contains session.host host.id
 
 hostFilter : String -> Session -> Bool
 hostFilter host session =

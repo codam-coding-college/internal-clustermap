@@ -2,9 +2,9 @@
     /* Defining variables */
     --background-color: #121212;
     --foreground-color: #fafafa;
-    --accent-color: #d644d1;
+    --accent-color: #d262cf;
     --inactive-color: #999999;
-    --danger-color: #e52a2d;
+    --danger-color: #fc3b3e;
     --drag-icon-color: #007bff;
     --active-color: rgba(48, 205, 49, 0.76);
     --popover-border: rgba(255, 255, 255, 0.2);
@@ -75,8 +75,8 @@ body {
 }
 
 .empty-host {
-	fill: var(--inactive-color);
-	color: var(--inactive-color);
+	fill: var(--accent-color);
+	color: var(--accent-color);
 }
 
 .empty-host-drag {
@@ -88,8 +88,7 @@ body {
 .dead-host {
     fill: var(--danger-color);
     color: var(--danger-color);
-    transform: scale(1.5);
-    animation: deadhost 3s infinite;
+    transform: scale(2);
 }
 
 .download-button {
