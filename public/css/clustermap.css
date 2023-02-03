@@ -7,6 +7,7 @@
     --danger-color: #fc3b3e;
     --drag-icon-color: #007bff;
     --active-color: rgba(48, 205, 49, 0.76);
+    --exam-active-color: rgba(206, 225, 36, 0.76);
     --popover-border: rgba(255, 255, 255, 0.2);
 }
 
@@ -17,6 +18,7 @@
         --foreground-color: #121212;
         --accent-color: #d644d1;
         --active-color: rgba(48, 205, 49, 0.76);
+        --exam-active-color: rgba(206, 225, 36, 0.76);
         --popover-border: rgba(0,0,0,.2);
     }
 }
@@ -72,6 +74,15 @@ body {
     object-position: center;
     background: rgba(0, 0, 0, 0);
     border: 3px solid var(--active-color);
+}
+
+.round-img.session-exam {
+    border-color: var(--exam-active-color);
+}
+
+/* The following should never happen but just in case maxreport decides to break */
+.round-img.session-dead {
+    border-color: var(--danger-color);
 }
 
 .empty-host {

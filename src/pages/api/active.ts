@@ -1,8 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { prisma } from "../../server/db/client";
 import Cors from "cors";
 import NodeCache from "node-cache";
-import { Host, Location } from "@prisma/client";
+import { PrismaClient as MaxreportClient } from "../../server/db/maxreportClient";
+import { Host, Location } from "../../server/db/maxreportClient";
+import { PrismaClient as ExamClient } from "../../server/db/examClient";
+import { auth_user, exam_session } from "../../server/db/examClient";
+
+const maxreportPrisma = new MaxreportClient();
+const examPrisma = new ExamClient();
 
 const locationCache = new NodeCache();
 
@@ -28,25 +33,105 @@ function runMiddleware(
   })
 }
 
+// Helper function to translate IP addresses into hostnames
+function getHostName(ip: string) {
+  const ipParts = ip.split(".", 4);
+  if (ipParts.length != 4) {
+    return undefined;
+  }
+  const floor = ipParts[1]?.charAt(1);
+  return `f${floor}r${ipParts[2]}s${ipParts[3]}.codam.nl`;
+}
+
+// Interface for locations provided in the response JSON
+interface ResponseLocation {
+  login: string | null;
+  hostname: string;
+  sessionType: 'normal' | 'exam' | 'dead';
+  alive: boolean;
+}
+
+async function getMaxreportLocations() {
+  const responseLocations : ResponseLocation[] = [];
+
+  // Get locations straight from Maxreport
+  const db_locations = await maxreportPrisma.location.findMany({
+    where: {
+      end_at: null,
+    },
+    select: {
+      login: true,
+      hostname: true,
+    }
+  });
+
+  // Add Maxreport locations to the response
+  for (const location of db_locations) {
+    responseLocations.push({
+      login: location.login,
+      hostname: location.hostname ? location.hostname : 'null',
+      sessionType: 'normal',
+      alive: true
+    });
+  }
+
+  return responseLocations;
+}
+
+async function getExamLocations() {
+  const responseLocations : ResponseLocation[] = [];
+
+  // Get locations from Exam-master V2
+  const examdb_sessions = examPrisma.exam_session.findMany({
+    where: {
+      OR: [
+        { state: "wait_choice" },
+        { state: "in_progress" }
+      ]
+    },
+    select: {
+      user: {
+        select: {
+          username: true
+        },
+      },
+      last_known_ip: true,
+    },
+  });
+
+  // Add Exam-master V2 sessions to the response
+  for (const session of await examdb_sessions) {
+    const hostname = getHostName(session.last_known_ip);
+    if (hostname == undefined) {
+      continue;
+    }
+    responseLocations.push({
+      login: session.user.username,
+      hostname: hostname,
+      sessionType: 'exam',
+      alive: true
+    });
+  }
+
+  return responseLocations;
+}
+
 const locations = async (req: NextApiRequest, res: NextApiResponse) => {
   await runMiddleware(req, res, cors);
 
-  let locations = locationCache.get("locations");
-  let hosts = locationCache.get("hosts");
-  if (locations == undefined || hosts == undefined) {
-    const db_locations = await prisma.location.findMany({
-      where: {
-        end_at: null,
-      },
-      select: {
-        login: true,
-        hostname: true,
-      }
-    });
-    locationCache.set("locations", db_locations, 5);
-    locations = db_locations;
+  const responseJSON : ResponseLocation[] = [];
+  let response = locationCache.get("response");
 
-    const db_hosts = await prisma.host.findMany({
+  if (response == undefined) {
+    for (const responseLocation of await getMaxreportLocations()) {
+      responseJSON.push(responseLocation);
+    }
+    for (const responseLocation of await getExamLocations()) {
+      responseJSON.push(responseLocation);
+    }
+
+    // Get host info from Maxreport to mark dead hosts
+    const db_hosts = await maxreportPrisma.host.findMany({
       where: {
         deleted_at: null,
         alive: false
@@ -57,41 +142,34 @@ const locations = async (req: NextApiRequest, res: NextApiResponse) => {
         // checkable: true
       }
     });
-    locationCache.set("hosts", db_hosts, 5);
-    hosts = db_hosts;
-  }
 
-  const responseJSON = [];
-
-  // Add locations to the response
-  for (const location of locations as Location[]) {
-    responseJSON.push({
-      login: location.login,
-      hostname: location.hostname,
-      alive: true
-    });
-  }
-
-  // Add dead hosts to the response
-  deadHostsLoop: for (const host of hosts as Host[]) {
-    // First check if the hostname is not already in the response JSON
-    for (const hostLocation of responseJSON) {
-      if (hostLocation.hostname == host.hostname) {
-        // If it is, modify it
-        hostLocation.alive = host.alive;
-        continue deadHostsLoop;
+    // Add dead hosts to the response
+    deadHostsLoop: for (const host of db_hosts as Host[]) {
+      // First check if the hostname is not already in the response JSON
+      for (const hostLocation of responseJSON) {
+        if (hostLocation.hostname == host.hostname) {
+          // If it is, modify it
+          hostLocation.alive = host.alive ? true : false;
+          hostLocation.sessionType = 'dead';
+          continue deadHostsLoop;
+        }
       }
-    }
 
-    // If it's not, add it
-    responseJSON.push({
-      login: null,
-      hostname: host.hostname,
-      alive: host.alive,
-    });
+      // If it's not, add it
+      responseJSON.push({
+        login: null,
+        hostname: host.hostname ? host.hostname : 'null',
+        alive: host.alive ? true : false,
+        sessionType: 'dead'
+      });
+
+      // Store locations in cache
+      locationCache.set("response", responseJSON, 5);
+      response = responseJSON;
+    }
   }
 
-  res.status(200).json(responseJSON);
+  res.status(200).json(response);
 };
 
 export default locations;

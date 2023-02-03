@@ -19,6 +19,7 @@ import Maybe
 import Platform.Cmd
 import Time
 import Asset exposing (image)
+import Html.Attributes exposing (classList)
 
 
 
@@ -86,6 +87,7 @@ type alias Session =
     , host : String
     , imageSrc : Image
     , alive : Bool
+    , sessionType : String
     }
 
 type alias UserImage =
@@ -371,7 +373,10 @@ viewIcon model sessionlist hostmapsettings host =
                             [ a [ href ("https://profile.intra.42.fr/users/" ++ session.username), target "_blank" ]
                                 [ img
                                     [ src (Asset.toString session.imageSrc)
-                                    , class "round-img"
+                                    , classList [
+                                        ( "round-img", True )
+                                        , ( "session-" ++ session.sessionType, True )
+                                    ]
                                     , style "width"
                                         <| String.fromInt model.mapSettings.activeIconSize
                                     , style "height"
@@ -632,23 +637,27 @@ sessionDecoder : (List Session) -> (List UserImage) -> Decoder Session
 sessionDecoder sessionlist userimagelist=
     Field.require "hostname" Decode.string <|
         \host ->
-            Field.attempt "login" Decode.string <|
-                \maybeUsername ->
-                    case maybeUsername of
-                        Just username ->
-                            Decode.succeed
-                                { username = username
-                                , host = host
-                                , imageSrc = (getInitialImage username sessionlist userimagelist)
-                                , alive = True
-                                }
-                        Nothing ->
-                            Decode.succeed
-                                { username = ""
-                                , host = host
-                                , imageSrc = defaultImageJson.versions.medium
-                                , alive = False
-                                }
+            Field.require "sessionType" Decode.string <|
+                \sessionType ->
+                    Field.attempt "login" Decode.string <|
+                        \maybeUsername ->
+                            case maybeUsername of
+                                Just username ->
+                                    Decode.succeed
+                                        { username = username
+                                        , host = host
+                                        , imageSrc = (getInitialImage username sessionlist userimagelist)
+                                        , alive = True
+                                        , sessionType = sessionType
+                                        }
+                                Nothing ->
+                                    Decode.succeed
+                                        { username = ""
+                                        , host = host
+                                        , imageSrc = defaultImageJson.versions.medium
+                                        , alive = False
+                                        , sessionType = sessionType
+                                        }
 
 imageRequestListDecoder : Decoder (List UserImage)
 imageRequestListDecoder =

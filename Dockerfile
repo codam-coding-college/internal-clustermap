@@ -19,7 +19,8 @@ COPY --from=deps /app/elm /usr/local/bin/elm
 COPY --from=deps /home /home
 COPY . .
 COPY .env-example .env.production
-RUN npx prisma generate
+RUN npx prisma generate --schema=./prisma/maxreport.prisma
+RUN npx prisma generate --schema=./prisma/exam.prisma
 RUN yarn build
 
 FROM node:16-bullseye as runner

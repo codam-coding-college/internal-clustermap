@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+    output = "../src/server/db/examClient"
+}
+
+// datasource db {
+//     provider = "sqlite"
+//     url      = "file:./db.sqlite"
+// }
+
+datasource db {
+    provider = "postgresql"
+    url      = env("EXAM_DATABASE_URL")
+}
+
+model auth_user {
+    id              Int @id
+    password        String @db.VarChar(128)
+    last_login      DateTime
+    is_superuser    Boolean
+    username        String @db.VarChar(30) @unique
+    first_name      String @db.VarChar(30)
+    last_name       String @db.VarChar(30)
+    email           String @db.VarChar(75)
+    is_staff        Boolean
+    is_active       Boolean
+    date_joined     DateTime
+    exam_sessions   exam_session[]
+}
+
+model exam_session {
+    id              Int @id
+    mode            String @db.VarChar(10)
+    level           Int
+    state           String @db.VarChar(24)
+    date_start      DateTime?
+    date_end        DateTime?
+    git_url         String @db.VarChar(256)
+    user_id         Int
+    user            auth_user @relation(fields: [user_id], references: [id])
+    archived        Boolean
+    git_uuid        String @db.VarChar(256)
+    grade           Int
+    start_level     Int
+    date_last_grading DateTime?
+    date_choice     DateTime?
+    date_limit      DateTime?
+    ssh_key_id      String @db.VarChar(4096)
+    ssh_public      String @db.VarChar(4096)
+    last_known_ip   String @db.VarChar(256)
+}
