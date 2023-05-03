@@ -1,12 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import Cors from "cors";
 import NodeCache from "node-cache";
-import { PrismaClient as MaxreportClient } from "../../server/db/maxreportClient";
-import { Host, Location } from "../../server/db/maxreportClient";
+import { PrismaClient as CrsClient } from "../../server/db/crsClient";
+import { Workstation, Location } from "../../server/db/crsClient";
 import { PrismaClient as ExamClient } from "../../server/db/examClient";
 import { auth_user, exam_session } from "../../server/db/examClient";
 
-const maxreportPrisma = new MaxreportClient();
+const crsPrisma = new CrsClient();
 const examPrisma = new ExamClient();
 
 const locationCache = new NodeCache();
@@ -55,7 +55,7 @@ async function getMaxreportLocations() {
   const responseLocations : ResponseLocation[] = [];
 
   // Get locations straight from Maxreport
-  const db_locations = await maxreportPrisma.location.findMany({
+  const db_locations = await crsPrisma.location.findMany({
     where: {
       end_at: null,
     },
@@ -131,26 +131,26 @@ const locations = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     // Get host info from Maxreport to mark dead hosts
-    const db_hosts = await maxreportPrisma.host.findMany({
+    const db_workstations = await crsPrisma.workstation.findMany({
       where: {
-        deleted_at: null,
-        alive: false
+        alive: false,
+        active: true
       },
       select: {
         hostname: true,
         alive: true,
-        // checkable: true
+        // active: true
       }
     });
 
     // Add dead hosts to the response
-    deadHostsLoop: for (const host of db_hosts as Host[]) {
+    deadHostsLoop: for (const workstation of db_workstations as Workstation[]) {
       // First check if the hostname is not already in the response JSON
-      for (const hostLocation of responseJSON) {
-        if (hostLocation.hostname == host.hostname) {
+      for (const workstationLocation of responseJSON) {
+        if (workstationLocation.hostname == workstation.hostname) {
           // If it is, modify it
-          hostLocation.alive = host.alive ? true : false;
-          hostLocation.sessionType = 'dead';
+          workstationLocation.alive = workstation.alive ? true : false;
+          workstationLocation.sessionType = 'dead';
           continue deadHostsLoop;
         }
       }
@@ -158,8 +158,8 @@ const locations = async (req: NextApiRequest, res: NextApiResponse) => {
       // If it's not, add it
       responseJSON.push({
         login: null,
-        hostname: host.hostname ? host.hostname : 'null',
-        alive: host.alive ? true : false,
+        hostname: workstation.hostname ? workstation.hostname : 'null',
+        alive: workstation.alive ? true : false,
         sessionType: 'dead'
       });
 

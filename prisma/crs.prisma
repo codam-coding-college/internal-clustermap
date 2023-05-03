@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+    output = "../src/server/db/crsClient"
+}
+
+// datasource db {
+//     provider = "sqlite"
+//     url      = "file:./db.sqlite"
+// }
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model Location {
+    id              BigInt @id
+    created_at      DateTime @default(now())
+    updated_at      DateTime?
+    login           String
+    hostname        String
+    location_id     BigInt?
+    begin_at        DateTime
+    end_at          DateTime?
+    workstation_locations  BigInt?
+
+    @@map("locations")
+}
+
+model Workstation {
+    id              BigInt @id
+    created_at      DateTime @default(now())
+    updated_at      DateTime?
+    ip_addr         String? @unique
+    hostname        String? @unique
+    uuid            String?
+    hardware_serial String?
+    hardware_model  String?
+    mac_address     String?
+    cpu_brand       String?
+    physical_memory String?
+    os_name         String?
+    os_version      String?
+    os_platform     String?
+    os_arch         String?
+    kernel_version  String?
+    alive           Boolean
+    active          Boolean @default(true)
+
+    @@map("workstations")
+}

@@ -519,11 +519,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.dc.aZ === region.dA.aZ)
+	if (region.dd.aZ === region.dB.aZ)
 	{
-		return 'on line ' + region.dc.aZ;
+		return 'on line ' + region.dd.aZ;
 	}
-	return 'on lines ' + region.dc.aZ + ' through ' + region.dA.aZ;
+	return 'on lines ' + region.dd.aZ + ' through ' + region.dB.aZ;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.fq,
-		impl.gn,
-		impl.f3,
+		impl.fr,
+		impl.go,
+		impl.f4,
 		function() { return function() {} }
 	);
 });
@@ -2705,8 +2705,8 @@ var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
 		W: func(record.W),
-		de: record.de,
-		c6: record.c6
+		df: record.df,
+		c7: record.c7
 	}
 });
 
@@ -2975,10 +2975,10 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 
 		var value = result.a;
 		var message = !tag ? value : tag < 3 ? value.a : value.W;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.de;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.df;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.c6) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.c7) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3928,11 +3928,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.fq,
-		impl.gn,
-		impl.f3,
+		impl.fr,
+		impl.go,
+		impl.f4,
 		function(sendToApp, initialModel) {
-			var view = impl.go;
+			var view = impl.gp;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3964,12 +3964,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.fq,
-		impl.gn,
-		impl.f3,
+		impl.fr,
+		impl.go,
+		impl.f4,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.da && impl.da(sendToApp)
-			var view = impl.go;
+			var divertHrefToApp = impl.db && impl.db(sendToApp)
+			var view = impl.gp;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3977,12 +3977,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.eT);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.eU);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.gj) && (_VirtualDom_doc.title = title = doc.gj);
+				(title !== doc.gk) && (_VirtualDom_doc.title = title = doc.gk);
 			});
 		}
 	);
@@ -4038,12 +4038,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.fE;
-	var onUrlRequest = impl.fF;
+	var onUrlChange = impl.fF;
+	var onUrlRequest = impl.fG;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		da: function(sendToApp)
+		db: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4059,9 +4059,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.d6 === next.d6
+							&& curr.d7 === next.d7
 							&& curr.ay === next.ay
-							&& curr.d2.a === next.d2.a
+							&& curr.d3.a === next.d3.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4069,13 +4069,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		fq: function(flags)
+		fr: function(flags)
 		{
-			return A3(impl.fq, flags, _Browser_getUrl(), key);
+			return A3(impl.fr, flags, _Browser_getUrl(), key);
 		},
+		gp: impl.gp,
 		go: impl.go,
-		gn: impl.gn,
-		f3: impl.f3
+		f4: impl.f4
 	});
 }
 
@@ -4141,17 +4141,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { fk: 'hidden', e0: 'visibilitychange' }
+		? { fl: 'hidden', e1: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { fk: 'mozHidden', e0: 'mozvisibilitychange' }
+		? { fl: 'mozHidden', e1: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { fk: 'msHidden', e0: 'msvisibilitychange' }
+		? { fl: 'msHidden', e1: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { fk: 'webkitHidden', e0: 'webkitvisibilitychange' }
-		: { fk: 'hidden', e0: 'visibilitychange' };
+		? { fl: 'webkitHidden', e1: 'webkitvisibilitychange' }
+		: { fl: 'hidden', e1: 'visibilitychange' };
 }
 
 
@@ -4232,10 +4232,10 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		ee: _Browser_getScene(),
+		ef: _Browser_getScene(),
 		ba: {
-			ey: _Browser_window.pageXOffset,
-			ez: _Browser_window.pageYOffset,
+			ez: _Browser_window.pageXOffset,
+			eA: _Browser_window.pageYOffset,
 			bb: _Browser_doc.documentElement.clientWidth,
 			aR: _Browser_doc.documentElement.clientHeight
 		}
@@ -4271,13 +4271,13 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			ee: {
+			ef: {
 				bb: node.scrollWidth,
 				aR: node.scrollHeight
 			},
 			ba: {
-				ey: node.scrollLeft,
-				ez: node.scrollTop,
+				ez: node.scrollLeft,
+				eA: node.scrollTop,
 				bb: node.clientWidth,
 				aR: node.clientHeight
 			}
@@ -4309,16 +4309,16 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			ee: _Browser_getScene(),
+			ef: _Browser_getScene(),
 			ba: {
-				ey: x,
-				ez: y,
+				ez: x,
+				eA: y,
 				bb: _Browser_doc.documentElement.clientWidth,
 				aR: _Browser_doc.documentElement.clientHeight
 			},
-			fd: {
-				ey: x + rect.left,
-				ez: y + rect.top,
+			fe: {
+				ez: x + rect.left,
+				eA: y + rect.top,
 				bb: rect.width,
 				aR: rect.height
 			}
@@ -4365,25 +4365,25 @@ var _Http_toTask = F3(function(router, toTask, request)
 	return _Scheduler_binding(function(callback)
 	{
 		function done(response) {
-			callback(toTask(request.cO.a(response)));
+			callback(toTask(request.cP.a(response)));
 		}
 
 		var xhr = new XMLHttpRequest();
 		xhr.addEventListener('error', function() { done($elm$http$Http$NetworkError_); });
 		xhr.addEventListener('timeout', function() { done($elm$http$Http$Timeout_); });
-		xhr.addEventListener('load', function() { done(_Http_toResponse(request.cO.b, xhr)); });
-		$elm$core$Maybe$isJust(request.er) && _Http_track(router, xhr, request.er.a);
+		xhr.addEventListener('load', function() { done(_Http_toResponse(request.cP.b, xhr)); });
+		$elm$core$Maybe$isJust(request.es) && _Http_track(router, xhr, request.es.a);
 
 		try {
-			xhr.open(request.fy, request.di, true);
+			xhr.open(request.fz, request.dj, true);
 		} catch (e) {
-			return done($elm$http$Http$BadUrl_(request.di));
+			return done($elm$http$Http$BadUrl_(request.dj));
 		}
 
 		_Http_configureRequest(xhr, request);
 
-		request.eT.a && xhr.setRequestHeader('Content-Type', request.eT.a);
-		xhr.send(request.eT.b);
+		request.eU.a && xhr.setRequestHeader('Content-Type', request.eU.a);
+		xhr.send(request.eU.b);
 
 		return function() { xhr.c = true; xhr.abort(); };
 	});
@@ -4394,13 +4394,13 @@ var _Http_toTask = F3(function(router, toTask, request)
 
 function _Http_configureRequest(xhr, request)
 {
-	for (var headers = request.dF; headers.b; headers = headers.b) // WHILE_CONS
+	for (var headers = request.dG; headers.b; headers = headers.b) // WHILE_CONS
 	{
 		xhr.setRequestHeader(headers.a.a, headers.a.b);
 	}
-	xhr.timeout = request.gi.a || 0;
-	xhr.responseType = request.cO.d;
-	xhr.withCredentials = request.eL;
+	xhr.timeout = request.gj.a || 0;
+	xhr.responseType = request.cP.d;
+	xhr.withCredentials = request.eM;
 }
 
 
@@ -4421,10 +4421,10 @@ function _Http_toResponse(toBody, xhr)
 function _Http_toMetadata(xhr)
 {
 	return {
-		di: xhr.responseURL,
-		fZ: xhr.status,
-		f_: xhr.statusText,
-		dF: _Http_parseHeaders(xhr.getAllResponseHeaders())
+		dj: xhr.responseURL,
+		f_: xhr.status,
+		f$: xhr.statusText,
+		dG: _Http_parseHeaders(xhr.getAllResponseHeaders())
 	};
 }
 
@@ -4519,15 +4519,15 @@ function _Http_track(router, xhr, tracker)
 	xhr.upload.addEventListener('progress', function(event) {
 		if (xhr.c) { return; }
 		_Scheduler_rawSpawn(A2($elm$core$Platform$sendToSelf, router, _Utils_Tuple2(tracker, $elm$http$Http$Sending({
-			fR: event.loaded,
-			eh: event.total
+			fS: event.loaded,
+			ei: event.total
 		}))));
 	});
 	xhr.addEventListener('progress', function(event) {
 		if (xhr.c) { return; }
 		_Scheduler_rawSpawn(A2($elm$core$Platform$sendToSelf, router, _Utils_Tuple2(tracker, $elm$http$Http$Receiving({
-			fJ: event.loaded,
-			eh: event.lengthComputable ? $elm$core$Maybe$Just(event.total) : $elm$core$Maybe$Nothing
+			fK: event.loaded,
+			ei: event.lengthComputable ? $elm$core$Maybe$Just(event.total) : $elm$core$Maybe$Nothing
 		}))));
 	});
 }
@@ -5082,7 +5082,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {dD: fragment, ay: host, d0: path, d2: port_, d6: protocol, d7: query};
+		return {dE: fragment, ay: host, d1: path, d3: port_, d7: protocol, d8: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5373,7 +5373,7 @@ var $author$project$Main$Mapf1Msg = function (a) {
 };
 var $author$project$Main$Model = F4(
 	function (clusterF0, clusterF1, windowInfo, deviceInfo) {
-		return {P: clusterF0, Q: clusterF1, bG: deviceInfo, gp: windowInfo};
+		return {P: clusterF0, Q: clusterF1, bG: deviceInfo, gq: windowInfo};
 	});
 var $author$project$Main$Window = F2(
 	function (width, height) {
@@ -5390,7 +5390,7 @@ var $elm$core$Basics$ge = _Utils_ge;
 var $elm$core$Basics$round = _Basics_round;
 var $author$project$Main$calcMapSettings = F2(
 	function (window, _v0) {
-		var _class = _v0.dv;
+		var _class = _v0.dw;
 		var orientation = _v0.a1;
 		var preheight = $elm$core$Basics$round(window.aR * 0.93);
 		var prewidth = $elm$core$Basics$round(preheight * 0.77);
@@ -5435,7 +5435,7 @@ var $elm$core$Basics$min = F2(
 	});
 var $author$project$Main$classifyDevice = function (window) {
 	return {
-		dv: function () {
+		dw: function () {
 			var shortSide = A2($elm$core$Basics$min, window.bb, window.aR);
 			var longSide = A2($elm$core$Basics$max, window.bb, window.aR);
 			return (shortSide < 600) ? 0 : ((longSide <= 1200) ? 1 : (((longSide > 1200) && (longSide <= 1800)) ? 2 : 3));
@@ -6047,7 +6047,7 @@ var $elm$http$Http$resolve = F2(
 			case 3:
 				var metadata = response.a;
 				return $elm$core$Result$Err(
-					$elm$http$Http$BadStatus(metadata.fZ));
+					$elm$http$Http$BadStatus(metadata.f_));
 			default:
 				var body = response.b;
 				return A2(
@@ -6075,7 +6075,7 @@ var $elm$http$Http$Request = function (a) {
 };
 var $elm$http$Http$State = F2(
 	function (reqs, subs) {
-		return {d9: reqs, ei: subs};
+		return {ea: reqs, ej: subs};
 	});
 var $elm$http$Http$init = $elm$core$Task$succeed(
 	A2($elm$http$Http$State, $elm$core$Dict$empty, _List_Nil));
@@ -6119,7 +6119,7 @@ var $elm$http$Http$updateReqs = F3(
 					return A2(
 						$elm$core$Task$andThen,
 						function (pid) {
-							var _v4 = req.er;
+							var _v4 = req.es;
 							if (_v4.$ === 1) {
 								return A3($elm$http$Http$updateReqs, router, otherCmds, reqs);
 							} else {
@@ -6149,7 +6149,7 @@ var $elm$http$Http$onEffects = F4(
 				return $elm$core$Task$succeed(
 					A2($elm$http$Http$State, reqs, subs));
 			},
-			A3($elm$http$Http$updateReqs, router, cmds, state.d9));
+			A3($elm$http$Http$updateReqs, router, cmds, state.ea));
 	});
 var $elm$core$List$maybeCons = F3(
 	function (f, mx, xs) {
@@ -6192,7 +6192,7 @@ var $elm$http$Http$onSelfMsg = F3(
 				A2(
 					$elm$core$List$filterMap,
 					A3($elm$http$Http$maybeSend, router, tracker, progress),
-					state.ei)));
+					state.ej)));
 	});
 var $elm$http$Http$Cancel = function (a) {
 	return {$: 0, a: a};
@@ -6206,14 +6206,14 @@ var $elm$http$Http$cmdMap = F2(
 			var r = cmd.a;
 			return $elm$http$Http$Request(
 				{
-					eL: r.eL,
-					eT: r.eT,
-					cO: A2(_Http_mapExpect, func, r.cO),
-					dF: r.dF,
-					fy: r.fy,
-					gi: r.gi,
-					er: r.er,
-					di: r.di
+					eM: r.eM,
+					eU: r.eU,
+					cP: A2(_Http_mapExpect, func, r.cP),
+					dG: r.dG,
+					fz: r.fz,
+					gj: r.gj,
+					es: r.es,
+					dj: r.dj
 				});
 		}
 	});
@@ -6236,18 +6236,18 @@ var $elm$http$Http$subscription = _Platform_leaf('Http');
 var $elm$http$Http$request = function (r) {
 	return $elm$http$Http$command(
 		$elm$http$Http$Request(
-			{eL: false, eT: r.eT, cO: r.cO, dF: r.dF, fy: r.fy, gi: r.gi, er: r.er, di: r.di}));
+			{eM: false, eU: r.eU, cP: r.cP, dG: r.dG, fz: r.fz, gj: r.gj, es: r.es, dj: r.dj}));
 };
 var $elm$http$Http$get = function (r) {
 	return $elm$http$Http$request(
-		{eT: $elm$http$Http$emptyBody, cO: r.cO, dF: _List_Nil, fy: 'GET', gi: $elm$core$Maybe$Nothing, er: $elm$core$Maybe$Nothing, di: r.di});
+		{eU: $elm$http$Http$emptyBody, cP: r.cP, dG: _List_Nil, fz: 'GET', gj: $elm$core$Maybe$Nothing, es: $elm$core$Maybe$Nothing, dj: r.dj});
 };
 var $rundis$elm_bootstrap$Bootstrap$Popover$State = $elm$core$Basics$identity;
 var $rundis$elm_bootstrap$Bootstrap$Popover$initialState = {
-	cN: {
-		c1: 0,
+	cO: {
+		c2: 0,
 		b1: 0,
-		c7: {aR: 0, dR: 0, eq: 0, bb: 0}
+		c8: {aR: 0, dS: 0, er: 0, bb: 0}
 	},
 	aB: false
 };
@@ -6333,8 +6333,8 @@ var $author$project$Endpoint$toString = function (_v0) {
 var $author$project$Clustermap$getHosts = function (endpoint) {
 	return $elm$http$Http$get(
 		{
-			cO: A2($elm$http$Http$expectJson, $author$project$Clustermap$GotHosts, $author$project$Clustermap$hostModelDecoder),
-			di: $author$project$Endpoint$toString(endpoint)
+			cP: A2($elm$http$Http$expectJson, $author$project$Clustermap$GotHosts, $author$project$Clustermap$hostModelDecoder),
+			dj: $author$project$Endpoint$toString(endpoint)
 		});
 };
 var $author$project$Clustermap$GotImages = function (a) {
@@ -6361,12 +6361,12 @@ var $author$project$Asset$image = function (url) {
 	return url;
 };
 var $author$project$Clustermap$defaultImageJson = {
-	cZ: $author$project$Asset$image('https://cdn.intra.42.fr/users/78999b974389f4c1370718e6c4eb0512/3b3.jpg'),
+	c_: $author$project$Asset$image('https://cdn.intra.42.fr/users/78999b974389f4c1370718e6c4eb0512/3b3.jpg'),
 	aJ: {
-		cY: $author$project$Asset$image('https://cdn.intra.42.fr/users/6d3ac322ccab95159955311616ee167b/large_3b3.jpg'),
+		cZ: $author$project$Asset$image('https://cdn.intra.42.fr/users/6d3ac322ccab95159955311616ee167b/large_3b3.jpg'),
 		aD: $author$project$Asset$image('https://cdn.intra.42.fr/users/c3df498b1ae3803a1800eee23a3cee7a/medium_3b3.jpg'),
-		c$: $author$project$Asset$image('https://cdn.intra.42.fr/users/067c131574dc60e884f2dfd51943f805/micro_3b3.jpg'),
-		db: $author$project$Asset$image('https://cdn.intra.42.fr/users/c6ccbf99169c9599a385a6aea2e3b307/small_3b3.jpg')
+		c0: $author$project$Asset$image('https://cdn.intra.42.fr/users/067c131574dc60e884f2dfd51943f805/micro_3b3.jpg'),
+		dc: $author$project$Asset$image('https://cdn.intra.42.fr/users/c6ccbf99169c9599a385a6aea2e3b307/small_3b3.jpg')
 	}
 };
 var $author$project$Clustermap$imageVersionsDecoder = A3(
@@ -6391,10 +6391,10 @@ var $author$project$Clustermap$imageVersionsDecoder = A3(
 							function (medium) {
 								return $elm$json$Json$Decode$succeed(
 									{
-										cY: $author$project$Asset$image(large),
+										cZ: $author$project$Asset$image(large),
 										aD: $author$project$Asset$image(medium),
-										c$: $author$project$Asset$image(micro),
-										db: $author$project$Asset$image(small)
+										c0: $author$project$Asset$image(micro),
+										dc: $author$project$Asset$image(small)
 									});
 							});
 					});
@@ -6416,7 +6416,7 @@ var $author$project$Clustermap$imageJsonDecoder = A3(
 						var versions = mversions.a;
 						return $elm$json$Json$Decode$succeed(
 							{
-								cZ: $author$project$Asset$image(link),
+								c_: $author$project$Asset$image(link),
 								aJ: versions
 							});
 					} else {
@@ -6443,7 +6443,7 @@ var $author$project$Clustermap$imageRequestDecoder = A3(
 					$author$project$Clustermap$imageJsonDecoder,
 					function (image) {
 						return $elm$json$Json$Decode$succeed(
-							{e: id, cU: image, L: username});
+							{e: id, cV: image, L: username});
 					});
 			});
 	});
@@ -6451,15 +6451,15 @@ var $author$project$Clustermap$imageRequestListDecoder = $elm$json$Json$Decode$l
 var $author$project$Clustermap$getImages = function (endpoint) {
 	return $elm$http$Http$get(
 		{
-			cO: A2($elm$http$Http$expectJson, $author$project$Clustermap$GotImages, $author$project$Clustermap$imageRequestListDecoder),
-			di: $author$project$Endpoint$toString(endpoint)
+			cP: A2($elm$http$Http$expectJson, $author$project$Clustermap$GotImages, $author$project$Clustermap$imageRequestListDecoder),
+			dj: $author$project$Endpoint$toString(endpoint)
 		});
 };
 var $author$project$Endpoint$imagesEndpoint = 'api/images';
 var $author$project$Clustermap$init = F4(
 	function (hostEndpoint, sessionEndpoint, image, mapsettings) {
 		return _Utils_Tuple2(
-			{E: _List_Nil, dI: hostEndpoint, V: $elm$core$Maybe$Nothing, bR: _List_Nil, bX: image, j: mapsettings, aG: $author$project$Clustermap$HostLoading, a3: $author$project$Clustermap$ImageLoading, aH: $author$project$Clustermap$Loading, cu: sessionEndpoint},
+			{E: _List_Nil, dJ: hostEndpoint, V: $elm$core$Maybe$Nothing, bR: _List_Nil, bX: image, j: mapsettings, aG: $author$project$Clustermap$HostLoading, a3: $author$project$Clustermap$ImageLoading, aH: $author$project$Clustermap$Loading, cu: sessionEndpoint},
 			$elm$core$Platform$Cmd$batch(
 				_List_fromArray(
 					[
@@ -6472,7 +6472,7 @@ var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Main$init = function (_v0) {
 	var width = _v0.bb;
 	var height = _v0.aR;
-	var isFirefox = _v0.dN;
+	var isFirefox = _v0.dO;
 	var width90 = $elm$core$Basics$round(width * 0.9);
 	var resizeTask = isFirefox ? $elm$core$Platform$Cmd$none : A2($elm$core$Task$perform, $author$project$Main$BeResponsive, $elm$browser$Browser$Dom$getViewport);
 	var height90 = $elm$core$Basics$round(height * 0.9);
@@ -6517,7 +6517,7 @@ var $elm$time$Time$Every = F2(
 	});
 var $elm$time$Time$State = F2(
 	function (taggers, processes) {
-		return {d5: processes, ej: taggers};
+		return {d6: processes, ek: taggers};
 	});
 var $elm$time$Time$init = $elm$core$Task$succeed(
 	A2($elm$time$Time$State, $elm$core$Dict$empty, $elm$core$Dict$empty));
@@ -6664,7 +6664,7 @@ var $elm$time$Time$spawnHelp = F3(
 	});
 var $elm$time$Time$onEffects = F3(
 	function (router, subs, _v0) {
-		var processes = _v0.d5;
+		var processes = _v0.d6;
 		var rightStep = F3(
 			function (_v6, id, _v7) {
 				var spawns = _v7.a;
@@ -6733,7 +6733,7 @@ var $elm$time$Time$millisToPosix = $elm$core$Basics$identity;
 var $elm$time$Time$now = _Time_now($elm$time$Time$millisToPosix);
 var $elm$time$Time$onSelfMsg = F3(
 	function (router, interval, state) {
-		var _v0 = A2($elm$core$Dict$get, interval, state.ej);
+		var _v0 = A2($elm$core$Dict$get, interval, state.ek);
 		if (_v0.$ === 1) {
 			return $elm$core$Task$succeed(state);
 		} else {
@@ -6787,7 +6787,7 @@ var $elm$browser$Browser$Events$MySub = F3(
 	});
 var $elm$browser$Browser$Events$State = F2(
 	function (subs, pids) {
-		return {d1: pids, ei: subs};
+		return {d2: pids, ej: subs};
 	});
 var $elm$browser$Browser$Events$init = $elm$core$Task$succeed(
 	A2($elm$browser$Browser$Events$State, _List_Nil, $elm$core$Dict$empty));
@@ -6821,7 +6821,7 @@ var $elm$core$Dict$fromList = function (assocs) {
 };
 var $elm$browser$Browser$Events$Event = F2(
 	function (key, event) {
-		return {dB: event, dQ: key};
+		return {dC: event, dR: key};
 	});
 var $elm$browser$Browser$Events$spawn = F3(
 	function (router, key, _v0) {
@@ -6895,7 +6895,7 @@ var $elm$browser$Browser$Events$onEffects = F3(
 			stepLeft,
 			stepBoth,
 			stepRight,
-			state.d1,
+			state.d2,
 			$elm$core$Dict$fromList(newSubs),
 			_Utils_Tuple3(_List_Nil, $elm$core$Dict$empty, _List_Nil));
 		var deadPids = _v0.a;
@@ -6923,8 +6923,8 @@ var $elm$browser$Browser$Events$onEffects = F3(
 	});
 var $elm$browser$Browser$Events$onSelfMsg = F3(
 	function (router, _v0, state) {
-		var key = _v0.dQ;
-		var event = _v0.dB;
+		var key = _v0.dR;
+		var event = _v0.dC;
 		var toMessage = function (_v2) {
 			var subKey = _v2.a;
 			var _v3 = _v2.b;
@@ -6933,7 +6933,7 @@ var $elm$browser$Browser$Events$onSelfMsg = F3(
 			var decoder = _v3.c;
 			return _Utils_eq(subKey, key) ? A2(_Browser_decodeEvent, decoder, event) : $elm$core$Maybe$Nothing;
 		};
-		var messages = A2($elm$core$List$filterMap, toMessage, state.ei);
+		var messages = A2($elm$core$List$filterMap, toMessage, state.ej);
 		return A2(
 			$elm$core$Task$andThen,
 			function (_v1) {
@@ -7059,7 +7059,7 @@ var $author$project$Clustermap$getInitialImage = F3(
 					userimagelist));
 			if (!_v1.$) {
 				var item = _v1.a;
-				return item.cU.aJ.aD;
+				return item.cV.aJ.aD;
 			} else {
 				return $author$project$Clustermap$defaultImageJson.aJ.aD;
 			}
@@ -7073,23 +7073,30 @@ var $author$project$Clustermap$sessionDecoder = F2(
 			$elm$json$Json$Decode$string,
 			function (host) {
 				return A3(
-					$webbhuset$elm_json_decode$Json$Decode$Field$attempt,
-					'login',
+					$webbhuset$elm_json_decode$Json$Decode$Field$require,
+					'sessionType',
 					$elm$json$Json$Decode$string,
-					function (maybeUsername) {
-						if (!maybeUsername.$) {
-							var username = maybeUsername.a;
-							return $elm$json$Json$Decode$succeed(
-								{
-									aa: true,
-									ay: host,
-									aU: A3($author$project$Clustermap$getInitialImage, username, sessionlist, userimagelist),
-									L: username
-								});
-						} else {
-							return $elm$json$Json$Decode$succeed(
-								{aa: false, ay: host, aU: $author$project$Clustermap$defaultImageJson.aJ.aD, L: ''});
-						}
+					function (sessionType) {
+						return A3(
+							$webbhuset$elm_json_decode$Json$Decode$Field$attempt,
+							'login',
+							$elm$json$Json$Decode$string,
+							function (maybeUsername) {
+								if (!maybeUsername.$) {
+									var username = maybeUsername.a;
+									return $elm$json$Json$Decode$succeed(
+										{
+											aa: true,
+											ay: host,
+											aU: A3($author$project$Clustermap$getInitialImage, username, sessionlist, userimagelist),
+											cv: sessionType,
+											L: username
+										});
+								} else {
+									return $elm$json$Json$Decode$succeed(
+										{aa: false, ay: host, aU: $author$project$Clustermap$defaultImageJson.aJ.aD, cv: sessionType, L: ''});
+								}
+							});
 					});
 			});
 	});
@@ -7102,11 +7109,11 @@ var $author$project$Clustermap$getActiveSessions = F3(
 	function (endpoint, sessionlist, userimagelist) {
 		return $elm$http$Http$get(
 			{
-				cO: A2(
+				cP: A2(
 					$elm$http$Http$expectJson,
 					$author$project$Clustermap$GotSessions,
 					A2($author$project$Clustermap$sessionListDecoder, sessionlist, userimagelist)),
-				di: $author$project$Endpoint$toString(endpoint)
+				dj: $author$project$Endpoint$toString(endpoint)
 			});
 	});
 var $author$project$Clustermap$update = F2(
@@ -7395,7 +7402,7 @@ var $rundis$elm_bootstrap$Bootstrap$Internal$Button$applyModifier = F2(
 				return _Utils_update(
 					options,
 					{
-						eh: $elm$core$Maybe$Just(size)
+						ei: $elm$core$Maybe$Just(size)
 					});
 			case 1:
 				var coloring = modifier.a;
@@ -7436,7 +7443,7 @@ var $elm$html$Html$Attributes$classList = function (classes) {
 				$elm$core$Tuple$first,
 				A2($elm$core$List$filter, $elm$core$Tuple$second, classes))));
 };
-var $rundis$elm_bootstrap$Bootstrap$Internal$Button$defaultOptions = {ab: _List_Nil, bt: false, R: $elm$core$Maybe$Nothing, bI: false, eh: $elm$core$Maybe$Nothing};
+var $rundis$elm_bootstrap$Bootstrap$Internal$Button$defaultOptions = {ab: _List_Nil, bt: false, R: $elm$core$Maybe$Nothing, bI: false, ei: $elm$core$Maybe$Nothing};
 var $elm$json$Json$Encode$bool = _Json_wrap;
 var $elm$html$Html$Attributes$boolProperty = F2(
 	function (key, bool) {
@@ -7498,7 +7505,7 @@ var $rundis$elm_bootstrap$Bootstrap$Internal$Button$buttonAttributes = function 
 			]),
 		_Utils_ap(
 			function () {
-				var _v0 = A2($elm$core$Maybe$andThen, $rundis$elm_bootstrap$Bootstrap$General$Internal$screenSizeOption, options.eh);
+				var _v0 = A2($elm$core$Maybe$andThen, $rundis$elm_bootstrap$Bootstrap$General$Internal$screenSizeOption, options.ei);
 				if (!_v0.$) {
 					var s = _v0.a;
 					return _List_fromArray(
@@ -7552,7 +7559,7 @@ var $author$project$Clustermap$calculateTop = F3(
 var $rundis$elm_bootstrap$Bootstrap$Popover$Config = $elm$core$Basics$identity;
 var $rundis$elm_bootstrap$Bootstrap$Popover$Top = 0;
 var $rundis$elm_bootstrap$Bootstrap$Popover$config = function (triggerElement) {
-	return {e6: $elm$core$Maybe$Nothing, U: 0, gj: $elm$core$Maybe$Nothing, et: triggerElement};
+	return {e7: $elm$core$Maybe$Nothing, U: 0, gk: $elm$core$Maybe$Nothing, eu: triggerElement};
 };
 var $rundis$elm_bootstrap$Bootstrap$Popover$Content = $elm$core$Basics$identity;
 var $rundis$elm_bootstrap$Bootstrap$Popover$content = F3(
@@ -7561,7 +7568,7 @@ var $rundis$elm_bootstrap$Bootstrap$Popover$content = F3(
 		return _Utils_update(
 			conf,
 			{
-				e6: $elm$core$Maybe$Just(
+				e7: $elm$core$Maybe$Just(
 					A2(
 						$elm$html$Html$div,
 						A2(
@@ -7684,7 +7691,7 @@ var $elm$html$Html$Events$on = F2(
 var $elm$core$Basics$not = _Basics_not;
 var $rundis$elm_bootstrap$Bootstrap$Popover$DOMState = F3(
 	function (rect, offsetWidth, offsetHeight) {
-		return {c1: offsetHeight, b1: offsetWidth, c7: rect};
+		return {c2: offsetHeight, b1: offsetWidth, c8: rect};
 	});
 var $elm$json$Json$Decode$map3 = _Json_map3;
 var $elm$json$Json$Decode$float = _Json_decodeFloat;
@@ -7797,7 +7804,7 @@ var $rundis$elm_bootstrap$Bootstrap$Utilities$DomHelper$boundingArea = A4(
 		function (_v0, width, height) {
 			var x = _v0.a;
 			var y = _v0.b;
-			return {aR: height, dR: x, eq: y, bb: width};
+			return {aR: height, dS: x, er: y, bb: width};
 		}),
 	A2($rundis$elm_bootstrap$Bootstrap$Utilities$DomHelper$position, 0, 0),
 	$rundis$elm_bootstrap$Bootstrap$Utilities$DomHelper$offsetWidth,
@@ -7862,7 +7869,7 @@ var $rundis$elm_bootstrap$Bootstrap$Popover$toggleState = F2(
 			function (v) {
 				return $elm$json$Json$Decode$succeed(
 					toMsg(
-						(!isActive) ? {cN: v, aB: true} : _Utils_update(
+						(!isActive) ? {cO: v, aB: true} : _Utils_update(
 							state,
 							{aB: false})));
 			},
@@ -7891,7 +7898,7 @@ var $rundis$elm_bootstrap$Bootstrap$Popover$titlePrivate = F4(
 		return _Utils_update(
 			conf,
 			{
-				gj: $elm$core$Maybe$Just(
+				gk: $elm$core$Maybe$Just(
 					A2(
 						elemFn,
 						A2(
@@ -7913,37 +7920,37 @@ var $elm$core$Basics$negate = function (n) {
 };
 var $rundis$elm_bootstrap$Bootstrap$Popover$calculatePos = F2(
 	function (pos, _v0) {
-		var rect = _v0.c7;
+		var rect = _v0.c8;
 		var offsetWidth = _v0.b1;
-		var offsetHeight = _v0.c1;
+		var offsetHeight = _v0.c2;
 		switch (pos) {
 			case 3:
 				return {
 					ar: $elm$core$Maybe$Nothing,
 					as: $elm$core$Maybe$Just((offsetHeight / 2) - 12),
-					dR: (-offsetWidth) - 10,
-					eq: (rect.aR / 2) - (offsetHeight / 2)
+					dS: (-offsetWidth) - 10,
+					er: (rect.aR / 2) - (offsetHeight / 2)
 				};
 			case 1:
 				return {
 					ar: $elm$core$Maybe$Nothing,
 					as: $elm$core$Maybe$Just((offsetHeight / 2) - 12),
-					dR: rect.bb,
-					eq: (rect.aR / 2) - (offsetHeight / 2)
+					dS: rect.bb,
+					er: (rect.aR / 2) - (offsetHeight / 2)
 				};
 			case 0:
 				return {
 					ar: $elm$core$Maybe$Just((offsetWidth / 2) - 12),
 					as: $elm$core$Maybe$Nothing,
-					dR: (rect.bb / 2) - (offsetWidth / 2),
-					eq: (-offsetHeight) - 10
+					dS: (rect.bb / 2) - (offsetWidth / 2),
+					er: (-offsetHeight) - 10
 				};
 			default:
 				return {
 					ar: $elm$core$Maybe$Just((offsetWidth / 2) - 12),
 					as: $elm$core$Maybe$Nothing,
-					dR: (rect.bb / 2) - (offsetWidth / 2),
-					eq: rect.aR
+					dS: (rect.bb / 2) - (offsetWidth / 2),
+					er: rect.aR
 				};
 		}
 	});
@@ -7998,7 +8005,7 @@ var $rundis$elm_bootstrap$Bootstrap$Popover$positionClass = function (position) 
 var $rundis$elm_bootstrap$Bootstrap$Popover$popoverView = F2(
 	function (_v0, _v1) {
 		var isActive = _v0.aB;
-		var domState = _v0.cN;
+		var domState = _v0.cO;
 		var conf = _v1;
 		var px = function (f) {
 			return $elm$core$String$fromFloat(f) + 'px';
@@ -8009,11 +8016,11 @@ var $rundis$elm_bootstrap$Bootstrap$Popover$popoverView = F2(
 				A2(
 				$elm$html$Html$Attributes$style,
 				'left',
-				px(pos.dR)),
+				px(pos.dS)),
 				A2(
 				$elm$html$Html$Attributes$style,
 				'top',
-				px(pos.eq)),
+				px(pos.er)),
 				A2($elm$html$Html$Attributes$style, 'display', 'inline-block'),
 				A2(
 				$elm$html$Html$Attributes$style,
@@ -8083,19 +8090,19 @@ var $rundis$elm_bootstrap$Bootstrap$Popover$popoverView = F2(
 							var t = _v2;
 							return t;
 						},
-						conf.gj),
+						conf.gk),
 						A2(
 						$elm$core$Maybe$map,
 						function (_v3) {
 							var c = _v3;
 							return c;
 						},
-						conf.e6)
+						conf.e7)
 					])));
 	});
 var $rundis$elm_bootstrap$Bootstrap$Popover$view = F2(
 	function (state, conf) {
-		var triggerElement = conf.et;
+		var triggerElement = conf.eu;
 		return A2(
 			$elm$html$Html$div,
 			_List_fromArray(
@@ -8231,7 +8238,12 @@ var $author$project$Clustermap$viewIcon = F4(
 																	[
 																		$elm$html$Html$Attributes$src(
 																		$author$project$Asset$toString(session.aU)),
-																		$elm$html$Html$Attributes$class('round-img'),
+																		$elm$html$Html$Attributes$classList(
+																		_List_fromArray(
+																			[
+																				_Utils_Tuple2('round-img', true),
+																				_Utils_Tuple2('session-' + session.cv, true)
+																			])),
 																		A2(
 																		$elm$html$Html$Attributes$style,
 																		'width',
@@ -8570,7 +8582,7 @@ var $author$project$Main$view = function (model) {
 			]));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
-	{fq: $author$project$Main$init, f3: $author$project$Main$subscriptions, gn: $author$project$Main$update, go: $author$project$Main$view});
+	{fr: $author$project$Main$init, f4: $author$project$Main$subscriptions, go: $author$project$Main$update, gp: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	A2(
 		$elm$json$Json$Decode$andThen,
@@ -8582,7 +8594,7 @@ _Platform_export({'Main':{'init':$author$project$Main$main(
 						$elm$json$Json$Decode$andThen,
 						function (height) {
 							return $elm$json$Json$Decode$succeed(
-								{aR: height, dN: isFirefox, bb: width});
+								{aR: height, dO: isFirefox, bb: width});
 						},
 						A2($elm$json$Json$Decode$field, 'height', $elm$json$Json$Decode$int));
 				},
