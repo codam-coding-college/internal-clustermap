@@ -34,21 +34,14 @@ model auth_user {
 model exam_session {
     id              Int @id
     mode            String @db.VarChar(10)
-    level           Int
     state           String @db.VarChar(24)
-    date_start      DateTime?
-    date_end        DateTime?
-    git_url         String @db.VarChar(256)
     user_id         Int
     user            auth_user @relation(fields: [user_id], references: [id])
     archived        Boolean
-    git_uuid        String @db.VarChar(256)
     grade           Int
-    start_level     Int
     date_last_grading DateTime?
-    date_choice     DateTime?
-    date_limit      DateTime?
-    ssh_key_id      String @db.VarChar(4096)
-    ssh_public      String @db.VarChar(4096)
     last_known_ip   String @db.VarChar(256)
+    exam_id         Int
+    last_known_hostname String @db.VarChar(256)
+    recognized      Boolean
 }

@@ -2,9 +2,8 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import Cors from "cors";
 import NodeCache from "node-cache";
 import { PrismaClient as CrsClient } from "../../server/db/crsClient";
-import { Workstation, Location } from "../../server/db/crsClient";
+import { Workstation } from "../../server/db/crsClient";
 import { PrismaClient as ExamClient } from "../../server/db/examClient";
-import { auth_user, exam_session } from "../../server/db/examClient";
 
 const crsPrisma = new CrsClient();
 const examPrisma = new ExamClient();
@@ -33,14 +32,14 @@ function runMiddleware(
   })
 }
 
-// Helper function to translate IP addresses into hostnames
+// Helper function to translate IP addresses into hostnames (for Exam-master V2 or missing hostnames)
 function getHostName(ip: string) {
   const ipParts = ip.split(".", 4);
   if (ipParts.length != 4) {
     return undefined;
   }
   const floor = ipParts[1]?.charAt(1);
-  return `f${floor}r${ipParts[2]}s${ipParts[3]}.codam.nl`;
+  return `f${floor}r${ipParts[2]}s${ipParts[3]}`;
 }
 
 // Interface for locations provided in the response JSON
@@ -81,13 +80,13 @@ async function getMaxreportLocations() {
 async function getExamLocations() {
   const responseLocations : ResponseLocation[] = [];
 
-  // Get locations from Exam-master V2
+  // Get locations from Exam-master V3
   const examdb_sessions = examPrisma.exam_session.findMany({
     where: {
       OR: [
         { state: "wait_choice" },
         { state: "in_progress" }
-      ]
+      ],
     },
     select: {
       user: {
@@ -96,18 +95,19 @@ async function getExamLocations() {
         },
       },
       last_known_ip: true,
+      last_known_hostname: true,
     },
   });
 
   // Add Exam-master V2 sessions to the response
   for (const session of await examdb_sessions) {
-    const hostname = getHostName(session.last_known_ip);
-    if (hostname == undefined) {
+    const hostname = session.last_known_hostname || getHostName(session.last_known_ip);
+    if (hostname == undefined || hostname == 'Unknown' || hostname == null || hostname == 'null') {
       continue;
     }
     responseLocations.push({
       login: session.user.username,
-      hostname: hostname,
+      hostname: `${hostname}.codam.nl`,
       sessionType: 'exam',
       alive: true
     });
