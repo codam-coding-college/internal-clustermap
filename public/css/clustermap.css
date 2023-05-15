@@ -80,7 +80,7 @@ body {
     border-color: var(--exam-active-color);
 }
 
-/* The following should never happen but just in case maxreport decides to break */
+/* The following should never happen but just in case crs decides to break */
 .round-img.session-dead {
     border-color: var(--danger-color);
 }

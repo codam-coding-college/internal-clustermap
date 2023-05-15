@@ -50,7 +50,7 @@ interface ResponseLocation {
   alive: boolean;
 }
 
-async function getMaxreportLocations() {
+async function getCRLocations() {
   const responseLocations : ResponseLocation[] = [];
 
   // Get locations straight from Maxreport
@@ -123,7 +123,7 @@ const locations = async (req: NextApiRequest, res: NextApiResponse) => {
   let response = locationCache.get("response");
 
   if (response == undefined) {
-    for (const responseLocation of await getMaxreportLocations()) {
+    for (const responseLocation of await getCRLocations()) {
       responseJSON.push(responseLocation);
     }
     for (const responseLocation of await getExamLocations()) {
