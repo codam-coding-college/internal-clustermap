@@ -169,6 +169,9 @@ const locations = async (req: NextApiRequest, res: NextApiResponse) => {
     }
   }
 
+  if (!response) {
+    return res.status(500).json({ error: "Could not get locations" });
+  }
   res.status(200).json(response);
 };
 
