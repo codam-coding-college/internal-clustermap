@@ -122,15 +122,22 @@ const locations = async (req: NextApiRequest, res: NextApiResponse) => {
   const responseJSON : ResponseLocation[] = [];
   let response = locationCache.get("response");
 
-  if (response == undefined) {
+  if (!response) {
+    console.log("No response locations in cache, fetching from database");
+
+    // Get locations from Cluster Reporter
     for (const responseLocation of await getCRLocations()) {
       responseJSON.push(responseLocation);
     }
+    console.log(`Got ${responseJSON.length} response locations after fetching from Cluster Reporter`);
+
+    // Get locations from Exam-master
     for (const responseLocation of await getExamLocations()) {
       responseJSON.push(responseLocation);
     }
+    console.log(`Got ${responseJSON.length} response locations after fetching from Exam-master`);
 
-    // Get host info from Maxreport to mark dead hosts
+    // Get host info from Cluster Reporter to mark dead hosts
     const db_workstations = await crsPrisma.workstation.findMany({
       where: {
         alive: false,
@@ -151,6 +158,7 @@ const locations = async (req: NextApiRequest, res: NextApiResponse) => {
           // If it is, modify it
           workstationLocation.alive = workstation.alive ? true : false;
           workstationLocation.sessionType = 'dead';
+          console.log(`Marked dead host at ${workstation.hostname} as dead (was already in response locations)`);
           continue deadHostsLoop;
         }
       }
@@ -162,16 +170,15 @@ const locations = async (req: NextApiRequest, res: NextApiResponse) => {
         alive: workstation.alive ? true : false,
         sessionType: 'dead'
       });
-
-      // Store locations in cache
-      locationCache.set("response", responseJSON, 5);
-      response = responseJSON;
+      console.log(`Pushed dead host at ${workstation.hostname} to response locations`);
     }
+
+    // Store locations in cache
+    locationCache.set("response", responseJSON, 5);
+    response = responseJSON;
+    console.log("Stored response locations in cache");
   }
 
-  if (!response) {
-    return res.status(500).json({ error: "Could not get locations" });
-  }
   res.status(200).json(response);
 };
 
