@@ -42,6 +42,25 @@ function getHostName(ip: string) {
   return `f${floor}r${ipParts[2]}s${ipParts[3]}`;
 }
 
+// Function to fetch hosts that are in exam mode from the exam-rebooter service
+// If this fails, it will return an empty array, so the rest of the code can still run and a clustermap still gets generated
+async function getHostsInExamMode() {
+  try {
+    // The URL below is only accessible from allowed IP ranges. Ask Codam IT for access if developing locally and you get a 403 error
+    const response = await fetch("https://exam-rebooter.codam.nl/exam_mode_hosts");
+    const hosts = await response.json();
+    if ("error" in hosts) {
+      throw new Error(hosts["error"]);
+    }
+    // Translate object into an array (only keep values of true)
+    return Object.keys(hosts).filter((key) => hosts[key] == true);
+  }
+  catch (err) {
+    console.log("Failed to fetch hosts in exam mode: " + err);
+    return [];
+  }
+}
+
 // Interface for locations provided in the response JSON
 interface ResponseLocation {
   login: string | null;
@@ -171,6 +190,30 @@ const locations = async (req: NextApiRequest, res: NextApiResponse) => {
         sessionType: 'dead'
       });
       console.log(`Pushed dead host at ${workstation.hostname} to response locations`);
+    }
+
+    // Get hosts in exam mode from the exam-rebooter service
+    const examHosts = await getHostsInExamMode();
+
+    // Modify all hosts in the response that are in exam mode
+    for (const responseLocation of responseJSON) {
+      if (examHosts.includes(responseLocation.hostname)) {
+        responseLocation.sessionType = 'exam';
+        console.log(`Marked host at ${responseLocation.hostname} as in exam mode (was already in response locations)`);
+      }
+    }
+
+    // Add any missing hosts in exam mode to the response
+    for (const examHost of examHosts) {
+      if (!responseJSON.some((responseLocation) => responseLocation.hostname == examHost)) {
+        responseJSON.push({
+          login: null,
+          hostname: examHost,
+          sessionType: 'exam',
+          alive: true
+        });
+        console.log(`Pushed host in exam mode at ${examHost} to response locations`);
+      }
     }
 
     // Store locations in cache

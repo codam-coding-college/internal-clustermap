@@ -8,6 +8,7 @@
     --drag-icon-color: #007bff;
     --active-color: rgba(48, 205, 49, 0.76);
     --exam-active-color: rgba(206, 225, 36, 0.76);
+    --exam-inactive-color: #ff831e;
     --popover-border: rgba(255, 255, 255, 0.2);
 }
 
@@ -88,6 +89,12 @@ body {
 .empty-host {
 	fill: var(--accent-color);
 	color: var(--accent-color);
+}
+
+.empty-exam-host {
+    fill: var(--exam-inactive-color);
+    color: var(--exam-inactive-color);
+    transform: scale(1.5);
 }
 
 .empty-host-drag {

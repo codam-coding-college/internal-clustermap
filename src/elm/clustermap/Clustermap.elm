@@ -398,7 +398,17 @@ viewIcon model sessionlist hostmapsettings host =
                                 <| id (hostToId host.id)
                                 :: Popover.onHover host.popState (PopoverMsg host.id)
                             ]
-                            [ Asset.deadHost model.mapSettings.emptyIconSize ]
+                            [
+                                case session.sessionType of
+                                    "exam" ->
+                                        Asset.emptyExamHost model.mapSettings.emptyIconSize
+
+                                    "dead" ->
+                                        Asset.deadHost model.mapSettings.emptyIconSize
+
+                                    _ ->
+                                        Asset.emptyHost model.mapSettings.emptyIconSize
+                            ]
                         )
                         |> Popover.top
                         |> Popover.content [] [ text (hostToId host.id ++ "") ]

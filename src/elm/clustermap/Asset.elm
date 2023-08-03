@@ -1,4 +1,4 @@
-module Asset exposing (Image, clusterf0, clusterf1, emptyHost, deadHost, image, src, toString)
+module Asset exposing (Image, clusterf0, clusterf1, emptyHost, emptyExamHost, deadHost, image, src, toString)
 
 {-| Assets, such as images
 -}
@@ -23,6 +23,22 @@ emptyHost : Int -> Html msg
 emptyHost size =
     svg
         [ class "empty-host"
+        , height <| String.fromInt size
+        , width <| String.fromInt size
+        ]
+        [ circle
+            [ cx <| String.fromInt (size // 2)
+            , cy <| String.fromInt (size // 2)
+            , r <| String.fromInt (size // 2)
+            ]
+            []
+        ]
+
+
+emptyExamHost : Int -> Html msg
+emptyExamHost size =
+    svg
+        [ class "empty-exam-host"
         , height <| String.fromInt size
         , width <| String.fromInt size
         ]
