@@ -47,13 +47,12 @@ function getHostName(ip: string) {
 async function getHostsInExamMode() {
   try {
     // The URL below is only accessible from allowed IP ranges. Ask Codam IT for access if developing locally and you get a 403 error
-    const response = await fetch("https://exam-rebooter.codam.nl/exam_mode_hosts");
-    const hosts = await response.json();
-    if ("error" in hosts) {
-      throw new Error(hosts["error"]);
+    const request = await fetch("https://clusterdata.codam.nl/api/exam_mode_hosts");
+    const response = await request.json();
+    if ("error" in response) {
+      throw new Error(response["error"]);
     }
-    // Translate object into an array (only keep values of true)
-    return Object.keys(hosts).filter((key) => hosts[key] == true);
+    return response["exam_mode_hosts"];
   }
   catch (err) {
     console.log("Failed to fetch hosts in exam mode: " + err);
