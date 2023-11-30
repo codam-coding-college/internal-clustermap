@@ -46,8 +46,14 @@ function getHostName(ip: string) {
 // If this fails, it will return an empty array, so the rest of the code can still run and a clustermap still gets generated
 async function getHostsInExamMode() {
   try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 3000);
+
     // The URL below is only accessible from allowed IP ranges. Ask Codam IT for access if developing locally and you get a 403 error
-    const request = await fetch("https://clusterdata.codam.nl/api/exam_mode_hosts");
+    const request = await fetch("https://clusterdata.codam.nl/api/exam_mode_hosts", {
+      signal: controller.signal,
+    });
+    clearTimeout(timeout);
     const response = await request.json();
     if ("error" in response) {
       throw new Error(response["error"]);
