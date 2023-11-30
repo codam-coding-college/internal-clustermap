@@ -5,7 +5,7 @@ WORKDIR /app
 COPY package.json ./
 COPY yarn.lock ./
 COPY prisma/ prisma/
-RUN yarn install
+RUN yarn install --frozen-lockfile
 
 RUN curl -L -o elm.gz https://github.com/elm/compiler/releases/download/0.19.1/binary-for-linux-64-bit.gz && \
     gunzip elm.gz && \
