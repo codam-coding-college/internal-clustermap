@@ -3,6 +3,7 @@ RUN apt-get update && apt-get install -y curl gzip
 WORKDIR /app
 
 COPY package.json ./
+COPY yarn.lock ./
 COPY prisma/ prisma/
 RUN yarn install
 
