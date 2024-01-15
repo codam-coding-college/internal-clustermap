@@ -67,6 +67,7 @@ body {
 }
 
 .round-img {
+    position: relative;
     width: 60px;
     height: 60px;
     border-radius: 50%;
@@ -75,6 +76,12 @@ body {
     object-position: center;
     background: rgba(0, 0, 0, 0);
     border: 3px solid var(--active-color);
+    transition: transform 0.1s;
+}
+
+.round-img:hover {
+    z-index: 10;
+    transform: scale(1.5);
 }
 
 .round-img.session-exam {
@@ -94,7 +101,7 @@ body {
 .empty-exam-host {
     fill: var(--exam-inactive-color);
     color: var(--exam-inactive-color);
-    transform: scale(1.5);
+    transform: scale(1.3);
 }
 
 .empty-host-drag {
@@ -106,7 +113,7 @@ body {
 .dead-host {
     fill: var(--danger-color);
     color: var(--danger-color);
-    transform: scale(2);
+    transform: scale(1.5);
 }
 
 .download-button {
