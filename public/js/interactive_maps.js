@@ -5393,9 +5393,9 @@ var $author$project$Main$calcMapSettings = F2(
 		var _class = _v0.dw;
 		var orientation = _v0.a1;
 		var preheight = $elm$core$Basics$round(window.aR * 0.93);
-		var prewidth = $elm$core$Basics$round(preheight * 0.77);
+		var prewidth = $elm$core$Basics$round(preheight * 0.63);
 		var width = (_Utils_cmp(prewidth, window.bc) > -1) ? $elm$core$Basics$round(window.bc * 0.95) : prewidth;
-		var height = (_Utils_cmp(prewidth, window.bc) > -1) ? $elm$core$Basics$round(width * 1.299) : preheight;
+		var height = (_Utils_cmp(prewidth, window.bc) > -1) ? $elm$core$Basics$round(width * 1.584) : preheight;
 		switch (_class) {
 			case 0:
 				if (!orientation) {

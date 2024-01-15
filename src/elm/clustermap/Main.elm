@@ -50,10 +50,10 @@ type alias Model =
     }
 
 
-{-| 
+{-|
 On initial loading we use the values passed from the flags to determine a map
 size. I found that taking 90% of the width and hight values gives better
-results. 
+results.
 
 Firefox loads nicely with the width and hight from the flags, but chrome
 doesn't. Also, performing getViewport in Firefox before the map is fully loaded
@@ -66,7 +66,7 @@ init { width, height, isFirefox } =
     let
         width90 =
             round (toFloat width * 0.9)
-        
+
         height90 =
             round (toFloat height * 0.9)
 
@@ -81,7 +81,7 @@ init { width, height, isFirefox } =
 
         ( f1model, f1cmd ) =
             Clustermap.init Endpoint.clusterf1 Endpoint.activeSessions Asset.clusterf1 mapsettings
-        
+
         resizeTask =
             if isFirefox then
                 Cmd.none
@@ -89,7 +89,7 @@ init { width, height, isFirefox } =
                 Task.perform BeResponsive BD.getViewport
     in
     ( Model f0model f1model (Window width90 height90) device
-    , Platform.Cmd.batch 
+    , Platform.Cmd.batch
         [ Platform.Cmd.map Mapf0Msg f0cmd
         , Platform.Cmd.map Mapf1Msg f1cmd
         , resizeTask
@@ -125,7 +125,7 @@ calcMapSettings window { class, orientation } =
             round (toFloat window.height * 0.93)
 
         prewidth =
-            round (toFloat preheight * 0.77)
+            round (toFloat preheight * 0.63)
 
         width =
             if prewidth >= window.width then
@@ -136,7 +136,7 @@ calcMapSettings window { class, orientation } =
 
         height =
             if prewidth >= window.width then
-                round (toFloat width * 1.299)
+                round (toFloat width * 1.584)
 
             else
                 preheight
@@ -319,15 +319,14 @@ classifyDevice window =
     }
 
 {-| Every 30 seconds both clusters are updated, also there is a listener for
-onResize events. 
+onResize events.
 -}
 subscriptions : Model -> Sub Msg
 subscriptions _ =
-    Sub.batch 
-        [ Sub.map Mapf0Msg 
+    Sub.batch
+        [ Sub.map Mapf0Msg
             <| Time.every (5 * 1000) Clustermap.FetchSessions
-        , Sub.map Mapf1Msg 
+        , Sub.map Mapf1Msg
             <| Time.every (5 * 1000) Clustermap.FetchSessions
         , BE.onResize OnResize
         ]
- 

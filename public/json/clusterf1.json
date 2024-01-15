@@ -1,12 +1,36 @@
 {
   "mapsettings": {
-    "heigth": 1325,
+    "heigth": 1625,
     "width": 1026,
     "active-size": 60,
     "empty-size": 20
   },
-  "hosts":
-  [
+  "hosts": [
+    {
+      "hostname": "f1r5s7.codam.nl",
+      "left": 148,
+      "top": 971
+    },
+    {
+      "hostname": "f1r7s4.codam.nl",
+      "left": 186,
+      "top": 1555
+    },
+    {
+      "hostname": "f1r7s3.codam.nl",
+      "left": 187,
+      "top": 1472
+    },
+    {
+      "hostname": "f1r7s2.codam.nl",
+      "left": 89,
+      "top": 1472
+    },
+    {
+      "hostname": "f1r7s1.codam.nl",
+      "left": 89,
+      "top": 1555
+    },
     {
       "hostname": "f1r1s10.codam.nl",
       "left": 899,
@@ -431,11 +455,6 @@
       "hostname": "f1r5s5.codam.nl",
       "left": 207,
       "top": 1079
-    },
-    {
-      "hostname": "f1r5s7.codam.nl",
-      "left": 147,
-      "top": 970
     },
     {
       "hostname": "f1r5s6.codam.nl",

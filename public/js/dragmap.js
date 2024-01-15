@@ -5972,7 +5972,7 @@ var $author$project$Dragmap$hostModelDecoder = A3(
 			function (hostlist) {
 				var mapsettings = function () {
 					if (maybemapsettings.$ === 'Nothing') {
-						return A4($author$project$Dragmap$MapSettings, 1325, 1026, 60, 25);
+						return A4($author$project$Dragmap$MapSettings, 1625, 1026, 60, 25);
 					} else {
 						var settings = maybemapsettings.a;
 						return settings;
@@ -5993,7 +5993,7 @@ var $author$project$Dragmap$getHosts = function (hostfile) {
 			var hostlist = result2.a;
 			var hostmodel = {
 				hostList: hostlist,
-				mapSettings: A4($author$project$Dragmap$MapSettings, 1325, 1026, 60, 25),
+				mapSettings: A4($author$project$Dragmap$MapSettings, 1625, 1026, 60, 25),
 				movingHost: $elm$core$Maybe$Nothing
 			};
 			return $elm$core$Maybe$Just(hostmodel);
@@ -6012,7 +6012,7 @@ var $author$project$Dragmap$init = F2(
 		var hostmodel = $author$project$Dragmap$getHosts(hostfile);
 		var mapset = function () {
 			if (hostmodel.$ === 'Nothing') {
-				return A4($author$project$Dragmap$MapSettings, 1325, 1026, 60, 25);
+				return A4($author$project$Dragmap$MapSettings, 1625, 1026, 60, 25);
 			} else {
 				var hmodel = hostmodel.a;
 				return hmodel.mapSettings;
