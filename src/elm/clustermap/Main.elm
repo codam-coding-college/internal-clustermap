@@ -145,34 +145,34 @@ calcMapSettings window { class, orientation } =
         Phone ->
             case orientation of
                 Portrait ->
-                    Clustermap.MapSettings height width 50 16
+                    Clustermap.MapSettings height width 40 12
 
                 Landscape ->
-                    Clustermap.MapSettings height width 32 12
+                    Clustermap.MapSettings height width 26 8
 
         Tablet ->
             case orientation of
                 Portrait ->
-                    Clustermap.MapSettings height width 50 16
+                    Clustermap.MapSettings height width 45 12
 
                 Landscape ->
-                    Clustermap.MapSettings height width 50 16
+                    Clustermap.MapSettings height width 45 12
 
         Desktop ->
             case orientation of
                 Portrait ->
-                    Clustermap.MapSettings height width 55 18
+                    Clustermap.MapSettings height width 45 15
 
                 Landscape ->
-                    Clustermap.MapSettings height width 55 18
+                    Clustermap.MapSettings height width 45 15
 
         BigDesktop ->
             case orientation of
                 Portrait ->
-                    Clustermap.MapSettings height width 70 24
+                    Clustermap.MapSettings height width 60 20
 
                 Landscape ->
-                    Clustermap.MapSettings height width 70 24
+                    Clustermap.MapSettings height width 60 20
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )

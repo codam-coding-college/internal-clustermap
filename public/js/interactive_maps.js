@@ -5399,27 +5399,27 @@ var $author$project$Main$calcMapSettings = F2(
 		switch (_class) {
 			case 0:
 				if (!orientation) {
-					return A4($author$project$Clustermap$MapSettings, height, width, 50, 16);
+					return A4($author$project$Clustermap$MapSettings, height, width, 40, 12);
 				} else {
-					return A4($author$project$Clustermap$MapSettings, height, width, 32, 12);
+					return A4($author$project$Clustermap$MapSettings, height, width, 26, 8);
 				}
 			case 1:
 				if (!orientation) {
-					return A4($author$project$Clustermap$MapSettings, height, width, 50, 16);
+					return A4($author$project$Clustermap$MapSettings, height, width, 45, 12);
 				} else {
-					return A4($author$project$Clustermap$MapSettings, height, width, 50, 16);
+					return A4($author$project$Clustermap$MapSettings, height, width, 45, 12);
 				}
 			case 2:
 				if (!orientation) {
-					return A4($author$project$Clustermap$MapSettings, height, width, 55, 18);
+					return A4($author$project$Clustermap$MapSettings, height, width, 45, 15);
 				} else {
-					return A4($author$project$Clustermap$MapSettings, height, width, 55, 18);
+					return A4($author$project$Clustermap$MapSettings, height, width, 45, 15);
 				}
 			default:
 				if (!orientation) {
-					return A4($author$project$Clustermap$MapSettings, height, width, 70, 24);
+					return A4($author$project$Clustermap$MapSettings, height, width, 60, 20);
 				} else {
-					return A4($author$project$Clustermap$MapSettings, height, width, 70, 24);
+					return A4($author$project$Clustermap$MapSettings, height, width, 60, 20);
 				}
 		}
 	});
