@@ -6259,9 +6259,9 @@ var $webbhuset$elm_json_decode$Json$Decode$Field$attempt = F3(
 			$elm$json$Json$Decode$maybe(
 				A2($elm$json$Json$Decode$field, fieldName, valueDecoder)));
 	});
-var $author$project$Clustermap$user_photos_domain = 'https://user-photos.codam.nl/';
+var $author$project$Clustermap$user_photos_domain = '/api/images/';
 var $author$project$Clustermap$getInitialImage = function (username) {
-	return _Utils_ap($author$project$Clustermap$user_photos_domain, username);
+	return $author$project$Clustermap$user_photos_domain + ('?login=' + username);
 };
 var $webbhuset$elm_json_decode$Json$Decode$Field$require = F3(
 	function (fieldName, valueDecoder, continuation) {

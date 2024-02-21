@@ -22,7 +22,7 @@ import Asset exposing (image)
 import Html.Attributes exposing (classList)
 
 user_photos_domain : String
-user_photos_domain = "https://user-photos.codam.nl/"
+user_photos_domain = "/api/images/"
 
 -- MODEL
 
@@ -555,7 +555,7 @@ compareSessionUsername username session =
 
 getInitialImage : String -> String
 getInitialImage username =
-    user_photos_domain ++ username ++ "/100"
+    user_photos_domain ++ "?login=" ++ username
 
 
 sessionListDecoder : (List Session) -> Decoder (List Session)
