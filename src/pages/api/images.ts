@@ -33,7 +33,7 @@ const images = async (req: NextApiRequest, res: NextApiResponse) => {
   // Get the image from the cache if it exists
   const image = imageCache.get(req.query.login as string);
   if (image) {
-    res.send(image as Buffer);
+    res.status(200).send(image as Buffer);
   } else {
     // Fetch the image from the user-photos server if it's not in the cache
     const response = await fetch(`${userPhotosServer}/${req.query.login}/100`);
@@ -42,7 +42,7 @@ const images = async (req: NextApiRequest, res: NextApiResponse) => {
     if (response.ok) {
       console.log(`Cache miss for ${req.query.login}, fetching image from user-photos.codam.nl...`);
       imageCache.set(req.query.login as string, buffer, 3600); // Cache the image for 1 hour
-      res.status(response.status).send(buffer);
+      res.status(200).send(buffer);
     } else {
       console.log(`Failed to fetch image for ${req.query.login} from user-photos.codam.nl`);
       res.status(response.status).send(buffer);
