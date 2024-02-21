@@ -519,11 +519,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.dd.aZ === region.dB.aZ)
+	if (region.c4.aX === region.dr.aX)
 	{
-		return 'on line ' + region.dd.aZ;
+		return 'on line ' + region.c4.aX;
 	}
-	return 'on lines ' + region.dd.aZ + ' through ' + region.dB.aZ;
+	return 'on lines ' + region.c4.aX + ' through ' + region.dr.aX;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.fr,
-		impl.go,
-		impl.f4,
+		impl.fk,
+		impl.gh,
+		impl.fZ,
 		function() { return function() {} }
 	);
 });
@@ -2704,9 +2704,9 @@ var _VirtualDom_mapEventTuple = F2(function(func, tuple)
 var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
-		X: func(record.X),
-		df: record.df,
-		c7: record.c7
+		W: func(record.W),
+		c6: record.c6,
+		c_: record.c_
 	}
 });
 
@@ -2974,11 +2974,11 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 		// 3 = Custom
 
 		var value = result.a;
-		var message = !tag ? value : tag < 3 ? value.a : value.X;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.df;
+		var message = !tag ? value : tag < 3 ? value.a : value.W;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.c6;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.c7) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.c_) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3928,11 +3928,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.fr,
-		impl.go,
-		impl.f4,
+		impl.fk,
+		impl.gh,
+		impl.fZ,
 		function(sendToApp, initialModel) {
-			var view = impl.gp;
+			var view = impl.gi;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3964,12 +3964,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.fr,
-		impl.go,
-		impl.f4,
+		impl.fk,
+		impl.gh,
+		impl.fZ,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.db && impl.db(sendToApp)
-			var view = impl.gp;
+			var divertHrefToApp = impl.c3 && impl.c3(sendToApp)
+			var view = impl.gi;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3977,12 +3977,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.eU);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.eN);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.gk) && (_VirtualDom_doc.title = title = doc.gk);
+				(title !== doc.gd) && (_VirtualDom_doc.title = title = doc.gd);
 			});
 		}
 	);
@@ -4038,12 +4038,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.fF;
-	var onUrlRequest = impl.fG;
+	var onUrlChange = impl.fy;
+	var onUrlRequest = impl.fz;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		db: function(sendToApp)
+		c3: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4059,9 +4059,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.d7 === next.d7
-							&& curr.ay === next.ay
-							&& curr.d3.a === next.d3.a
+							&& curr.d$ === next.d$
+							&& curr.ax === next.ax
+							&& curr.dX.a === next.dX.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4069,13 +4069,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		fr: function(flags)
+		fk: function(flags)
 		{
-			return A3(impl.fr, flags, _Browser_getUrl(), key);
+			return A3(impl.fk, flags, _Browser_getUrl(), key);
 		},
-		gp: impl.gp,
-		go: impl.go,
-		f4: impl.f4
+		gi: impl.gi,
+		gh: impl.gh,
+		fZ: impl.fZ
 	});
 }
 
@@ -4141,17 +4141,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { fl: 'hidden', e1: 'visibilitychange' }
+		? { fe: 'hidden', eW: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { fl: 'mozHidden', e1: 'mozvisibilitychange' }
+		? { fe: 'mozHidden', eW: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { fl: 'msHidden', e1: 'msvisibilitychange' }
+		? { fe: 'msHidden', eW: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { fl: 'webkitHidden', e1: 'webkitvisibilitychange' }
-		: { fl: 'hidden', e1: 'visibilitychange' };
+		? { fe: 'webkitHidden', eW: 'webkitvisibilitychange' }
+		: { fe: 'hidden', eW: 'visibilitychange' };
 }
 
 
@@ -4232,12 +4232,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		ef: _Browser_getScene(),
-		bb: {
-			ez: _Browser_window.pageXOffset,
-			eA: _Browser_window.pageYOffset,
-			bc: _Browser_doc.documentElement.clientWidth,
-			aR: _Browser_doc.documentElement.clientHeight
+		d7: _Browser_getScene(),
+		a8: {
+			es: _Browser_window.pageXOffset,
+			et: _Browser_window.pageYOffset,
+			a9: _Browser_doc.documentElement.clientWidth,
+			aQ: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4247,8 +4247,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		bc: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		aR: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		a9: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		aQ: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4271,15 +4271,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			ef: {
-				bc: node.scrollWidth,
-				aR: node.scrollHeight
+			d7: {
+				a9: node.scrollWidth,
+				aQ: node.scrollHeight
 			},
-			bb: {
-				ez: node.scrollLeft,
-				eA: node.scrollTop,
-				bc: node.clientWidth,
-				aR: node.clientHeight
+			a8: {
+				es: node.scrollLeft,
+				et: node.scrollTop,
+				a9: node.clientWidth,
+				aQ: node.clientHeight
 			}
 		};
 	});
@@ -4309,18 +4309,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			ef: _Browser_getScene(),
-			bb: {
-				ez: x,
-				eA: y,
-				bc: _Browser_doc.documentElement.clientWidth,
-				aR: _Browser_doc.documentElement.clientHeight
+			d7: _Browser_getScene(),
+			a8: {
+				es: x,
+				et: y,
+				a9: _Browser_doc.documentElement.clientWidth,
+				aQ: _Browser_doc.documentElement.clientHeight
 			},
-			fe: {
-				ez: x + rect.left,
-				eA: y + rect.top,
-				bc: rect.width,
-				aR: rect.height
+			e7: {
+				es: x + rect.left,
+				et: y + rect.top,
+				a9: rect.width,
+				aQ: rect.height
 			}
 		};
 	});
@@ -4365,25 +4365,25 @@ var _Http_toTask = F3(function(router, toTask, request)
 	return _Scheduler_binding(function(callback)
 	{
 		function done(response) {
-			callback(toTask(request.cP.a(response)));
+			callback(toTask(request.dt.a(response)));
 		}
 
 		var xhr = new XMLHttpRequest();
 		xhr.addEventListener('error', function() { done($elm$http$Http$NetworkError_); });
 		xhr.addEventListener('timeout', function() { done($elm$http$Http$Timeout_); });
-		xhr.addEventListener('load', function() { done(_Http_toResponse(request.cP.b, xhr)); });
-		$elm$core$Maybe$isJust(request.es) && _Http_track(router, xhr, request.es.a);
+		xhr.addEventListener('load', function() { done(_Http_toResponse(request.dt.b, xhr)); });
+		$elm$core$Maybe$isJust(request.ek) && _Http_track(router, xhr, request.ek.a);
 
 		try {
-			xhr.open(request.fz, request.dj, true);
+			xhr.open(request.fs, request.en, true);
 		} catch (e) {
-			return done($elm$http$Http$BadUrl_(request.dj));
+			return done($elm$http$Http$BadUrl_(request.en));
 		}
 
 		_Http_configureRequest(xhr, request);
 
-		request.eU.a && xhr.setRequestHeader('Content-Type', request.eU.a);
-		xhr.send(request.eU.b);
+		request.eN.a && xhr.setRequestHeader('Content-Type', request.eN.a);
+		xhr.send(request.eN.b);
 
 		return function() { xhr.c = true; xhr.abort(); };
 	});
@@ -4394,13 +4394,13 @@ var _Http_toTask = F3(function(router, toTask, request)
 
 function _Http_configureRequest(xhr, request)
 {
-	for (var headers = request.dG; headers.b; headers = headers.b) // WHILE_CONS
+	for (var headers = request.dx; headers.b; headers = headers.b) // WHILE_CONS
 	{
 		xhr.setRequestHeader(headers.a.a, headers.a.b);
 	}
-	xhr.timeout = request.gj.a || 0;
-	xhr.responseType = request.cP.d;
-	xhr.withCredentials = request.eM;
+	xhr.timeout = request.gc.a || 0;
+	xhr.responseType = request.dt.d;
+	xhr.withCredentials = request.eF;
 }
 
 
@@ -4421,10 +4421,10 @@ function _Http_toResponse(toBody, xhr)
 function _Http_toMetadata(xhr)
 {
 	return {
-		dj: xhr.responseURL,
-		f_: xhr.status,
-		f$: xhr.statusText,
-		dG: _Http_parseHeaders(xhr.getAllResponseHeaders())
+		en: xhr.responseURL,
+		fT: xhr.status,
+		fU: xhr.statusText,
+		dx: _Http_parseHeaders(xhr.getAllResponseHeaders())
 	};
 }
 
@@ -4519,15 +4519,15 @@ function _Http_track(router, xhr, tracker)
 	xhr.upload.addEventListener('progress', function(event) {
 		if (xhr.c) { return; }
 		_Scheduler_rawSpawn(A2($elm$core$Platform$sendToSelf, router, _Utils_Tuple2(tracker, $elm$http$Http$Sending({
-			fS: event.loaded,
-			ei: event.total
+			fL: event.loaded,
+			ea: event.total
 		}))));
 	});
 	xhr.addEventListener('progress', function(event) {
 		if (xhr.c) { return; }
 		_Scheduler_rawSpawn(A2($elm$core$Platform$sendToSelf, router, _Utils_Tuple2(tracker, $elm$http$Http$Receiving({
-			fK: event.loaded,
-			ei: event.lengthComputable ? $elm$core$Maybe$Just(event.total) : $elm$core$Maybe$Nothing
+			fD: event.loaded,
+			ea: event.lengthComputable ? $elm$core$Maybe$Just(event.total) : $elm$core$Maybe$Nothing
 		}))));
 	});
 }
@@ -4985,22 +4985,22 @@ var $elm$core$Array$builderToArray = F2(
 		if (!builder.c) {
 			return A4(
 				$elm$core$Array$Array_elm_builtin,
-				$elm$core$Elm$JsArray$length(builder.h),
+				$elm$core$Elm$JsArray$length(builder.g),
 				$elm$core$Array$shiftStep,
 				$elm$core$Elm$JsArray$empty,
-				builder.h);
+				builder.g);
 		} else {
 			var treeLen = builder.c * $elm$core$Array$branchFactor;
 			var depth = $elm$core$Basics$floor(
 				A2($elm$core$Basics$logBase, $elm$core$Array$branchFactor, treeLen - 1));
-			var correctNodeList = reverseNodeList ? $elm$core$List$reverse(builder.i) : builder.i;
+			var correctNodeList = reverseNodeList ? $elm$core$List$reverse(builder.h) : builder.h;
 			var tree = A2($elm$core$Array$treeFromBuilder, correctNodeList, builder.c);
 			return A4(
 				$elm$core$Array$Array_elm_builtin,
-				$elm$core$Elm$JsArray$length(builder.h) + treeLen,
+				$elm$core$Elm$JsArray$length(builder.g) + treeLen,
 				A2($elm$core$Basics$max, 5, depth * $elm$core$Array$shiftStep),
 				tree,
-				builder.h);
+				builder.g);
 		}
 	});
 var $elm$core$Basics$idiv = _Basics_idiv;
@@ -5013,7 +5013,7 @@ var $elm$core$Array$initializeHelp = F5(
 				return A2(
 					$elm$core$Array$builderToArray,
 					false,
-					{i: nodeList, c: (len / $elm$core$Array$branchFactor) | 0, h: tail});
+					{h: nodeList, c: (len / $elm$core$Array$branchFactor) | 0, g: tail});
 			} else {
 				var leaf = $elm$core$Array$Leaf(
 					A3($elm$core$Elm$JsArray$initialize, $elm$core$Array$branchFactor, fromIndex, fn));
@@ -5082,7 +5082,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {dE: fragment, ay: host, d1: path, d3: port_, d7: protocol, d8: query};
+		return {dv: fragment, ax: host, dV: path, dX: port_, d$: protocol, d0: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5373,33 +5373,33 @@ var $author$project$Main$Mapf1Msg = function (a) {
 };
 var $author$project$Main$Model = F4(
 	function (clusterF0, clusterF1, windowInfo, deviceInfo) {
-		return {P: clusterF0, Q: clusterF1, bH: deviceInfo, gq: windowInfo};
+		return {O: clusterF0, P: clusterF1, bE: deviceInfo, gj: windowInfo};
 	});
 var $author$project$Main$Window = F2(
 	function (width, height) {
-		return {aR: height, bc: width};
+		return {aQ: height, a9: width};
 	});
 var $author$project$Endpoint$Endpoint = $elm$core$Basics$identity;
 var $author$project$Endpoint$activeSessions = 'api/active';
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $author$project$Clustermap$MapSettings = F4(
 	function (height, width, activeIconSize, emptyIconSize) {
-		return {aL: activeIconSize, V: emptyIconSize, aR: height, bc: width};
+		return {aK: activeIconSize, U: emptyIconSize, aQ: height, a9: width};
 	});
 var $elm$core$Basics$ge = _Utils_ge;
 var $elm$core$Basics$round = _Basics_round;
 var $author$project$Main$calcMapSettings = F2(
 	function (window, _v0) {
-		var _class = _v0.dw;
-		var orientation = _v0.a1;
-		var preheight = $elm$core$Basics$round(window.aR * 0.93);
+		var _class = _v0.dm;
+		var orientation = _v0.a$;
+		var preheight = $elm$core$Basics$round(window.aQ * 0.93);
 		var prewidth = $elm$core$Basics$round(preheight * 0.63);
-		var width = (_Utils_cmp(prewidth, window.bc) > -1) ? $elm$core$Basics$round(window.bc * 0.95) : prewidth;
-		var height = (_Utils_cmp(prewidth, window.bc) > -1) ? $elm$core$Basics$round(width * 1.584) : preheight;
+		var width = (_Utils_cmp(prewidth, window.a9) > -1) ? $elm$core$Basics$round(window.a9 * 0.95) : prewidth;
+		var height = (_Utils_cmp(prewidth, window.a9) > -1) ? $elm$core$Basics$round(width * 1.584) : preheight;
 		switch (_class) {
 			case 0:
 				if (!orientation) {
-					return A4($author$project$Clustermap$MapSettings, height, width, 40, 12);
+					return A4($author$project$Clustermap$MapSettings, height, width, 42, 12);
 				} else {
 					return A4($author$project$Clustermap$MapSettings, height, width, 26, 8);
 				}
@@ -5411,15 +5411,15 @@ var $author$project$Main$calcMapSettings = F2(
 				}
 			case 2:
 				if (!orientation) {
-					return A4($author$project$Clustermap$MapSettings, height, width, 45, 15);
+					return A4($author$project$Clustermap$MapSettings, height, width, 48, 15);
 				} else {
-					return A4($author$project$Clustermap$MapSettings, height, width, 45, 15);
+					return A4($author$project$Clustermap$MapSettings, height, width, 48, 15);
 				}
 			default:
 				if (!orientation) {
-					return A4($author$project$Clustermap$MapSettings, height, width, 60, 20);
+					return A4($author$project$Clustermap$MapSettings, height, width, 55, 20);
 				} else {
-					return A4($author$project$Clustermap$MapSettings, height, width, 60, 20);
+					return A4($author$project$Clustermap$MapSettings, height, width, 55, 20);
 				}
 		}
 	});
@@ -5435,12 +5435,12 @@ var $elm$core$Basics$min = F2(
 	});
 var $author$project$Main$classifyDevice = function (window) {
 	return {
-		dw: function () {
-			var shortSide = A2($elm$core$Basics$min, window.bc, window.aR);
-			var longSide = A2($elm$core$Basics$max, window.bc, window.aR);
+		dm: function () {
+			var shortSide = A2($elm$core$Basics$min, window.a9, window.aQ);
+			var longSide = A2($elm$core$Basics$max, window.a9, window.aQ);
 			return (shortSide < 600) ? 0 : ((longSide <= 1200) ? 1 : (((longSide > 1200) && (longSide <= 1800)) ? 2 : 3));
 		}(),
-		a1: (_Utils_cmp(window.bc, window.aR) < 0) ? 0 : 1
+		a$: (_Utils_cmp(window.a9, window.aQ) < 0) ? 0 : 1
 	};
 };
 var $author$project$Asset$Image = $elm$core$Basics$identity;
@@ -5450,10 +5450,9 @@ var $author$project$Asset$clusterf1 = 'img/f1.svg';
 var $author$project$Endpoint$clusterf1 = 'json/clusterf1.json';
 var $elm$browser$Browser$Dom$getViewport = _Browser_withWindow(_Browser_getViewport);
 var $author$project$Clustermap$HostLoading = {$: 1};
-var $author$project$Clustermap$ImageLoading = {$: 1};
 var $author$project$Clustermap$Loading = {$: 1};
-var $author$project$Clustermap$GotHosts = function (a) {
-	return {$: 1, a: a};
+var $author$project$Clustermap$GotSessions = function (a) {
+	return {$: 0, a: a};
 };
 var $elm$json$Json$Decode$decodeString = _Json_runOnString;
 var $elm$http$Http$BadStatus_ = F2(
@@ -6047,7 +6046,7 @@ var $elm$http$Http$resolve = F2(
 			case 3:
 				var metadata = response.a;
 				return $elm$core$Result$Err(
-					$elm$http$Http$BadStatus(metadata.f_));
+					$elm$http$Http$BadStatus(metadata.fT));
 			default:
 				var body = response.b;
 				return A2(
@@ -6075,7 +6074,7 @@ var $elm$http$Http$Request = function (a) {
 };
 var $elm$http$Http$State = F2(
 	function (reqs, subs) {
-		return {ea: reqs, ej: subs};
+		return {d2: reqs, eb: subs};
 	});
 var $elm$http$Http$init = $elm$core$Task$succeed(
 	A2($elm$http$Http$State, $elm$core$Dict$empty, _List_Nil));
@@ -6119,7 +6118,7 @@ var $elm$http$Http$updateReqs = F3(
 					return A2(
 						$elm$core$Task$andThen,
 						function (pid) {
-							var _v4 = req.es;
+							var _v4 = req.ek;
 							if (_v4.$ === 1) {
 								return A3($elm$http$Http$updateReqs, router, otherCmds, reqs);
 							} else {
@@ -6149,7 +6148,7 @@ var $elm$http$Http$onEffects = F4(
 				return $elm$core$Task$succeed(
 					A2($elm$http$Http$State, reqs, subs));
 			},
-			A3($elm$http$Http$updateReqs, router, cmds, state.ea));
+			A3($elm$http$Http$updateReqs, router, cmds, state.d2));
 	});
 var $elm$core$List$maybeCons = F3(
 	function (f, mx, xs) {
@@ -6192,7 +6191,7 @@ var $elm$http$Http$onSelfMsg = F3(
 				A2(
 					$elm$core$List$filterMap,
 					A3($elm$http$Http$maybeSend, router, tracker, progress),
-					state.ej)));
+					state.eb)));
 	});
 var $elm$http$Http$Cancel = function (a) {
 	return {$: 0, a: a};
@@ -6206,14 +6205,14 @@ var $elm$http$Http$cmdMap = F2(
 			var r = cmd.a;
 			return $elm$http$Http$Request(
 				{
-					eM: r.eM,
-					eU: r.eU,
-					cP: A2(_Http_mapExpect, func, r.cP),
-					dG: r.dG,
-					fz: r.fz,
-					gj: r.gj,
-					es: r.es,
-					dj: r.dj
+					eF: r.eF,
+					eN: r.eN,
+					dt: A2(_Http_mapExpect, func, r.dt),
+					dx: r.dx,
+					fs: r.fs,
+					gc: r.gc,
+					ek: r.ek,
+					en: r.en
 				});
 		}
 	});
@@ -6236,22 +6235,34 @@ var $elm$http$Http$subscription = _Platform_leaf('Http');
 var $elm$http$Http$request = function (r) {
 	return $elm$http$Http$command(
 		$elm$http$Http$Request(
-			{eM: false, eU: r.eU, cP: r.cP, dG: r.dG, fz: r.fz, gj: r.gj, es: r.es, dj: r.dj}));
+			{eF: false, eN: r.eN, dt: r.dt, dx: r.dx, fs: r.fs, gc: r.gc, ek: r.ek, en: r.en}));
 };
 var $elm$http$Http$get = function (r) {
 	return $elm$http$Http$request(
-		{eU: $elm$http$Http$emptyBody, cP: r.cP, dG: _List_Nil, fz: 'GET', gj: $elm$core$Maybe$Nothing, es: $elm$core$Maybe$Nothing, dj: r.dj});
+		{eN: $elm$http$Http$emptyBody, dt: r.dt, dx: _List_Nil, fs: 'GET', gc: $elm$core$Maybe$Nothing, ek: $elm$core$Maybe$Nothing, en: r.en});
 };
-var $rundis$elm_bootstrap$Bootstrap$Popover$State = $elm$core$Basics$identity;
-var $rundis$elm_bootstrap$Bootstrap$Popover$initialState = {
-	cO: {
-		c2: 0,
-		b2: 0,
-		c8: {aR: 0, dS: 0, er: 0, bc: 0}
-	},
-	aB: false
+var $elm$json$Json$Decode$list = _Json_decodeList;
+var $elm$json$Json$Decode$oneOf = _Json_oneOf;
+var $elm$json$Json$Decode$maybe = function (decoder) {
+	return $elm$json$Json$Decode$oneOf(
+		_List_fromArray(
+			[
+				A2($elm$json$Json$Decode$map, $elm$core$Maybe$Just, decoder),
+				$elm$json$Json$Decode$succeed($elm$core$Maybe$Nothing)
+			]));
 };
-var $elm$json$Json$Decode$int = _Json_decodeInt;
+var $webbhuset$elm_json_decode$Json$Decode$Field$attempt = F3(
+	function (fieldName, valueDecoder, continuation) {
+		return A2(
+			$elm$json$Json$Decode$andThen,
+			continuation,
+			$elm$json$Json$Decode$maybe(
+				A2($elm$json$Json$Decode$field, fieldName, valueDecoder)));
+	});
+var $author$project$Clustermap$user_photos_domain = 'https://user-photos.codam.nl/';
+var $author$project$Clustermap$getInitialImage = function (username) {
+	return _Utils_ap($author$project$Clustermap$user_photos_domain, username);
+};
 var $webbhuset$elm_json_decode$Json$Decode$Field$require = F3(
 	function (fieldName, valueDecoder, continuation) {
 		return A2(
@@ -6260,6 +6271,78 @@ var $webbhuset$elm_json_decode$Json$Decode$Field$require = F3(
 			A2($elm$json$Json$Decode$field, fieldName, valueDecoder));
 	});
 var $elm$json$Json$Decode$string = _Json_decodeString;
+var $author$project$Clustermap$sessionDecoder = function (sessionlist) {
+	return A3(
+		$webbhuset$elm_json_decode$Json$Decode$Field$require,
+		'hostname',
+		$elm$json$Json$Decode$string,
+		function (host) {
+			return A3(
+				$webbhuset$elm_json_decode$Json$Decode$Field$require,
+				'sessionType',
+				$elm$json$Json$Decode$string,
+				function (sessionType) {
+					return A3(
+						$webbhuset$elm_json_decode$Json$Decode$Field$attempt,
+						'login',
+						$elm$json$Json$Decode$string,
+						function (maybeUsername) {
+							if (!maybeUsername.$) {
+								var username = maybeUsername.a;
+								return $elm$json$Json$Decode$succeed(
+									{
+										aa: true,
+										ax: host,
+										bP: $author$project$Clustermap$getInitialImage(username),
+										a1: sessionType,
+										aH: username
+									});
+							} else {
+								return $elm$json$Json$Decode$succeed(
+									{
+										aa: false,
+										ax: host,
+										bP: $author$project$Clustermap$getInitialImage(''),
+										a1: sessionType,
+										aH: ''
+									});
+							}
+						});
+				});
+		});
+};
+var $author$project$Clustermap$sessionListDecoder = function (sessionlist) {
+	return $elm$json$Json$Decode$list(
+		$author$project$Clustermap$sessionDecoder(sessionlist));
+};
+var $author$project$Endpoint$toString = function (_v0) {
+	var str = _v0;
+	return str;
+};
+var $author$project$Clustermap$getActiveSessions = F2(
+	function (endpoint, sessionlist) {
+		return $elm$http$Http$get(
+			{
+				dt: A2(
+					$elm$http$Http$expectJson,
+					$author$project$Clustermap$GotSessions,
+					$author$project$Clustermap$sessionListDecoder(sessionlist)),
+				en: $author$project$Endpoint$toString(endpoint)
+			});
+	});
+var $author$project$Clustermap$GotHosts = function (a) {
+	return {$: 1, a: a};
+};
+var $rundis$elm_bootstrap$Bootstrap$Popover$State = $elm$core$Basics$identity;
+var $rundis$elm_bootstrap$Bootstrap$Popover$initialState = {
+	cK: {
+		cV: 0,
+		b$: 0,
+		c$: {aQ: 0, dJ: 0, ej: 0, a9: 0}
+	},
+	aA: false
+};
+var $elm$json$Json$Decode$int = _Json_decodeInt;
 var $author$project$Clustermap$hostDecoder = A3(
 	$webbhuset$elm_json_decode$Json$Decode$Field$require,
 	'hostname',
@@ -6277,14 +6360,13 @@ var $author$project$Clustermap$hostDecoder = A3(
 					function (top) {
 						return $elm$json$Json$Decode$succeed(
 							{
-								e: hostname,
-								J: $rundis$elm_bootstrap$Bootstrap$Popover$initialState,
-								ce: _Utils_Tuple2(left, top)
+								i: hostname,
+								I: $rundis$elm_bootstrap$Bootstrap$Popover$initialState,
+								cb: _Utils_Tuple2(left, top)
 							});
 					});
 			});
 	});
-var $elm$json$Json$Decode$list = _Json_decodeList;
 var $author$project$Clustermap$hostListDecoder = $elm$json$Json$Decode$list($author$project$Clustermap$hostDecoder);
 var $author$project$Clustermap$mapSettingsDecoder = A3(
 	$webbhuset$elm_json_decode$Json$Decode$Field$require,
@@ -6307,7 +6389,7 @@ var $author$project$Clustermap$mapSettingsDecoder = A3(
 							$elm$json$Json$Decode$int,
 							function (emptyIconSize) {
 								return $elm$json$Json$Decode$succeed(
-									{aL: activeIconSize, V: emptyIconSize, aR: height, bc: width});
+									{aK: activeIconSize, U: emptyIconSize, aQ: height, a9: width});
 							});
 					});
 			});
@@ -6323,164 +6405,41 @@ var $author$project$Clustermap$hostModelDecoder = A3(
 			$author$project$Clustermap$hostListDecoder,
 			function (hostlist) {
 				return $elm$json$Json$Decode$succeed(
-					{az: hostlist, f: mapsettings});
+					{ay: hostlist, e: mapsettings});
 			});
 	});
-var $author$project$Endpoint$toString = function (_v0) {
-	var str = _v0;
-	return str;
-};
 var $author$project$Clustermap$getHosts = function (endpoint) {
 	return $elm$http$Http$get(
 		{
-			cP: A2($elm$http$Http$expectJson, $author$project$Clustermap$GotHosts, $author$project$Clustermap$hostModelDecoder),
-			dj: $author$project$Endpoint$toString(endpoint)
+			dt: A2($elm$http$Http$expectJson, $author$project$Clustermap$GotHosts, $author$project$Clustermap$hostModelDecoder),
+			en: $author$project$Endpoint$toString(endpoint)
 		});
 };
-var $author$project$Clustermap$GotImages = function (a) {
-	return {$: 2, a: a};
-};
-var $elm$json$Json$Decode$oneOf = _Json_oneOf;
-var $elm$json$Json$Decode$maybe = function (decoder) {
-	return $elm$json$Json$Decode$oneOf(
-		_List_fromArray(
-			[
-				A2($elm$json$Json$Decode$map, $elm$core$Maybe$Just, decoder),
-				$elm$json$Json$Decode$succeed($elm$core$Maybe$Nothing)
-			]));
-};
-var $webbhuset$elm_json_decode$Json$Decode$Field$attempt = F3(
-	function (fieldName, valueDecoder, continuation) {
-		return A2(
-			$elm$json$Json$Decode$andThen,
-			continuation,
-			$elm$json$Json$Decode$maybe(
-				A2($elm$json$Json$Decode$field, fieldName, valueDecoder)));
-	});
-var $author$project$Asset$image = function (url) {
-	return url;
-};
-var $author$project$Clustermap$defaultImageJson = {
-	c_: $author$project$Asset$image('https://cdn.intra.42.fr/users/78999b974389f4c1370718e6c4eb0512/3b3.jpg'),
-	aJ: {
-		cZ: $author$project$Asset$image('https://cdn.intra.42.fr/users/6d3ac322ccab95159955311616ee167b/large_3b3.jpg'),
-		aD: $author$project$Asset$image('https://cdn.intra.42.fr/users/c3df498b1ae3803a1800eee23a3cee7a/medium_3b3.jpg'),
-		c0: $author$project$Asset$image('https://cdn.intra.42.fr/users/067c131574dc60e884f2dfd51943f805/micro_3b3.jpg'),
-		dc: $author$project$Asset$image('https://cdn.intra.42.fr/users/c6ccbf99169c9599a385a6aea2e3b307/small_3b3.jpg')
-	}
-};
-var $author$project$Clustermap$imageVersionsDecoder = A3(
-	$webbhuset$elm_json_decode$Json$Decode$Field$require,
-	'large',
-	$elm$json$Json$Decode$string,
-	function (large) {
-		return A3(
-			$webbhuset$elm_json_decode$Json$Decode$Field$require,
-			'micro',
-			$elm$json$Json$Decode$string,
-			function (micro) {
-				return A3(
-					$webbhuset$elm_json_decode$Json$Decode$Field$require,
-					'small',
-					$elm$json$Json$Decode$string,
-					function (small) {
-						return A3(
-							$webbhuset$elm_json_decode$Json$Decode$Field$require,
-							'medium',
-							$elm$json$Json$Decode$string,
-							function (medium) {
-								return $elm$json$Json$Decode$succeed(
-									{
-										cZ: $author$project$Asset$image(large),
-										aD: $author$project$Asset$image(medium),
-										c0: $author$project$Asset$image(micro),
-										dc: $author$project$Asset$image(small)
-									});
-							});
-					});
-			});
-	});
-var $author$project$Clustermap$imageJsonDecoder = A3(
-	$webbhuset$elm_json_decode$Json$Decode$Field$attempt,
-	'link',
-	$elm$json$Json$Decode$string,
-	function (mlink) {
-		if (!mlink.$) {
-			var link = mlink.a;
-			return A3(
-				$webbhuset$elm_json_decode$Json$Decode$Field$attempt,
-				'versions',
-				$author$project$Clustermap$imageVersionsDecoder,
-				function (mversions) {
-					if (!mversions.$) {
-						var versions = mversions.a;
-						return $elm$json$Json$Decode$succeed(
-							{
-								c_: $author$project$Asset$image(link),
-								aJ: versions
-							});
-					} else {
-						return $elm$json$Json$Decode$succeed($author$project$Clustermap$defaultImageJson);
-					}
-				});
-		} else {
-			return $elm$json$Json$Decode$succeed($author$project$Clustermap$defaultImageJson);
-		}
-	});
-var $author$project$Clustermap$imageRequestDecoder = A3(
-	$webbhuset$elm_json_decode$Json$Decode$Field$require,
-	'id',
-	$elm$json$Json$Decode$int,
-	function (id) {
-		return A3(
-			$webbhuset$elm_json_decode$Json$Decode$Field$require,
-			'login',
-			$elm$json$Json$Decode$string,
-			function (username) {
-				return A3(
-					$webbhuset$elm_json_decode$Json$Decode$Field$require,
-					'image',
-					$author$project$Clustermap$imageJsonDecoder,
-					function (image) {
-						return $elm$json$Json$Decode$succeed(
-							{e: id, cV: image, L: username});
-					});
-			});
-	});
-var $author$project$Clustermap$imageRequestListDecoder = $elm$json$Json$Decode$list($author$project$Clustermap$imageRequestDecoder);
-var $author$project$Clustermap$getImages = function (endpoint) {
-	return $elm$http$Http$get(
-		{
-			cP: A2($elm$http$Http$expectJson, $author$project$Clustermap$GotImages, $author$project$Clustermap$imageRequestListDecoder),
-			dj: $author$project$Endpoint$toString(endpoint)
-		});
-};
-var $author$project$Endpoint$imagesEndpoint = 'api/images';
 var $author$project$Clustermap$init = F4(
 	function (hostEndpoint, sessionEndpoint, image, mapsettings) {
 		return _Utils_Tuple2(
-			{E: _List_Nil, dJ: hostEndpoint, W: $elm$core$Maybe$Nothing, bS: _List_Nil, bY: image, f: mapsettings, aG: $author$project$Clustermap$HostLoading, a3: $author$project$Clustermap$ImageLoading, aH: $author$project$Clustermap$Loading, cv: sessionEndpoint},
+			{L: _List_Nil, dA: hostEndpoint, V: $elm$core$Maybe$Nothing, bV: image, e: mapsettings, aE: $author$project$Clustermap$HostLoading, aF: $author$project$Clustermap$Loading, c2: sessionEndpoint},
 			$elm$core$Platform$Cmd$batch(
 				_List_fromArray(
 					[
-						$author$project$Clustermap$getHosts(hostEndpoint),
-						$author$project$Clustermap$getImages($author$project$Endpoint$imagesEndpoint)
+						A2($author$project$Clustermap$getActiveSessions, sessionEndpoint, _List_Nil),
+						$author$project$Clustermap$getHosts(hostEndpoint)
 					])));
 	});
 var $elm$core$Platform$Cmd$map = _Platform_map;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Main$init = function (_v0) {
-	var width = _v0.bc;
-	var height = _v0.aR;
-	var isFirefox = _v0.dO;
+	var width = _v0.a9;
+	var height = _v0.aQ;
+	var isFirefox = _v0.dF;
 	var width90 = $elm$core$Basics$round(width * 0.9);
 	var resizeTask = isFirefox ? $elm$core$Platform$Cmd$none : A2($elm$core$Task$perform, $author$project$Main$BeResponsive, $elm$browser$Browser$Dom$getViewport);
 	var height90 = $elm$core$Basics$round(height * 0.9);
 	var device = $author$project$Main$classifyDevice(
-		{aR: height90, bc: width90});
+		{aQ: height90, a9: width90});
 	var mapsettings = A2(
 		$author$project$Main$calcMapSettings,
-		{aR: height90, bc: width90},
+		{aQ: height90, a9: width90},
 		device);
 	var _v1 = A4($author$project$Clustermap$init, $author$project$Endpoint$clusterf1, $author$project$Endpoint$activeSessions, $author$project$Asset$clusterf1, mapsettings);
 	var f1model = _v1.a;
@@ -6504,7 +6463,7 @@ var $author$project$Main$init = function (_v0) {
 				])));
 };
 var $author$project$Clustermap$FetchSessions = function (a) {
-	return {$: 3, a: a};
+	return {$: 2, a: a};
 };
 var $author$project$Main$OnResize = F2(
 	function (a, b) {
@@ -6517,7 +6476,7 @@ var $elm$time$Time$Every = F2(
 	});
 var $elm$time$Time$State = F2(
 	function (taggers, processes) {
-		return {d6: processes, ek: taggers};
+		return {d_: processes, ec: taggers};
 	});
 var $elm$time$Time$init = $elm$core$Task$succeed(
 	A2($elm$time$Time$State, $elm$core$Dict$empty, $elm$core$Dict$empty));
@@ -6664,7 +6623,7 @@ var $elm$time$Time$spawnHelp = F3(
 	});
 var $elm$time$Time$onEffects = F3(
 	function (router, subs, _v0) {
-		var processes = _v0.d6;
+		var processes = _v0.d_;
 		var rightStep = F3(
 			function (_v6, id, _v7) {
 				var spawns = _v7.a;
@@ -6733,7 +6692,7 @@ var $elm$time$Time$millisToPosix = $elm$core$Basics$identity;
 var $elm$time$Time$now = _Time_now($elm$time$Time$millisToPosix);
 var $elm$time$Time$onSelfMsg = F3(
 	function (router, interval, state) {
-		var _v0 = A2($elm$core$Dict$get, interval, state.ek);
+		var _v0 = A2($elm$core$Dict$get, interval, state.ec);
 		if (_v0.$ === 1) {
 			return $elm$core$Task$succeed(state);
 		} else {
@@ -6787,7 +6746,7 @@ var $elm$browser$Browser$Events$MySub = F3(
 	});
 var $elm$browser$Browser$Events$State = F2(
 	function (subs, pids) {
-		return {d2: pids, ej: subs};
+		return {dW: pids, eb: subs};
 	});
 var $elm$browser$Browser$Events$init = $elm$core$Task$succeed(
 	A2($elm$browser$Browser$Events$State, _List_Nil, $elm$core$Dict$empty));
@@ -6821,7 +6780,7 @@ var $elm$core$Dict$fromList = function (assocs) {
 };
 var $elm$browser$Browser$Events$Event = F2(
 	function (key, event) {
-		return {dC: event, dR: key};
+		return {ds: event, dI: key};
 	});
 var $elm$browser$Browser$Events$spawn = F3(
 	function (router, key, _v0) {
@@ -6895,7 +6854,7 @@ var $elm$browser$Browser$Events$onEffects = F3(
 			stepLeft,
 			stepBoth,
 			stepRight,
-			state.d2,
+			state.dW,
 			$elm$core$Dict$fromList(newSubs),
 			_Utils_Tuple3(_List_Nil, $elm$core$Dict$empty, _List_Nil));
 		var deadPids = _v0.a;
@@ -6923,8 +6882,8 @@ var $elm$browser$Browser$Events$onEffects = F3(
 	});
 var $elm$browser$Browser$Events$onSelfMsg = F3(
 	function (router, _v0, state) {
-		var key = _v0.dR;
-		var event = _v0.dC;
+		var key = _v0.dI;
+		var event = _v0.ds;
 		var toMessage = function (_v2) {
 			var subKey = _v2.a;
 			var _v3 = _v2.b;
@@ -6933,7 +6892,7 @@ var $elm$browser$Browser$Events$onSelfMsg = F3(
 			var decoder = _v3.c;
 			return _Utils_eq(subKey, key) ? A2(_Browser_decodeEvent, decoder, event) : $elm$core$Maybe$Nothing;
 		};
-		var messages = A2($elm$core$List$filterMap, toMessage, state.ej);
+		var messages = A2($elm$core$List$filterMap, toMessage, state.eb);
 		return A2(
 			$elm$core$Task$andThen,
 			function (_v1) {
@@ -7001,121 +6960,9 @@ var $author$project$Clustermap$HostFailure = function (a) {
 var $author$project$Clustermap$HostSuccess = function (a) {
 	return {$: 2, a: a};
 };
-var $author$project$Clustermap$ImageFailure = function (a) {
-	return {$: 0, a: a};
-};
-var $author$project$Clustermap$ImageSuccess = function (a) {
-	return {$: 2, a: a};
-};
 var $author$project$Clustermap$Success = function (a) {
 	return {$: 2, a: a};
 };
-var $author$project$Clustermap$GotSessions = function (a) {
-	return {$: 0, a: a};
-};
-var $author$project$Clustermap$compareSessionUsername = F2(
-	function (username, session) {
-		return _Utils_eq(session.L, username);
-	});
-var $author$project$Clustermap$compareUserImageUsername = F2(
-	function (username, userimage) {
-		return _Utils_eq(userimage.L, username);
-	});
-var $elm$core$List$filter = F2(
-	function (isGood, list) {
-		return A3(
-			$elm$core$List$foldr,
-			F2(
-				function (x, xs) {
-					return isGood(x) ? A2($elm$core$List$cons, x, xs) : xs;
-				}),
-			_List_Nil,
-			list);
-	});
-var $elm$core$List$head = function (list) {
-	if (list.b) {
-		var x = list.a;
-		var xs = list.b;
-		return $elm$core$Maybe$Just(x);
-	} else {
-		return $elm$core$Maybe$Nothing;
-	}
-};
-var $author$project$Clustermap$getInitialImage = F3(
-	function (username, sessionlist, userimagelist) {
-		var _v0 = $elm$core$List$head(
-			A2(
-				$elm$core$List$filter,
-				$author$project$Clustermap$compareSessionUsername(username),
-				sessionlist));
-		if (!_v0.$) {
-			var item = _v0.a;
-			return item.aU;
-		} else {
-			var _v1 = $elm$core$List$head(
-				A2(
-					$elm$core$List$filter,
-					$author$project$Clustermap$compareUserImageUsername(username),
-					userimagelist));
-			if (!_v1.$) {
-				var item = _v1.a;
-				return item.cV.aJ.aD;
-			} else {
-				return $author$project$Clustermap$defaultImageJson.aJ.aD;
-			}
-		}
-	});
-var $author$project$Clustermap$sessionDecoder = F2(
-	function (sessionlist, userimagelist) {
-		return A3(
-			$webbhuset$elm_json_decode$Json$Decode$Field$require,
-			'hostname',
-			$elm$json$Json$Decode$string,
-			function (host) {
-				return A3(
-					$webbhuset$elm_json_decode$Json$Decode$Field$require,
-					'sessionType',
-					$elm$json$Json$Decode$string,
-					function (sessionType) {
-						return A3(
-							$webbhuset$elm_json_decode$Json$Decode$Field$attempt,
-							'login',
-							$elm$json$Json$Decode$string,
-							function (maybeUsername) {
-								if (!maybeUsername.$) {
-									var username = maybeUsername.a;
-									return $elm$json$Json$Decode$succeed(
-										{
-											ab: true,
-											ay: host,
-											aU: A3($author$project$Clustermap$getInitialImage, username, sessionlist, userimagelist),
-											a4: sessionType,
-											L: username
-										});
-								} else {
-									return $elm$json$Json$Decode$succeed(
-										{ab: false, ay: host, aU: $author$project$Clustermap$defaultImageJson.aJ.aD, a4: sessionType, L: ''});
-								}
-							});
-					});
-			});
-	});
-var $author$project$Clustermap$sessionListDecoder = F2(
-	function (sessionlist, userimagelist) {
-		return $elm$json$Json$Decode$list(
-			A2($author$project$Clustermap$sessionDecoder, sessionlist, userimagelist));
-	});
-var $author$project$Clustermap$getActiveSessions = F3(
-	function (endpoint, sessionlist, userimagelist) {
-		return $elm$http$Http$get(
-			{
-				cP: A2(
-					$elm$http$Http$expectJson,
-					$author$project$Clustermap$GotSessions,
-					A2($author$project$Clustermap$sessionListDecoder, sessionlist, userimagelist)),
-				dj: $author$project$Endpoint$toString(endpoint)
-			});
-	});
 var $author$project$Clustermap$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
@@ -7127,8 +6974,8 @@ var $author$project$Clustermap$update = F2(
 						_Utils_update(
 							model,
 							{
-								E: sessionlist,
-								aH: $author$project$Clustermap$Success(sessionlist)
+								L: sessionlist,
+								aF: $author$project$Clustermap$Success(sessionlist)
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -7137,7 +6984,7 @@ var $author$project$Clustermap$update = F2(
 						_Utils_update(
 							model,
 							{
-								aH: $author$project$Clustermap$Failure(err)
+								aF: $author$project$Clustermap$Failure(err)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
@@ -7149,8 +6996,8 @@ var $author$project$Clustermap$update = F2(
 						_Utils_update(
 							model,
 							{
-								W: $elm$core$Maybe$Just(hostmodel),
-								aG: $author$project$Clustermap$HostSuccess(hostmodel)
+								V: $elm$core$Maybe$Just(hostmodel),
+								aE: $author$project$Clustermap$HostSuccess(hostmodel)
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -7159,55 +7006,33 @@ var $author$project$Clustermap$update = F2(
 						_Utils_update(
 							model,
 							{
-								aG: $author$project$Clustermap$HostFailure(err)
+								aE: $author$project$Clustermap$HostFailure(err)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
 			case 2:
-				var result = msg.a;
-				if (!result.$) {
-					var imagelist = result.a;
-					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{
-								bS: imagelist,
-								a3: $author$project$Clustermap$ImageSuccess(imagelist)
-							}),
-						A3($author$project$Clustermap$getActiveSessions, model.cv, model.E, imagelist));
-				} else {
-					var err = result.a;
-					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{
-								a3: $author$project$Clustermap$ImageFailure(err)
-							}),
-						$elm$core$Platform$Cmd$none);
-				}
-			case 3:
 				return _Utils_Tuple2(
 					model,
-					A3($author$project$Clustermap$getActiveSessions, model.cv, model.E, model.bS));
+					A2($author$project$Clustermap$getActiveSessions, model.c2, model.L));
 			default:
 				var host = msg.a;
 				var state = msg.b;
 				var updatePopState = function (session) {
-					return A2($elm$core$String$contains, host, session.e) ? _Utils_update(
+					return A2($elm$core$String$contains, host, session.i) ? _Utils_update(
 						session,
-						{J: state}) : session;
+						{I: state}) : session;
 				};
 				var newhostModel = function () {
-					var _v5 = model.W;
-					if (_v5.$ === 1) {
+					var _v4 = model.V;
+					if (_v4.$ === 1) {
 						return $elm$core$Maybe$Nothing;
 					} else {
-						var hmodel = _v5.a;
+						var hmodel = _v4.a;
 						return $elm$core$Maybe$Just(
 							_Utils_update(
 								hmodel,
 								{
-									az: A2($elm$core$List$map, updatePopState, hmodel.az)
+									ay: A2($elm$core$List$map, updatePopState, hmodel.ay)
 								}));
 					}
 				}();
@@ -7215,7 +7040,7 @@ var $author$project$Clustermap$update = F2(
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{W: newhostModel}),
+							{V: newhostModel}),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					var newhmodel = newhostModel.a;
@@ -7223,8 +7048,8 @@ var $author$project$Clustermap$update = F2(
 						_Utils_update(
 							model,
 							{
-								W: $elm$core$Maybe$Just(newhmodel),
-								aG: $author$project$Clustermap$HostSuccess(newhmodel)
+								V: $elm$core$Maybe$Just(newhmodel),
+								aE: $author$project$Clustermap$HostSuccess(newhmodel)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
@@ -7232,73 +7057,73 @@ var $author$project$Clustermap$update = F2(
 	});
 var $author$project$Main$update = F2(
 	function (msg, model) {
-		var clusterF0 = model.P;
-		var clusterF1 = model.Q;
+		var clusterF0 = model.O;
+		var clusterF1 = model.P;
 		switch (msg.$) {
 			case 0:
 				var mapmsg = msg.a;
-				var _v1 = A2($author$project$Clustermap$update, mapmsg, model.P);
+				var _v1 = A2($author$project$Clustermap$update, mapmsg, model.O);
 				var newmodel = _v1.a;
 				var newcmd = _v1.b;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{P: newmodel}),
+						{O: newmodel}),
 					A2($elm$core$Platform$Cmd$map, $author$project$Main$Mapf0Msg, newcmd));
 			case 1:
 				var mapmsg = msg.a;
-				var _v2 = A2($author$project$Clustermap$update, mapmsg, model.Q);
+				var _v2 = A2($author$project$Clustermap$update, mapmsg, model.P);
 				var newmodel = _v2.a;
 				var newcmd = _v2.b;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{Q: newmodel}),
+						{P: newmodel}),
 					A2($elm$core$Platform$Cmd$map, $author$project$Main$Mapf1Msg, newcmd));
 			case 2:
 				var viewp = msg.a;
 				var predevice = $author$project$Main$classifyDevice(
 					{
-						aR: $elm$core$Basics$round(viewp.bb.aR),
-						bc: $elm$core$Basics$round(viewp.bb.bc)
+						aQ: $elm$core$Basics$round(viewp.a8.aQ),
+						a9: $elm$core$Basics$round(viewp.a8.a9)
 					});
 				var mapsettings = A2(
 					$author$project$Main$calcMapSettings,
 					{
-						aR: $elm$core$Basics$round(viewp.bb.aR),
-						bc: $elm$core$Basics$round(viewp.bb.bc)
+						aQ: $elm$core$Basics$round(viewp.a8.aQ),
+						a9: $elm$core$Basics$round(viewp.a8.a9)
 					},
 					predevice);
 				var device = function () {
-					var _v3 = predevice.a1;
+					var _v3 = predevice.a$;
 					if (!_v3) {
 						return predevice;
 					} else {
 						return (_Utils_cmp(
-							mapsettings.bc,
-							$elm$core$Basics$round(viewp.bb.bc / 2)) > 0) ? _Utils_update(
+							mapsettings.a9,
+							$elm$core$Basics$round(viewp.a8.a9 / 2)) > 0) ? _Utils_update(
 							predevice,
-							{a1: 0}) : predevice;
+							{a$: 0}) : predevice;
 					}
 				}();
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							P: _Utils_update(
+							O: _Utils_update(
 								clusterF0,
-								{f: mapsettings}),
-							Q: _Utils_update(
+								{e: mapsettings}),
+							P: _Utils_update(
 								clusterF1,
 								{
-									f: _Utils_update(
+									e: _Utils_update(
 										mapsettings,
 										{
-											aR: mapsettings.aR - 30,
-											bc: mapsettings.bc - $elm$core$Basics$round(30.0 * 0.77)
+											aQ: mapsettings.aQ - 30,
+											a9: mapsettings.a9 - $elm$core$Basics$round(30.0 * 0.77)
 										})
 								}),
-							bH: device
+							bE: device
 						}),
 					$elm$core$Platform$Cmd$none);
 			default:
@@ -7308,8 +7133,8 @@ var $author$project$Main$update = F2(
 					_Utils_update(
 						model,
 						{
-							bH: $author$project$Main$classifyDevice(
-								{aR: height, bc: width})
+							bE: $author$project$Main$classifyDevice(
+								{aQ: height, a9: width})
 						}),
 					A2($elm$core$Task$perform, $author$project$Main$BeResponsive, $elm$browser$Browser$Dom$getViewport));
 		}
@@ -7325,7 +7150,7 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
 var $elm$html$Html$div = _VirtualDom_node('div');
 var $author$project$Main$getMapcontainerClass = function (deviceinfo) {
-	var _v0 = deviceinfo.a1;
+	var _v0 = deviceinfo.a$;
 	if (!_v0) {
 		return 'mapcontainer-row';
 	} else {
@@ -7375,7 +7200,7 @@ var $author$project$Asset$toString = function (_v0) {
 };
 var $author$project$Clustermap$PopoverMsg = F2(
 	function (a, b) {
-		return {$: 4, a: a, b: b};
+		return {$: 3, a: a, b: b};
 	});
 var $elm$html$Html$a = _VirtualDom_node('a');
 var $rundis$elm_bootstrap$Bootstrap$Internal$Button$Attrs = function (a) {
@@ -7402,32 +7227,43 @@ var $rundis$elm_bootstrap$Bootstrap$Internal$Button$applyModifier = F2(
 				return _Utils_update(
 					options,
 					{
-						ei: $elm$core$Maybe$Just(size)
+						ea: $elm$core$Maybe$Just(size)
 					});
 			case 1:
 				var coloring = modifier.a;
 				return _Utils_update(
 					options,
 					{
-						R: $elm$core$Maybe$Just(coloring)
+						Q: $elm$core$Maybe$Just(coloring)
 					});
 			case 2:
 				return _Utils_update(
 					options,
-					{bu: true});
+					{br: true});
 			case 3:
 				var val = modifier.a;
 				return _Utils_update(
 					options,
-					{bJ: val});
+					{bG: val});
 			default:
 				var attrs = modifier.a;
 				return _Utils_update(
 					options,
 					{
-						ac: _Utils_ap(options.ac, attrs)
+						ab: _Utils_ap(options.ab, attrs)
 					});
 		}
+	});
+var $elm$core$List$filter = F2(
+	function (isGood, list) {
+		return A3(
+			$elm$core$List$foldr,
+			F2(
+				function (x, xs) {
+					return isGood(x) ? A2($elm$core$List$cons, x, xs) : xs;
+				}),
+			_List_Nil,
+			list);
 	});
 var $elm$core$Tuple$second = function (_v0) {
 	var y = _v0.b;
@@ -7443,7 +7279,7 @@ var $elm$html$Html$Attributes$classList = function (classes) {
 				$elm$core$Tuple$first,
 				A2($elm$core$List$filter, $elm$core$Tuple$second, classes))));
 };
-var $rundis$elm_bootstrap$Bootstrap$Internal$Button$defaultOptions = {ac: _List_Nil, bu: false, R: $elm$core$Maybe$Nothing, bJ: false, ei: $elm$core$Maybe$Nothing};
+var $rundis$elm_bootstrap$Bootstrap$Internal$Button$defaultOptions = {ab: _List_Nil, br: false, Q: $elm$core$Maybe$Nothing, bG: false, ea: $elm$core$Maybe$Nothing};
 var $elm$json$Json$Encode$bool = _Json_wrap;
 var $elm$html$Html$Attributes$boolProperty = F2(
 	function (key, bool) {
@@ -7498,14 +7334,14 @@ var $rundis$elm_bootstrap$Bootstrap$Internal$Button$buttonAttributes = function 
 				_List_fromArray(
 					[
 						_Utils_Tuple2('btn', true),
-						_Utils_Tuple2('btn-block', options.bu),
-						_Utils_Tuple2('disabled', options.bJ)
+						_Utils_Tuple2('btn-block', options.br),
+						_Utils_Tuple2('disabled', options.bG)
 					])),
-				$elm$html$Html$Attributes$disabled(options.bJ)
+				$elm$html$Html$Attributes$disabled(options.bG)
 			]),
 		_Utils_ap(
 			function () {
-				var _v0 = A2($elm$core$Maybe$andThen, $rundis$elm_bootstrap$Bootstrap$General$Internal$screenSizeOption, options.ei);
+				var _v0 = A2($elm$core$Maybe$andThen, $rundis$elm_bootstrap$Bootstrap$General$Internal$screenSizeOption, options.ea);
 				if (!_v0.$) {
 					var s = _v0.a;
 					return _List_fromArray(
@@ -7518,7 +7354,7 @@ var $rundis$elm_bootstrap$Bootstrap$Internal$Button$buttonAttributes = function 
 			}(),
 			_Utils_ap(
 				function () {
-					var _v1 = options.R;
+					var _v1 = options.Q;
 					if (!_v1.$) {
 						if (!_v1.a.$) {
 							var role = _v1.a.a;
@@ -7539,7 +7375,7 @@ var $rundis$elm_bootstrap$Bootstrap$Internal$Button$buttonAttributes = function 
 						return _List_Nil;
 					}
 				}(),
-				options.ac)));
+				options.ab)));
 };
 var $rundis$elm_bootstrap$Bootstrap$Button$button = F2(
 	function (options, children) {
@@ -7550,16 +7386,16 @@ var $rundis$elm_bootstrap$Bootstrap$Button$button = F2(
 	});
 var $author$project$Clustermap$calculateLeft = F3(
 	function (model, hostmapsettings, left) {
-		return $elm$core$Basics$round((left / hostmapsettings.bc) * model.f.bc);
+		return $elm$core$Basics$round((left / hostmapsettings.a9) * model.e.a9);
 	});
 var $author$project$Clustermap$calculateTop = F3(
 	function (model, hostmapsettings, top) {
-		return $elm$core$Basics$round((top / hostmapsettings.aR) * model.f.aR);
+		return $elm$core$Basics$round((top / hostmapsettings.aQ) * model.e.aQ);
 	});
 var $rundis$elm_bootstrap$Bootstrap$Popover$Config = $elm$core$Basics$identity;
 var $rundis$elm_bootstrap$Bootstrap$Popover$Top = 0;
 var $rundis$elm_bootstrap$Bootstrap$Popover$config = function (triggerElement) {
-	return {e7: $elm$core$Maybe$Nothing, U: 0, gk: $elm$core$Maybe$Nothing, eu: triggerElement};
+	return {e0: $elm$core$Maybe$Nothing, T: 0, gd: $elm$core$Maybe$Nothing, em: triggerElement};
 };
 var $rundis$elm_bootstrap$Bootstrap$Popover$Content = $elm$core$Basics$identity;
 var $rundis$elm_bootstrap$Bootstrap$Popover$content = F3(
@@ -7568,7 +7404,7 @@ var $rundis$elm_bootstrap$Bootstrap$Popover$content = F3(
 		return _Utils_update(
 			conf,
 			{
-				e7: $elm$core$Maybe$Just(
+				e0: $elm$core$Maybe$Just(
 					A2(
 						$elm$html$Html$div,
 						A2(
@@ -7668,9 +7504,18 @@ var $author$project$Asset$emptyHost = function (size) {
 				_List_Nil)
 			]));
 };
+var $elm$core$List$head = function (list) {
+	if (list.b) {
+		var x = list.a;
+		var xs = list.b;
+		return $elm$core$Maybe$Just(x);
+	} else {
+		return $elm$core$Maybe$Nothing;
+	}
+};
 var $author$project$Clustermap$hostFilter = F2(
 	function (host, session) {
-		return A2($elm$core$String$contains, host, session.ay);
+		return A2($elm$core$String$contains, host, session.ax);
 	});
 var $elm$core$Maybe$withDefault = F2(
 	function (_default, maybe) {
@@ -7702,7 +7547,7 @@ var $rundis$elm_bootstrap$Bootstrap$Popover$forceClose = F2(
 			toMsg(
 				_Utils_update(
 					state,
-					{aB: false})));
+					{aA: false})));
 	});
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
 	return {$: 0, a: a};
@@ -7718,7 +7563,7 @@ var $elm$html$Html$Events$on = F2(
 var $elm$core$Basics$not = _Basics_not;
 var $rundis$elm_bootstrap$Bootstrap$Popover$DOMState = F3(
 	function (rect, offsetWidth, offsetHeight) {
-		return {c2: offsetHeight, b2: offsetWidth, c8: rect};
+		return {cV: offsetHeight, b$: offsetWidth, c$: rect};
 	});
 var $elm$json$Json$Decode$map3 = _Json_map3;
 var $elm$json$Json$Decode$float = _Json_decodeFloat;
@@ -7831,7 +7676,7 @@ var $rundis$elm_bootstrap$Bootstrap$Utilities$DomHelper$boundingArea = A4(
 		function (_v0, width, height) {
 			var x = _v0.a;
 			var y = _v0.b;
-			return {aR: height, dS: x, er: y, bc: width};
+			return {aQ: height, dJ: x, ej: y, a9: width};
 		}),
 	A2($rundis$elm_bootstrap$Bootstrap$Utilities$DomHelper$position, 0, 0),
 	$rundis$elm_bootstrap$Bootstrap$Utilities$DomHelper$offsetWidth,
@@ -7890,15 +7735,15 @@ var $rundis$elm_bootstrap$Bootstrap$Popover$stateDecoder = A4(
 var $rundis$elm_bootstrap$Bootstrap$Popover$toggleState = F2(
 	function (_v0, toMsg) {
 		var state = _v0;
-		var isActive = state.aB;
+		var isActive = state.aA;
 		return A2(
 			$elm$json$Json$Decode$andThen,
 			function (v) {
 				return $elm$json$Json$Decode$succeed(
 					toMsg(
-						(!isActive) ? {cO: v, aB: true} : _Utils_update(
+						(!isActive) ? {cK: v, aA: true} : _Utils_update(
 							state,
-							{aB: false})));
+							{aA: false})));
 			},
 			$rundis$elm_bootstrap$Bootstrap$Popover$stateDecoder);
 	});
@@ -7925,7 +7770,7 @@ var $rundis$elm_bootstrap$Bootstrap$Popover$titlePrivate = F4(
 		return _Utils_update(
 			conf,
 			{
-				gk: $elm$core$Maybe$Just(
+				gd: $elm$core$Maybe$Just(
 					A2(
 						elemFn,
 						A2(
@@ -7940,44 +7785,44 @@ var $rundis$elm_bootstrap$Bootstrap$Popover$top = function (_v0) {
 	var conf = _v0;
 	return _Utils_update(
 		conf,
-		{U: 0});
+		{T: 0});
 };
 var $elm$core$Basics$negate = function (n) {
 	return -n;
 };
 var $rundis$elm_bootstrap$Bootstrap$Popover$calculatePos = F2(
 	function (pos, _v0) {
-		var rect = _v0.c8;
-		var offsetWidth = _v0.b2;
-		var offsetHeight = _v0.c2;
+		var rect = _v0.c$;
+		var offsetWidth = _v0.b$;
+		var offsetHeight = _v0.cV;
 		switch (pos) {
 			case 3:
 				return {
-					as: $elm$core$Maybe$Nothing,
-					at: $elm$core$Maybe$Just((offsetHeight / 2) - 12),
-					dS: (-offsetWidth) - 10,
-					er: (rect.aR / 2) - (offsetHeight / 2)
+					ar: $elm$core$Maybe$Nothing,
+					as: $elm$core$Maybe$Just((offsetHeight / 2) - 12),
+					dJ: (-offsetWidth) - 10,
+					ej: (rect.aQ / 2) - (offsetHeight / 2)
 				};
 			case 1:
 				return {
-					as: $elm$core$Maybe$Nothing,
-					at: $elm$core$Maybe$Just((offsetHeight / 2) - 12),
-					dS: rect.bc,
-					er: (rect.aR / 2) - (offsetHeight / 2)
+					ar: $elm$core$Maybe$Nothing,
+					as: $elm$core$Maybe$Just((offsetHeight / 2) - 12),
+					dJ: rect.a9,
+					ej: (rect.aQ / 2) - (offsetHeight / 2)
 				};
 			case 0:
 				return {
-					as: $elm$core$Maybe$Just((offsetWidth / 2) - 12),
-					at: $elm$core$Maybe$Nothing,
-					dS: (rect.bc / 2) - (offsetWidth / 2),
-					er: (-offsetHeight) - 10
+					ar: $elm$core$Maybe$Just((offsetWidth / 2) - 12),
+					as: $elm$core$Maybe$Nothing,
+					dJ: (rect.a9 / 2) - (offsetWidth / 2),
+					ej: (-offsetHeight) - 10
 				};
 			default:
 				return {
-					as: $elm$core$Maybe$Just((offsetWidth / 2) - 12),
-					at: $elm$core$Maybe$Nothing,
-					dS: (rect.bc / 2) - (offsetWidth / 2),
-					er: rect.aR
+					ar: $elm$core$Maybe$Just((offsetWidth / 2) - 12),
+					as: $elm$core$Maybe$Nothing,
+					dJ: (rect.a9 / 2) - (offsetWidth / 2),
+					ej: rect.aQ
 				};
 		}
 	});
@@ -8031,28 +7876,28 @@ var $rundis$elm_bootstrap$Bootstrap$Popover$positionClass = function (position) 
 };
 var $rundis$elm_bootstrap$Bootstrap$Popover$popoverView = F2(
 	function (_v0, _v1) {
-		var isActive = _v0.aB;
-		var domState = _v0.cO;
+		var isActive = _v0.aA;
+		var domState = _v0.cK;
 		var conf = _v1;
 		var px = function (f) {
 			return $elm$core$String$fromFloat(f) + 'px';
 		};
-		var pos = A2($rundis$elm_bootstrap$Bootstrap$Popover$calculatePos, conf.U, domState);
+		var pos = A2($rundis$elm_bootstrap$Bootstrap$Popover$calculatePos, conf.T, domState);
 		var styles = isActive ? _List_fromArray(
 			[
 				A2(
 				$elm$html$Html$Attributes$style,
 				'left',
-				px(pos.dS)),
+				px(pos.dJ)),
 				A2(
 				$elm$html$Html$Attributes$style,
 				'top',
-				px(pos.er)),
+				px(pos.ej)),
 				A2($elm$html$Html$Attributes$style, 'display', 'inline-block'),
 				A2(
 				$elm$html$Html$Attributes$style,
 				'width',
-				px(domState.b2))
+				px(domState.b$))
 			]) : _List_fromArray(
 			[
 				A2($elm$html$Html$Attributes$style, 'left', '-5000px'),
@@ -8071,7 +7916,7 @@ var $rundis$elm_bootstrap$Bootstrap$Popover$popoverView = F2(
 							'top',
 							px(t));
 					},
-					pos.at),
+					pos.as),
 					A2(
 					$elm$core$Maybe$map,
 					function (l) {
@@ -8080,7 +7925,7 @@ var $rundis$elm_bootstrap$Bootstrap$Popover$popoverView = F2(
 							'left',
 							px(l));
 					},
-					pos.as)
+					pos.ar)
 				]));
 		return A2(
 			$elm$html$Html$div,
@@ -8093,9 +7938,9 @@ var $rundis$elm_bootstrap$Bootstrap$Popover$popoverView = F2(
 								_Utils_Tuple2('popover', true),
 								_Utils_Tuple2('fade', true),
 								_Utils_Tuple2('show', isActive),
-								$rundis$elm_bootstrap$Bootstrap$Popover$positionClass(conf.U)
+								$rundis$elm_bootstrap$Bootstrap$Popover$positionClass(conf.T)
 							])),
-						$rundis$elm_bootstrap$Bootstrap$Popover$directionAttr(conf.U)
+						$rundis$elm_bootstrap$Bootstrap$Popover$directionAttr(conf.T)
 					]),
 				styles),
 			A2(
@@ -8117,19 +7962,19 @@ var $rundis$elm_bootstrap$Bootstrap$Popover$popoverView = F2(
 							var t = _v2;
 							return t;
 						},
-						conf.gk),
+						conf.gd),
 						A2(
 						$elm$core$Maybe$map,
 						function (_v3) {
 							var c = _v3;
 							return c;
 						},
-						conf.e7)
+						conf.e0)
 					])));
 	});
 var $rundis$elm_bootstrap$Bootstrap$Popover$view = F2(
 	function (state, conf) {
-		var triggerElement = conf.eu;
+		var triggerElement = conf.em;
 		return A2(
 			$elm$html$Html$div,
 			_List_fromArray(
@@ -8148,14 +7993,14 @@ var $author$project$Clustermap$viewIcon = F4(
 		var maybeSession = $elm$core$List$head(
 			A2(
 				$elm$core$List$filter,
-				$author$project$Clustermap$hostFilter(host.e),
+				$author$project$Clustermap$hostFilter(host.i),
 				sessionlist));
 		var offset = function () {
 			if (maybeSession.$ === 1) {
-				return (model.f.V / 2) | 0;
+				return (model.e.U / 2) | 0;
 			} else {
 				var session = maybeSession.a;
-				return session.ab ? ((model.f.aL / 2) | 0) : ((model.f.V / 2) | 0);
+				return session.aa ? ((model.e.aK / 2) | 0) : ((model.e.U / 2) | 0);
 			}
 		}();
 		return A2(
@@ -8167,12 +8012,12 @@ var $author$project$Clustermap$viewIcon = F4(
 					$elm$html$Html$Attributes$style,
 					'left',
 					$elm$core$String$fromInt(
-						A3($author$project$Clustermap$calculateLeft, model, hostmapsettings, host.ce.a) - offset) + 'px'),
+						A3($author$project$Clustermap$calculateLeft, model, hostmapsettings, host.cb.a) - offset) + 'px'),
 					A2(
 					$elm$html$Html$Attributes$style,
 					'top',
 					$elm$core$String$fromInt(
-						A3($author$project$Clustermap$calculateTop, model, hostmapsettings, host.ce.b) - offset) + 'px')
+						A3($author$project$Clustermap$calculateTop, model, hostmapsettings, host.cb.b) - offset) + 'px')
 				]),
 			function () {
 				if (maybeSession.$ === 1) {
@@ -8180,14 +8025,14 @@ var $author$project$Clustermap$viewIcon = F4(
 						[
 							A2(
 							$rundis$elm_bootstrap$Bootstrap$Popover$view,
-							host.J,
+							host.I,
 							A3(
 								$rundis$elm_bootstrap$Bootstrap$Popover$content,
 								_List_Nil,
 								_List_fromArray(
 									[
 										$elm$html$Html$text(
-										$author$project$Clustermap$hostToId(host.e))
+										$author$project$Clustermap$hostToId(host.i))
 									]),
 								$rundis$elm_bootstrap$Bootstrap$Popover$top(
 									$rundis$elm_bootstrap$Bootstrap$Popover$config(
@@ -8199,38 +8044,38 @@ var $author$project$Clustermap$viewIcon = F4(
 													A2(
 														$elm$core$List$cons,
 														$elm$html$Html$Attributes$id(
-															$author$project$Clustermap$hostToId(host.e)),
+															$author$project$Clustermap$hostToId(host.i)),
 														A2(
 															$rundis$elm_bootstrap$Bootstrap$Popover$onHover,
-															host.J,
-															$author$project$Clustermap$PopoverMsg(host.e))))
+															host.I,
+															$author$project$Clustermap$PopoverMsg(host.i))))
 												]),
 											_List_fromArray(
 												[
-													$author$project$Asset$emptyHost(model.f.V)
+													$author$project$Asset$emptyHost(model.e.U)
 												]))))))
 						]);
 				} else {
 					var session = maybeSession.a;
-					return session.ab ? _List_fromArray(
+					return session.aa ? _List_fromArray(
 						[
 							A2(
 							$rundis$elm_bootstrap$Bootstrap$Popover$view,
-							host.J,
+							host.I,
 							A3(
 								$rundis$elm_bootstrap$Bootstrap$Popover$content,
 								_List_Nil,
 								_List_fromArray(
 									[
 										$elm$html$Html$text(
-										$author$project$Clustermap$hostToId(host.e))
+										$author$project$Clustermap$hostToId(host.i))
 									]),
 								A3(
 									$rundis$elm_bootstrap$Bootstrap$Popover$title,
 									_List_Nil,
 									_List_fromArray(
 										[
-											$elm$html$Html$text(session.L)
+											$elm$html$Html$text(session.aH)
 										]),
 									$rundis$elm_bootstrap$Bootstrap$Popover$top(
 										$rundis$elm_bootstrap$Bootstrap$Popover$config(
@@ -8242,11 +8087,11 @@ var $author$project$Clustermap$viewIcon = F4(
 														A2(
 															$elm$core$List$cons,
 															$elm$html$Html$Attributes$id(
-																$author$project$Clustermap$hostToId(host.e)),
+																$author$project$Clustermap$hostToId(host.i)),
 															A2(
 																$rundis$elm_bootstrap$Bootstrap$Popover$onHover,
-																host.J,
-																$author$project$Clustermap$PopoverMsg(host.e))))
+																host.I,
+																$author$project$Clustermap$PopoverMsg(host.i))))
 													]),
 												_List_fromArray(
 													[
@@ -8254,7 +8099,7 @@ var $author$project$Clustermap$viewIcon = F4(
 														$elm$html$Html$a,
 														_List_fromArray(
 															[
-																$elm$html$Html$Attributes$href('https://profile.intra.42.fr/users/' + session.L),
+																$elm$html$Html$Attributes$href('https://profile.intra.42.fr/users/' + session.aH),
 																$elm$html$Html$Attributes$target('_blank')
 															]),
 														_List_fromArray(
@@ -8263,22 +8108,21 @@ var $author$project$Clustermap$viewIcon = F4(
 																$elm$html$Html$img,
 																_List_fromArray(
 																	[
-																		$elm$html$Html$Attributes$src(
-																		$author$project$Asset$toString(session.aU)),
+																		$elm$html$Html$Attributes$src(session.bP),
 																		$elm$html$Html$Attributes$classList(
 																		_List_fromArray(
 																			[
 																				_Utils_Tuple2('round-img', true),
-																				_Utils_Tuple2('session-' + session.a4, true)
+																				_Utils_Tuple2('session-' + session.a1, true)
 																			])),
 																		A2(
 																		$elm$html$Html$Attributes$style,
 																		'width',
-																		$elm$core$String$fromInt(model.f.aL)),
+																		$elm$core$String$fromInt(model.e.aK)),
 																		A2(
 																		$elm$html$Html$Attributes$style,
 																		'height',
-																		$elm$core$String$fromInt(model.f.aL))
+																		$elm$core$String$fromInt(model.e.aK))
 																	]),
 																_List_Nil)
 															]))
@@ -8287,14 +8131,14 @@ var $author$project$Clustermap$viewIcon = F4(
 						[
 							A2(
 							$rundis$elm_bootstrap$Bootstrap$Popover$view,
-							host.J,
+							host.I,
 							A3(
 								$rundis$elm_bootstrap$Bootstrap$Popover$content,
 								_List_Nil,
 								_List_fromArray(
 									[
 										$elm$html$Html$text(
-										$author$project$Clustermap$hostToId(host.e) + '')
+										$author$project$Clustermap$hostToId(host.i) + '')
 									]),
 								$rundis$elm_bootstrap$Bootstrap$Popover$top(
 									$rundis$elm_bootstrap$Bootstrap$Popover$config(
@@ -8306,23 +8150,23 @@ var $author$project$Clustermap$viewIcon = F4(
 													A2(
 														$elm$core$List$cons,
 														$elm$html$Html$Attributes$id(
-															$author$project$Clustermap$hostToId(host.e)),
+															$author$project$Clustermap$hostToId(host.i)),
 														A2(
 															$rundis$elm_bootstrap$Bootstrap$Popover$onHover,
-															host.J,
-															$author$project$Clustermap$PopoverMsg(host.e))))
+															host.I,
+															$author$project$Clustermap$PopoverMsg(host.i))))
 												]),
 											_List_fromArray(
 												[
 													function () {
-													var _v1 = session.a4;
+													var _v1 = session.a1;
 													switch (_v1) {
 														case 'exam':
-															return $author$project$Asset$emptyExamHost(model.f.V);
+															return $author$project$Asset$emptyExamHost(model.e.U);
 														case 'dead':
-															return $author$project$Asset$deadHost(model.f.V);
+															return $author$project$Asset$deadHost(model.e.U);
 														default:
-															return $author$project$Asset$emptyHost(model.f.V);
+															return $author$project$Asset$emptyHost(model.e.U);
 													}
 												}()
 												]))))))
@@ -8333,15 +8177,15 @@ var $author$project$Clustermap$viewIcon = F4(
 var $author$project$Clustermap$viewKeyedIcon = F4(
 	function (model, sessionlist, hostmapsettings, host) {
 		return _Utils_Tuple2(
-			host.e,
+			host.i,
 			A4($author$project$Clustermap$viewIcon, model, sessionlist, hostmapsettings, host));
 	});
 var $author$project$Clustermap$viewIcons = F3(
 	function (model, sessionlist, hostmodel) {
 		return A2(
 			$elm$core$List$map,
-			A3($author$project$Clustermap$viewKeyedIcon, model, sessionlist, hostmodel.f),
-			hostmodel.az);
+			A3($author$project$Clustermap$viewKeyedIcon, model, sessionlist, hostmodel.e),
+			hostmodel.ay);
 	});
 var $author$project$Clustermap$viewMap = F3(
 	function (model, sessionlist, hostmodel) {
@@ -8355,32 +8199,32 @@ var $author$project$Clustermap$viewMap = F3(
 			A2(
 				$elm$core$List$cons,
 				_Utils_Tuple2(
-					$author$project$Asset$toString(model.bY),
+					$author$project$Asset$toString(model.bV),
 					A2(
 						$elm$html$Html$img,
 						_List_fromArray(
 							[
 								$elm$html$Html$Attributes$src(
-								$author$project$Asset$toString(model.bY)),
+								$author$project$Asset$toString(model.bV)),
 								A2($elm$html$Html$Attributes$style, 'position', 'relative'),
 								A2(
 								$elm$html$Html$Attributes$style,
 								'height',
-								$elm$core$String$fromInt(model.f.aR) + 'px'),
+								$elm$core$String$fromInt(model.e.aQ) + 'px'),
 								A2(
 								$elm$html$Html$Attributes$style,
 								'width',
-								$elm$core$String$fromInt(model.f.bc) + 'px')
+								$elm$core$String$fromInt(model.e.a9) + 'px')
 							]),
 						_List_Nil)),
 				A3($author$project$Clustermap$viewIcons, model, sessionlist, hostmodel)));
 	});
 var $author$project$Clustermap$view = function (model) {
-	var _v0 = model.aG;
+	var _v0 = model.aE;
 	switch (_v0.$) {
 		case 0:
 			var err = _v0.a;
-			var _v1 = model.W;
+			var _v1 = model.V;
 			if (_v1.$ === 1) {
 				return A2(
 					$elm$html$Html$div,
@@ -8398,7 +8242,7 @@ var $author$project$Clustermap$view = function (model) {
 						]));
 			} else {
 				var hostmodel = _v1.a;
-				var _v2 = model.aH;
+				var _v2 = model.aF;
 				switch (_v2.$) {
 					case 0:
 						return A2(
@@ -8413,7 +8257,7 @@ var $author$project$Clustermap$view = function (model) {
 										[
 											$elm$html$Html$text('Error retrieving sessions, map might be outdated.')
 										])),
-									A3($author$project$Clustermap$viewMap, model, model.E, hostmodel)
+									A3($author$project$Clustermap$viewMap, model, model.L, hostmodel)
 								]));
 					case 1:
 						return $elm$html$Html$text('Loading Sessions...');
@@ -8426,7 +8270,7 @@ var $author$project$Clustermap$view = function (model) {
 			return $elm$html$Html$text('Loading Hosts...');
 		default:
 			var hostmodel = _v0.a;
-			var _v3 = model.aH;
+			var _v3 = model.aF;
 			switch (_v3.$) {
 				case 0:
 					return A2(
@@ -8441,40 +8285,19 @@ var $author$project$Clustermap$view = function (model) {
 									[
 										$elm$html$Html$text('Error retrieving sessions, map might be outdated.')
 									])),
-								A3($author$project$Clustermap$viewMap, model, model.E, hostmodel)
+								A3($author$project$Clustermap$viewMap, model, model.L, hostmodel)
 							]));
 				case 1:
 					return $elm$html$Html$text('Loading Sessions...');
 				default:
 					var sessionlist = _v3.a;
-					var _v4 = model.a3;
-					switch (_v4.$) {
-						case 0:
-							return A2(
-								$elm$html$Html$div,
-								_List_Nil,
-								_List_fromArray(
-									[
-										A2(
-										$elm$html$Html$p,
-										_List_Nil,
-										_List_fromArray(
-											[
-												$elm$html$Html$text('Error retrieving images, sorry :(')
-											])),
-										A3($author$project$Clustermap$viewMap, model, sessionlist, hostmodel)
-									]));
-						case 1:
-							return $elm$html$Html$text('Loading Images...');
-						default:
-							return A3($author$project$Clustermap$viewMap, model, sessionlist, hostmodel);
-					}
+					return A3($author$project$Clustermap$viewMap, model, sessionlist, hostmodel);
 			}
 	}
 };
 var $author$project$Clustermap$deadHostSessionFilter = F2(
 	function (session, host) {
-		return (!session.ab) && A2($elm$core$String$contains, session.ay, host.e);
+		return (!session.aa) && A2($elm$core$String$contains, session.ax, host.i);
 	});
 var $author$project$Clustermap$deadHostListFilter = F2(
 	function (hostlist, session) {
@@ -8491,7 +8314,7 @@ var $author$project$Clustermap$deadHostListFilter = F2(
 	});
 var $author$project$Clustermap$sessionFilter = F2(
 	function (session, host) {
-		return session.ab && A2($elm$core$String$contains, session.ay, host.e);
+		return session.aa && A2($elm$core$String$contains, session.ax, host.i);
 	});
 var $author$project$Clustermap$hostListFilter = F2(
 	function (hostlist, session) {
@@ -8508,12 +8331,12 @@ var $author$project$Clustermap$hostListFilter = F2(
 	});
 var $author$project$Clustermap$viewUsedImacs = function (model) {
 	var hlist = function () {
-		var _v0 = model.W;
+		var _v0 = model.V;
 		if (_v0.$ === 1) {
 			return _List_Nil;
 		} else {
 			var hmodel = _v0.a;
-			return hmodel.az;
+			return hmodel.ay;
 		}
 	}();
 	var usedImacs = $elm$core$String$fromInt(
@@ -8521,13 +8344,13 @@ var $author$project$Clustermap$viewUsedImacs = function (model) {
 			A2(
 				$elm$core$List$filter,
 				$author$project$Clustermap$hostListFilter(hlist),
-				model.E)));
+				model.L)));
 	var totalImacs = $elm$core$String$fromInt(
 		$elm$core$List$length(hlist) - $elm$core$List$length(
 			A2(
 				$elm$core$List$filter,
 				$author$project$Clustermap$deadHostListFilter(hlist),
-				model.E)));
+				model.L)));
 	return $elm$html$Html$text(usedImacs + ('/' + totalImacs));
 };
 var $author$project$Main$view = function (model) {
@@ -8545,7 +8368,7 @@ var $author$project$Main$view = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$Attributes$class(
-						$author$project$Main$getMapcontainerClass(model.bH))
+						$author$project$Main$getMapcontainerClass(model.bE))
 					]),
 				_List_fromArray(
 					[
@@ -8566,7 +8389,7 @@ var $author$project$Main$view = function (model) {
 										A2(
 										$elm$html$Html$Attributes$style,
 										'width',
-										$elm$core$String$fromInt(model.P.f.bc) + 'px'),
+										$elm$core$String$fromInt(model.O.e.a9) + 'px'),
 										A2($elm$html$Html$Attributes$style, 'margin-top', '1vh')
 									]),
 								_List_fromArray(
@@ -8575,12 +8398,12 @@ var $author$project$Main$view = function (model) {
 										A2(
 										$elm$html$Html$map,
 										$author$project$Main$Mapf0Msg,
-										$author$project$Clustermap$viewUsedImacs(model.P))
+										$author$project$Clustermap$viewUsedImacs(model.O))
 									])),
 								A2(
 								$elm$html$Html$map,
 								$author$project$Main$Mapf0Msg,
-								$author$project$Clustermap$view(model.P))
+								$author$project$Clustermap$view(model.O))
 							])),
 						A2(
 						$elm$html$Html$div,
@@ -8599,7 +8422,7 @@ var $author$project$Main$view = function (model) {
 										A2(
 										$elm$html$Html$Attributes$style,
 										'width',
-										$elm$core$String$fromInt(model.Q.f.bc) + 'px'),
+										$elm$core$String$fromInt(model.P.e.a9) + 'px'),
 										A2($elm$html$Html$Attributes$style, 'margin-top', '1vh')
 									]),
 								_List_fromArray(
@@ -8608,18 +8431,18 @@ var $author$project$Main$view = function (model) {
 										A2(
 										$elm$html$Html$map,
 										$author$project$Main$Mapf1Msg,
-										$author$project$Clustermap$viewUsedImacs(model.Q))
+										$author$project$Clustermap$viewUsedImacs(model.P))
 									])),
 								A2(
 								$elm$html$Html$map,
 								$author$project$Main$Mapf1Msg,
-								$author$project$Clustermap$view(model.Q))
+								$author$project$Clustermap$view(model.P))
 							]))
 					]))
 			]));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
-	{fr: $author$project$Main$init, f4: $author$project$Main$subscriptions, go: $author$project$Main$update, gp: $author$project$Main$view});
+	{fk: $author$project$Main$init, fZ: $author$project$Main$subscriptions, gh: $author$project$Main$update, gi: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	A2(
 		$elm$json$Json$Decode$andThen,
@@ -8631,7 +8454,7 @@ _Platform_export({'Main':{'init':$author$project$Main$main(
 						$elm$json$Json$Decode$andThen,
 						function (height) {
 							return $elm$json$Json$Decode$succeed(
-								{aR: height, dO: isFirefox, bc: width});
+								{aQ: height, dF: isFirefox, a9: width});
 						},
 						A2($elm$json$Json$Decode$field, 'height', $elm$json$Json$Decode$int));
 				},

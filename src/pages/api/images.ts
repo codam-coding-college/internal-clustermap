@@ -29,19 +29,9 @@ function runMiddleware(
 const images = async (req: NextApiRequest, res: NextApiResponse) => {
   await runMiddleware(req, res, cors);
 
-  let images = imageCache.get("images");
-  if (images == undefined) {
-    const image_secret = process.env.IMAGE_SECRET;
-    const new_images = await fetch(`https://intra.codam.nl/api/veryprivateimageendpoint/${image_secret}`)
-    if (!new_images.ok) {
-        res.status(500).json({ error: "Could not fetch images" });
-        return;
-    }
-    const json = await new_images.json();
-    imageCache.set("images", json, 120);
-    images = json;
-  }
-  res.status(200).json(images);
+  //TODO: add proxy for user-photos.codam.nl to make internal clustermap available externally (once it's behind a login wall)
+
+  res.status(501).json({ error: "Not Implemented" });
 };
 
 export default images;
