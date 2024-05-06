@@ -22,7 +22,7 @@ import Asset exposing (image)
 import Html.Attributes exposing (classList)
 
 user_photos_domain : String
-user_photos_domain = "/api/images/"
+user_photos_domain = "/api/images"
 
 -- MODEL
 
