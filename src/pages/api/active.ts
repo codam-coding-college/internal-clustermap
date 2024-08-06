@@ -200,14 +200,6 @@ const locations = async (req: NextApiRequest, res: NextApiResponse) => {
     // Get hosts in exam mode from the exam-rebooter service
     const examHosts = await getHostsInExamMode();
 
-    // Modify all hosts in the response that are in exam mode
-    for (const responseLocation of responseJSON) {
-      if (examHosts.includes(responseLocation.hostname)) {
-        responseLocation.sessionType = 'exam';
-        console.log(`Marked host at ${responseLocation.hostname} as in exam mode (was already in response locations)`);
-      }
-    }
-
     // Add any missing hosts in exam mode to the response
     for (const examHost of examHosts) {
       if (!responseJSON.some((responseLocation) => responseLocation.hostname == examHost)) {
