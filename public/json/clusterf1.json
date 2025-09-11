@@ -7,109 +7,54 @@
   },
   "hosts": [
     {
-      "hostname": "f1r9s1.codam.nl",
-      "left": 925,
-      "top": 1455
+      "hostname": "f1r7s5.codam.nl",
+      "left": 188,
+      "top": 1506
     },
     {
-      "hostname": "f1r9s2.codam.nl",
-      "left": 855,
-      "top": 1455
-    },
-    {
-      "hostname": "f1r9s3.codam.nl",
-      "left": 745,
-      "top": 1455
-    },
-    {
-      "hostname": "f1r9s4.codam.nl",
-      "left": 675,
-      "top": 1455
-    },
-    {
-      "hostname": "f1r9s5.codam.nl",
-      "left": 565,
-      "top": 1455
-    },
-    {
-      "hostname": "f1r9s6.codam.nl",
-      "left": 495,
-      "top": 1456
-    },
-    {
-      "hostname": "f1r9s7.codam.nl",
-      "left": 385,
-      "top": 1455
-    },
-    {
-      "hostname": "f1r9s8.codam.nl",
-      "left": 315,
-      "top": 1455
-    },
-    {
-      "hostname": "f1r9s9.codam.nl",
-      "left": 925,
-      "top": 1566
-    },
-    {
-      "hostname": "f1r9s11.codam.nl",
-      "left": 745,
-      "top": 1565
-    },
-    {
-      "hostname": "f1r9s10.codam.nl",
-      "left": 855,
-      "top": 1566
-    },
-    {
-      "hostname": "f1r9s12.codam.nl",
-      "left": 675,
-      "top": 1566
-    },
-    {
-      "hostname": "f1r9s13.codam.nl",
-      "left": 565,
-      "top": 1566
-    },
-    {
-      "hostname": "f1r9s14.codam.nl",
-      "left": 495,
-      "top": 1566
-    },
-    {
-      "hostname": "f1r9s15.codam.nl",
-      "left": 385,
-      "top": 1565
-    },
-    {
-      "hostname": "f1r9s16.codam.nl",
-      "left": 315,
-      "top": 1566
-    },
-    {
-      "hostname": "f1r7s4.codam.nl",
-      "left": 187,
+      "hostname": "f1r7s3.codam.nl",
+      "left": 89,
       "top": 1480
     },
     {
       "hostname": "f1r7s2.codam.nl",
       "left": 89,
-      "top": 1480
+      "top": 1539
+    },
+    {
+      "hostname": "f1r7s1.codam.nl",
+      "left": 89,
+      "top": 1591
+    },
+    {
+      "hostname": "f1r7s7.codam.nl",
+      "left": 285,
+      "top": 1505
+    },
+    {
+      "hostname": "f1r5s4.codam.nl",
+      "left": 267,
+      "top": 1100
+    },
+    {
+      "hostname": "f1r7s6.codam.nl",
+      "left": 189,
+      "top": 1431
+    },
+    {
+      "hostname": "f1r7s8.codam.nl",
+      "left": 286,
+      "top": 1431
+    },
+    {
+      "hostname": "f1r7s4.codam.nl",
+      "left": 89,
+      "top": 1425
     },
     {
       "hostname": "f1r5s7.codam.nl",
       "left": 148,
       "top": 971
-    },
-    {
-      "hostname": "f1r7s3.codam.nl",
-      "left": 186,
-      "top": 1555
-    },
-    {
-      "hostname": "f1r7s1.codam.nl",
-      "left": 89,
-      "top": 1555
     },
     {
       "hostname": "f1r1s10.codam.nl",
@@ -525,11 +470,6 @@
       "hostname": "f1r5s3.codam.nl",
       "left": 232,
       "top": 1164
-    },
-    {
-      "hostname": "f1r5s4.codam.nl",
-      "left": 267,
-      "top": 1101
     },
     {
       "hostname": "f1r5s5.codam.nl",
