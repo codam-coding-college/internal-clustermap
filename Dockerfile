@@ -1,4 +1,4 @@
-FROM node:20-bullseye as deps
+FROM node:22-bullseye as deps
 RUN apt-get update && apt-get install -y curl gzip
 WORKDIR /app
 
@@ -11,7 +11,7 @@ RUN curl -L -o elm.gz https://github.com/elm/compiler/releases/download/0.19.1/b
     gunzip elm.gz && \
     chmod +x elm
 
-FROM node:20-bullseye as builder
+FROM node:22-bullseye as builder
 
 WORKDIR /app
 
@@ -24,7 +24,7 @@ RUN npx prisma generate --schema=./prisma/crs.prisma
 RUN npx prisma generate --schema=./prisma/exam.prisma
 RUN yarn build
 
-FROM node:20-bullseye as runner
+FROM node:22-bullseye as runner
 WORKDIR /app
 
 ENV NODE_ENV=production
